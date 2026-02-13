@@ -2,7 +2,7 @@
 
 If you are in the cloud computing business — or building infrastructure at the scale of companies like Meta — you quickly realize that the traditional 3-tier architecture of core, aggregation, and access layers is no longer sufficient. It was designed for a different era, a different type of application, and a different traffic pattern.
 
-The real reason Clos architecture became dominant was not fashion or vendor marketing. It was driven by a fundamental shift in how applications operate.
+The real reason Clos architecture became dominant was not any marketing gimmick. It was driven by a fundamental shift in how applications operate.
 
 In the past, most applications followed a **north–south** traffic model. A client would send a request to a server, the server would process it, and a response would travel back. The network’s primary responsibility was to move traffic in and out of the data center efficiently. That model worked well when applications were mostly monolithic and lived on a single machine or a tightly coupled set of servers.
 
