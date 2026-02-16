@@ -4,11 +4,11 @@ Before diving deep into any specific protocol, it helps to step back and underst
 
 The first rule of routing is simple: a router must know how to reach a destination.
 
-No matter which protocol you use — static or dynamic — the device needs basic **reachability information**. In its simplest form, routing is just a statement that says, “To reach this network, send traffic there.”
+No matter which protocol you use - static or dynamic - the device needs basic **reachability information**. In its simplest form, routing is just a statement that says, “To reach this network, send traffic there.”
 
 If you configure a static route, for example, you are manually telling the router: to reach the `10.2.2.0/24` network, forward traffic to the next-hop IP `10.0.0.2`, which happens to be the neighboring switch. The exact syntax may vary across vendors, but the idea is always the same: destination prefix plus next-hop.
 
-Dynamic routing protocols follow the same principle, but instead of manually specifying next-hops, routers discover them. They form neighbors, exchange updates, build routing tables, and compute the best path automatically. The process involves more steps — neighbor relationships, route advertisements, convergence logic — but the end result is identical: populate the routing table with valid reachability information.
+Dynamic routing protocols follow the same principle, but instead of manually specifying next-hops, routers discover them. They form neighbors, exchange updates, build routing tables, and compute the best path automatically. The process involves more steps - neighbor relationships, route advertisements, convergence logic - but the end result is identical: populate the routing table with valid reachability information.
 
 The second rule of routing comes into play when things become interesting.
 
