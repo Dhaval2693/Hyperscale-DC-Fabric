@@ -16,5 +16,43 @@ A large set of routes (the specific thresholds depend on the individual router�
 
 The practice for efficient routing across an IBGP infrastructure is that a full mesh of IBGP sessions should exist between all BGP routers within a single AS. 
 
+<Multihoming>
+A transit AS must, by definition, be multihomed for a packet to transit the AS. But a stub AS can also be multihomed.
+B
+A transit AS is usually a service provider network, delivering services such as basic Internet connectivity or voice and video services to connected customers, or a carrier network, specializing in providing a geographically large backbone to smaller service provider networks. However, a transit AS might also be the backbone of a large commercial, government, or academic organization.
+
+In general, three types of external connections from a transit network exist:
+
+User (customer) peering: Networks that originate or terminate traffic and use the transit AS to get to either other user networks connected to the AS or to get to user networks connected to some other AS.
+
+Private peering: When two or more service providers agree to share routes, they enter into a peering agreement.
+Traffic patterns play a major role in determining the financial nature of the agreement.
+Tiers are defined by peering relationships. Tier 1 service providers peer with each other exclusively through settlement-free peering. Tier 2 service providers peer with some or, occasionally, all the Tier 1 providers (upstream peering),
+Public peering: These connections take place at well-known Internet exchange points (IXP)8 built specifically for allowing such peering.
+
+multihoming is also common in stub autonomous systems. If a stub AS is small enough to not need multihoming—that is, it has only a single link to some higher-level AS—BGP probably is not needed. Static routes on each side of the connection are easy to configure and safer to manage.
+
+good reasons for a stub AS to multihome:
+
+Image Redundancy against access loss because of link and interface failures
+
+Image Redundancy against access loss because of router failures
+
+Image Redundancy against access loss because of ISP failures
+
+Image Local connectivity for autonomous systems with wide geographical footprints
+
+Image Provider independence
+
+Image Corporate or external policies such as acceptable use policies or economic partnerships
+
+Image Load sharing
+
+The principal benefits of multihoming are redundancy, path diversity, and increased bandwidth to external peers.
+
+The point is that load sharing is not the same as load balancing, in which an effort (usually misguided) is made to maintain equal load percentages on all external links in the name of efficient bandwidth usage.  Multihoming is for redundancy and increased routing efficiency, not load balancing.
+
+GP Policies Can Influence How Other Autonomous Systems Choose the Paths into the Local AS
+BGP provides you with more than just the means for making better route choices. Its policy capabilities enable you to define a “better route,” on your own terms, outside of what a routing protocol would define by default.
 
 
