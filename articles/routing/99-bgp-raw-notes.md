@@ -55,4 +55,36 @@ The point is that load sharing is not the same as load balancing, in which an ef
 GP Policies Can Influence How Other Autonomous Systems Choose the Paths into the Local AS
 BGP provides you with more than just the means for making better route choices. Its policy capabilities enable you to define a “better route,” on your own terms, outside of what a routing protocol would define by default.
 
+<Intro to BGP>
+Unlike IGP, BGP is powerful routing protocol for carrying traffic between two AS and want to control the incoming/outgoing traffic with ISP. Now a days, its been used within Datacenter with clos architecture. But that topic is for another chapter.
+It is important to note that, you don't always need to use BGP if you are planning to talk to ISP. For example. if you want to advertise the route to a single ISP for the incoming traffic and use ISP for default route, then you can use static routing and not bother about BGP because it requires tremendos CPU to peer with ISP routers.
+You start benefitting from BGP when you have multihome scenario where you are peering with mutliple ISP for your network and you want to control which ISP to peer with. how many routes you want to receive or advertise. Even if multihome scenarios,you just want to advertise traffic to one ISP and use other ISP for backup, you can get away with static routing where you use ISP1 with less metric than othert ISP2. 
+
+It is important to understand the BGP message types & its state machine before we deep dive into different case studies.
+
+BGP has 4 types message types - 1) Open when router starts making peering and it uses TCP 179 port for that, 2) Keepalive to know the peer is healthy and alive , 3) update to send routes, 4) notifciation if for some reason the BGP fail to peer
+BGP state finite machine go through these stages before making full neighborship between routers. In idle state, BGP just start initiating TCP session with the peer.
+When it wait for the keepalive message, it goes into connect state. If for some reason, peering did not happen then it goes into Active state and initiate another TCP session before go into idle state. If the TCP session was successful and the parameters matches, it goes to OpenConnect state. Once the other router  (R2) also send the BGP parameters, then it (R1) goes to open Confirm. Once both exchange al the info, both routers go to Established state.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
