@@ -18,23 +18,7 @@ If every ISP, enterprise, government network, and academic backbone shared full 
 - A malicious attack against the routing protocol could propagate instantly.
 
 The Internet needed something different. It needed a protocol that does not expose topology. A protocol that does not flood. A protocol built around control and policy.
-That protocol became **BGP**.
+That protocol became **BGP**. 
 
-## From EGP to BGP
-
-Before BGP, there was EGP - the original Exterior Gateway Protocol. But EGP was not a true routing protocol. It was only a reachability protocol. It could tell you whether a network was reachable, but not how to choose between multiple paths.
-As the Internet grew, this limitation became fatal. BGP introduced something revolutionary: the **AS_PATH** attribute. Instead of sharing link-state information, BGP shares path information.
-Every route advertisement carries the list of Autonomous Systems it has traversed. That serves two purposes:
-
-1. It helps choose a shorter AS-level path.
-2. It prevents routing loops - if a router sees its own ASN in the AS_PATH, it drops the route.
-
-This simple idea allowed the Internet to scale without sharing internal topology details.
-
-## Neighbors vs Peers
-
-In BGP terminology, two routers running BGP directly over a session are **neighbors**. Once that session is established and they begin exchanging reachability information, they become **peers**.
-BGP establishes a unique, unicast TCP connection (port 179) to each neighbor. There is no multicast. No flooding. Every session is deliberate.
-When two BGP neighbors first establish a session, they exchange their entire routing tables. After that, they only exchange incremental updates - only what changes.
-
-This design is what makes BGP scalable.It shares reachability. Not topology. Not internal design. Not link-state. And that difference is why the Internet survived exponential growth.
+In BGP, two routers running BGP directly over a session are **neighbors**. Once that session is established and they begin exchanging reachability information, they become **peers**.
+BGP establishes a unique, unicast TCP connection (port 179) to each neighbor. There is no multicast. No flooding. Every session is deliberate. When two BGP neighbors first establish a session, they exchange their entire routing tables. After that, they only exchange incremental updates - only what changes. This design is what makes BGP scalable.It shares reachability. Not topology. Not internal design. Not link-state. And that difference is why the Internet survived exponential growth.
