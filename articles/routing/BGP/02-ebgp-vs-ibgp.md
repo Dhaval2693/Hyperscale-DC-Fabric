@@ -1,24 +1,21 @@
-# Understanding BGP Peering: EBGP vs IBGP
+# Understanding BGP Peering: eBGP vs iBGP
 
-At first glance, BGP peering seems simple. Two routers connect. They exchange routes. Traffic flows. But the type of peering defines the behavior of the entire system.
+At first glance, BGP peering seems simple. Two routers connect, exchange routes, and traffic flows. But the type of peering defines the behavior of the entire system — and understanding the difference between external and internal BGP is foundational to understanding how any large network is built.
 
-If two BGP neighbors belong to different Autonomous Systems, the session is called **External BGP (EBGP)**. If two neighbors belong to the same AS, the session is called **Internal BGP (IBGP)**.
-That distinction is small in configuration. It is enormous in design.
-EBGP operates across trust boundaries. IBGP operates inside a single administrative domain.
+If two BGP neighbors belong to different Autonomous Systems, the session between them is **eBGP** — External BGP. If two neighbors belong to the same AS, the session is **iBGP** — Internal BGP. The configuration difference is minor. The design implications are enormous.
 
+eBGP is the BGP of the Internet. It operates across trust boundaries, connecting organizations that have agreed to exchange reachability information with each other. Every time your ISP announces a route to another ISP, that is eBGP at work. Every time a hyperscaler peers with an Internet Exchange Point, that is eBGP at work. The AS_PATH attribute is the tool that keeps this from becoming chaos — when a router receives a route, it checks the AS_PATH and rejects it if its own AS number appears in the list. That is how BGP prevents routing loops across the global Internet.
 
-Inside an AS, routers must share external routes with each other. But BGP has a built-in loop prevention rule - If a router sees its own ASN in the AS_PATH, it rejects the route. This works perfectly across different ASes.
-Inside the same AS, however, all routers share the same ASN. So how do they share routes without breaking loop prevention?
-In IBGP, the rule becomes - do not re-advertise routes learned from one IBGP peer to another IBGP peer. That prevents loops - but it creates a scaling issue.
-To ensure every router knows every external route, a **full mesh of IBGP sessions** must exist. If you have 10 BGP routers inside an AS, each must peer with the other 9.
-As the number of routers increases, the number of sessions grows rapidly. This is one of the reasons IBGP does not scale linearly without additional design tools like route reflectors or BGP confederations. More about this in the later chapter.
+eBGP sessions are typically formed between directly connected routers. By default, eBGP sets a TTL of 1 on its packets, which means the session can only be established between neighbors that are exactly one IP hop apart. This is deliberate — it enforces the assumption that eBGP peers are directly adjacent. When an engineer needs to peer across multiple hops, or through a loopback interface for redundancy, they configure **eBGP multihop** to increase the TTL and **update-source** to specify which interface to use. These are intentional overrides, not the default.
 
-But why we need BGP protocol inside AS if we have IGP like OSPF? Why not redistribute EBGP routes into OSPF? The answer is simple. Disaster.
-If you inject thousands (or hundreds of thousands) of Internet routes into an IGP:
-- SPF calculations explode.
-- CPU utilization spikes.
-- Memory consumption increases dramatically.
-- Convergence events become catastrophic.
-- A single routing issue could collapse the internal network.
+iBGP serves a different purpose entirely. Once an AS receives external routes via eBGP, it needs to distribute them to every other router in the AS. The IGP carries internal topology — not external prefixes. So iBGP becomes the mechanism for propagating external routes across the internal network, from the edge router that learned them to every other BGP-speaking router that needs to forward traffic based on them.
 
-IGPs were not designed to carry Internet-scale routing tables. BGP exists to protect the stability of the internal routing domain.
+Here the AS_PATH loop prevention rule breaks down. iBGP routers share the same AS number. If the rule were the same — reject any route containing your own ASN — no iBGP route would ever be accepted. So iBGP uses a different rule: **BGP split horizon**. A router will not re-advertise a route it learned from one iBGP peer to another iBGP peer. This prevents loops within the AS, because routes cannot circulate through a chain of iBGP sessions.
+
+That constraint has a significant consequence. If iBGP routes cannot be passed between iBGP peers, then the only way every router can learn every external route is if every router peers directly with every other router. This is the **iBGP full mesh** requirement. In an AS with 10 BGP routers, each must peer with the other 9. With 50 routers, each needs 49 sessions. The session count grows as n(n-1)/2, and it becomes unmanageable quickly. Route Reflectors and BGP Confederations exist precisely to solve this scaling problem — but that is a topic for a later article.
+
+The obvious question is: why carry external routes in BGP at all? Why not simply redistribute eBGP routes into OSPF or IS-IS and let the IGP distribute them? The answer is that IGPs were never designed for Internet-scale routing tables. A modern Internet routing table holds over a million prefixes. Injecting that into an IGP would trigger constant SPF recalculations, consume most of the router's CPU and memory, and turn every external routing event into an internal convergence storm. A single flapping external prefix could destabilize the entire internal network. BGP exists, in part, to isolate the internal routing domain from the instability of the outside world.
+
+The separation is intentional and necessary. eBGP faces outward, exchanging reachability with other organizations. iBGP carries that information inward, distributing it to the routers that need it. The IGP handles internal topology. Each protocol does what it was designed to do, and none is asked to do more.
+
+A natural next question is: when does a network actually need BGP? Many organizations connect to the Internet through a single ISP with a single link. They do not need BGP at all — a static default route is simpler, safer, and easier to manage. The case for BGP emerges when the design requires multiple external connections, policy control over traffic paths, or the ability to influence how traffic enters the AS. In the next article, we will look at exactly when BGP becomes necessary — and what multihoming means for network design.

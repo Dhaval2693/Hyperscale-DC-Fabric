@@ -66,25 +66,21 @@ BGP has 4 types message types - 1) Open when router starts making peering and it
 BGP state finite machine go through these stages before making full neighborship between routers. In idle state, BGP just start initiating TCP session with the peer.
 When it wait for the keepalive message, it goes into connect state. If for some reason, peering did not happen then it goes into Active state and initiate another TCP session before go into idle state. If the TCP session was successful and the parameters matches, it goes to OpenConnect state. Once the other router  (R2) also send the BGP parameters, then it (R1) goes to open Confirm. Once both exchange al the info, both routers go to Established state.
 
+## Network Lessons
+#### Introduction to BGP
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+When to use BGP? Routing tables - Default, Partial, and Full
+Multi-homed designs: Single & Dual Homed (1 ISP), Single & Dual multi-homed (2 ISP)
+eBGP: 
+- uses TTL of 1 by default (directly connected neighbor)
+- ebgp-multihop (increase TTL)
+- update-source (another interface like loopback)
+- eBGP multi-home for redunancy when two routers connected through multiple interfaces
+iBGP:
+- IBGP does not advertise prefixes from one IBGP neighbor to another IBGP neighbor. This is called BGP split horizon.
+- Split horizon - Between different ASes, BGP uses the AS_PATH attribute to avoid routing loops. A prefix will not be accepted by a BGP router if it sees its own AS number in it…plain and simple. However, within the autonomous system, the AS number does not change, so we can’t use this loop prevention mechanism.
+How to advertise networks in BGP
+- BGP network command - exact matches from routing table
+- Discard routes to null interface allow you to advertise networks you don't have
+- Redistibution injects routes from other protocols such as OSPF, EIGRP into BGP
+- Origin codes - i (IGP) and ?  incomplete
