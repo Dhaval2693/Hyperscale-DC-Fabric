@@ -84,3 +84,13 @@ How to advertise networks in BGP
 - Discard routes to null interface allow you to advertise networks you don't have
 - Redistibution injects routes from other protocols such as OSPF, EIGRP into BGP
 - Origin codes - i (IGP) and ?  incomplete
+
+BGP next hop self
+When Internal BGP (IBGP) advertises a prefix to another IBGP router, it doesn’t change the next hop address. External BGP (EBGP) does change the next hop. IBGP keeps the original next hop address. If the other IBGP router can’t reach that next hop address, you will see the prefix in the BGP table, but it won’t be able to install the route in the routing table.
+Two options to fix this problem:
+
+    Use the network command to advertise the network where the next hop address is.
+    Use the next-hop-self command to change the next hop address to the local IBGP router.
+Changing the next hop address is usually the best solution because you won’t have to advertise unnecessary networks.
+
+Using auto-summary has advantages and disadvantages. One major advantage is that the receiving router receives fewer prefixes. This helps with routers with CPU and/or memory constraints. The disadvantage is that you have a loss of detailed routing information. It’s possible that you will receive traffic for prefixes that you don’t have, but that match the advertised summary. Nowadays, we have powerful hardware so it’s best to avoid auto-summary. If you use it, you might want to consider using a route-map so that you only advertise to to specific routers.

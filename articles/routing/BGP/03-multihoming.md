@@ -1,30 +1,21 @@
 # Multihoming: Redundancy, Control, and Independence
 
-Imagine your entire network connected to the world through a single link. One fiber. One router. One ISP. Everything works until it doesn’t. A backhoe cuts the fiber. The ISP has an outage. A router crashes. Your connectivity disappears.
+Imagine your entire network connected to the world through a single link. One fiber. One router. One ISP. Everything works until it doesn't. A backhoe cuts the fiber. The ISP has an outage. A router crashes. Your connectivity vanishes completely, and there is nothing you can do except wait.
 
 That is why multihoming exists.
 
-Multihoming simply means connecting your Autonomous System to more than one external AS. But the motivation is deeper than just “two links are better than one.”
+**Multihoming** means connecting your Autonomous System to more than one external AS. But the motivation is deeper than just having a backup link. Redundancy is the entry point — what you gain from multihoming goes much further than that.
 
-There are two types of Autonomous Systems in the Internet. A **stub AS** originates or terminates traffic but does not carry traffic between other ASes. Most enterprises fall into this category. A **transit AS** carries traffic across itself. Service providers and large backbone networks operate as transit ASes. By definition, a transit AS must be multihomed - otherwise traffic cannot pass through it.
+There are two fundamental types of Autonomous Systems on the Internet. A **stub AS** originates or terminates traffic but does not carry traffic between other ASes. Most enterprises, universities, and corporate networks fall into this category. A **transit AS** carries traffic across itself on behalf of others — service providers and large backbone networks operate this way. By definition, a transit AS must be multihomed. If it has only one external connection, traffic cannot pass through it and it ceases to function as a transit network.
 
-But even stub ASes choose to multihome.
+But stub ASes choose to multihome too, and for good reasons. A second connection to the Internet provides redundancy against link failures, router failures, and ISP outages. For organizations with geographically distributed offices, multihoming also enables local connectivity — traffic can enter or exit closer to its destination rather than hairpinning through a single point. And once an organization peers with multiple providers, it gains **provider independence** — the ability to change or drop one ISP without losing connectivity, and the freedom to negotiate without being held captive to a single vendor.
 
-Because multihoming provides:
-- Redundancy against link failures  
-- Redundancy against router failures  
-- Protection against ISP outages  
-- Geographic resilience  
-- Provider independence  
-- Policy flexibility  
-- Increased aggregate bandwidth  
+Multihoming is not primarily about load balancing. That distinction matters. Load balancing attempts to maintain equal utilization across all links at all times. Multihoming is about **path diversity** and resilience — having options when something fails, and the ability to route traffic more efficiently based on policy and performance rather than raw bandwidth percentages. Load sharing, where traffic naturally distributes across paths based on routing decisions, is a side effect of good multihoming design. Forcing equal traffic splits is a different goal, and usually the wrong one.
 
-Multihoming is not primarily about load balancing. That is a common misunderstanding. Load balancing tries to keep equal utilization on multiple links. Multihoming is about resilience and routing efficiency. It gives you **path diversity**. It allows you to survive failure. It gives you options.
-The moment you connect to multiple providers, routing stops being automatic and starts becoming strategic. You can choose which provider handles outbound traffic. You can influence how inbound traffic reaches you. You can enforce policies based on economics, performance, or partnerships.
-BGP policies allow you to define what “better” means. Shorter AS path. Preferred provider. Lower cost transit. Community-based routing decisions. 
+Once you are connected to multiple providers, routing stops being automatic and starts becoming strategic. BGP gives you the tools to define what "better" means on your own terms. You can prefer one ISP for outbound traffic based on cost. You can use BGP communities to signal preferences to upstream providers and influence how inbound traffic reaches you. You can back up one connection with another and make the failover invisible to your users. The protocol does not impose a definition of optimal — it gives you the mechanisms to express your own.
 
-Transit networks take this even further. They engage in different types of peering relationships. Customer peering happens when users connect to a transit AS to reach the Internet. Private peering happens when two service providers directly interconnect and exchange routes based on negotiated agreements. Public peering happens at Internet Exchange Points (IXPs), where many providers connect to a shared switching fabric to exchange traffic efficiently.
-Multihoming turns routing into an economic and architectural decision, not just a technical one. At small scale, static routing may be enough. But once redundancy, policy, and provider independence matter, BGP becomes unavoidable.
+The peering relationships inside the Internet reflect this layered economic reality. **Customer peering** happens when a stub AS or smaller network connects to a transit AS to reach the broader Internet — the customer pays the transit provider for access. **Private peering** happens when two service providers directly interconnect and exchange routes without payment, based on a negotiated agreement that the traffic flows are roughly balanced and mutually beneficial. Tier 1 providers — the networks at the top of the hierarchy — peer exclusively this way, through settlement-free agreements with each other, paying nothing for interconnection. Tier 2 providers peer with some Tier 1 networks through paid upstream agreements and with peers of similar size through settlement-free arrangements. **Public peering** happens at **Internet Exchange Points (IXPs)**, shared switching fabrics where hundreds of networks connect to a single fabric and exchange traffic with any participant who agrees to peer.
 
-The principal benefits of multihoming are simple: redundancy, path diversity, and greater control. Not perfect symmetry. Not equal traffic percentages.
-And at Internet scale, those are the properties that matter most.
+Understanding these relationships matters because they shape routing decisions. A transit AS is not just a technical participant — it is an economic one. Which routes it accepts, which it advertises, and how it prefers paths all reflect commercial agreements as much as engineering constraints. BGP is the mechanism that enforces those agreements in the routing table.
+
+At small scale, none of this complexity is necessary. If a network has a single link to a single ISP and simply needs a path to the Internet, static routing is simpler, safer, and easier to manage than BGP. The case for running BGP emerges when redundancy, policy control, and provider independence actually matter. In the next article, we will look at exactly when BGP becomes worth the operational overhead — and when it does not.
