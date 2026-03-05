@@ -85,7 +85,7 @@ How to advertise networks in BGP
 - Redistibution injects routes from other protocols such as OSPF, EIGRP into BGP
 - Origin codes - i (IGP) and ?  incomplete
 
-BGP next hop self
+#### BGP next hop self
 When Internal BGP (IBGP) advertises a prefix to another IBGP router, it doesn’t change the next hop address. External BGP (EBGP) does change the next hop. IBGP keeps the original next hop address. If the other IBGP router can’t reach that next hop address, you will see the prefix in the BGP table, but it won’t be able to install the route in the routing table.
 Two options to fix this problem:
 
@@ -94,3 +94,58 @@ Two options to fix this problem:
 Changing the next hop address is usually the best solution because you won’t have to advertise unnecessary networks.
 
 Using auto-summary has advantages and disadvantages. One major advantage is that the receiving router receives fewer prefixes. This helps with routers with CPU and/or memory constraints. The disadvantage is that you have a loss of detailed routing information. It’s possible that you will receive traffic for prefixes that you don’t have, but that match the advertised summary. Nowadays, we have powerful hardware so it’s best to avoid auto-summary. If you use it, you might want to consider using a route-map so that you only advertise to to specific routers.
+
+#### BGP active vs passive router
+
+    The passive router acts as the server and listens on TCP port 179.
+    The active router acts as the client with a random source TCP port number and initiates the connection to TCP port 179
+
+How do BGP routers figure out which one is active or passive? They can compare the BGP router identifier (router ID). Each BGP router knows its identifier and the identifier of the other router, which is configured with the neighbor command. There might be differences between different platforms and OS versions, though.
+There are a number of scenarios where this could be useful:
+
+    If you need to allow BGP through a firewall, it’s easier to make rules when the connection is deterministic instead of random.
+    When two BGP routers attempt to establish a connection simultaneously, we have a connection collision. The chance that this happens is small, though, and BGP has something built-in to deal with this.
+    When you use a route reflector with many clients, you might want to configure the route reflector as passive so it won’t attempt to connect to any BGP routers that are not there (yet).
+
+#### BGP messages
+Border Gateway Protocol (BGP) uses four messages to establish a neighbor adjacency, exchange routing information, check if the remote BGP neighbor is still there, and to notify the neighbor if there are any errors. To do all of this, BGP uses these four messages:
+
+    Open Message: establish BGP sessions and negotiate parameters like BGP version, AS numbers, hold timers, and optional capabilities.
+    Update Message: advertise new routes (NLRI) or withdraw previously advertised routes using BGP path attributes.
+    Keepalive Message: sent every 60 seconds (default) to maintain the BGP session and to confirm the neighbor is still reachable.
+    Notification Message: signal errors and terminate BGP sessions when problems occur.
+
+#### BGP Neighbor adjacency troubleshooting
+
+#### BGP Route advertisement troubleshooting
+
+#### BGP attributes and path selection
+Priority 	Attribute
+1 	Weight - Highest - default 0 - Cisoc proprietary - Not exchanged between routers
+2 	Local Preference - highest - control outbound path selection within AS -  Default 100 - set globally or per-neighbor with route-maps - Local preference is exchanged between iBGP routers, so you can configure this on one router, and all your iBGP routers will then receive the local preference value
+3 	Originate - path originated by local router over (next hop 0.0.0.0) any other router (networ command, redistribution)
+4 	AS path length - shortest - manipulate route by AS path prepending
+5 	Origin code - IGP (when you use netwokr command), EGP (historical and no longer there), and INCOMPLETE (redistributed something into BGP) 
+6 	MED - lowest - control entry for your AS - exchanged between AS - propogated to all routers within neighbor AS but not passed along to any other AS
+7 	eBGP path over iBGP path - eBGP over iBGP
+8 	Shortest IGP path to BGP next hop - lowest IGP metric
+9 	Oldest path - we received first
+10 	Router ID - Lowest bgp neighbor router id 
+11 	Neighbor IP address - lowest neighbor ip address
+
+#### Accumulated IGP metric attribute (AIGP)
+network designs where the network is under a single administrative authority but divided into multiple ASes, each with its own IGP.
+Why do we see networks designed like this? There are several reasons:
+
+    The IGP doesn’t scale for a network of this size.
+    One company bought another company, and they haven’t merged their ASes (yet).
+    Each business division has a separate network.
+    You require a specific routing policy that you can’t do with an IGP.
+    You use BGP confederations.
+    You use seamless MPLS.
+A network with multiple IGPs and BGP in between instead of a single IGP introduces a potential problem. BGP selects a path using the best path selection algorithm, which isn’t based on a “lowest metric” as IGPs do. What happens is that your router will sometimes select sub-optimal paths in your network.
+The solution to this problem is to use a BGP attribute named Accumulated IGP Metric Attribute (AIGP).
+AIGP is a non-transitive attribute that includes the accumulated IGP metric. BGP routers advertise this AIGP metric to neighbors in other ASes. This allows BGP routers to select the best path based on the end-to-end IGP metric.
+To make this possible, AIGP makes some changes to the BGP best-path algorithm.
+Once you enable AIGP, BGP will check the AIGP metric right after step 3 (originate). This means we use the AIGP metric as a tie-breaker before other important attributes like the AS path length or MED.
+If you use AIGP, you have to use the same IGP. Each IGP uses a different metric, so when you use different IGPs, the AIGP metric won’t make any sense.
