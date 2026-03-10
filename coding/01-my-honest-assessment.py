@@ -40,3 +40,8 @@ def two_sum(nums, target):
         seen[num] = i
 
 print (two_sum(nums, target))
+
+# Why this works: For each number, check if target - num was already seen. If yes, done.
+
+# Time: O(N) - one pass
+# Space: O(N) - hashmap grows with input
