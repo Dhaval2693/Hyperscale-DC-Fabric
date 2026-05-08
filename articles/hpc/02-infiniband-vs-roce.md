@@ -56,7 +56,7 @@ The solution is lossless Ethernet via **PFC (Priority Flow Control)** and **ECN 
 2. PFC pauses the upstream sender if ECN is insufficient and the buffer is about to overflow
 3. PFC deadlock never occurs (requires careful topology design)
 
-This is why LinkedIn's JD specifically lists both RoCEv2 and QoS/ECN as basic qualifications — the two are inseparable for anyone operating RoCEv2 infrastructure.
+RoCEv2 and QoS/ECN are inseparable — anyone operating RoCEv2 infrastructure must understand both together.
 
 ## The Comparison
 
@@ -79,14 +79,12 @@ This is why LinkedIn's JD specifically lists both RoCEv2 and QoS/ECN as basic qu
 
 **Hybrid:** Some large-scale deployments use InfiniBand for GPU-to-GPU RDMA (the training fabric) and Ethernet for storage, management, and general compute traffic. The GPU servers have two NICs: an IB HCA for RDMA and an Ethernet NIC for everything else.
 
-## What This Means for a Network Engineer at LinkedIn
+## What a Network Engineer Needs to Know
 
-LinkedIn's JD mentions "AI/ML network infrastructure, e.g. InfiniBand and RoCEv2 networking" as a preferred qualification. The honest admission: if you have not operated production InfiniBand or RoCEv2 fabric, that is a gap.
-
-The foundational knowledge that bridges the gap:
+For a network engineer working with AI/ML infrastructure, the foundational knowledge that matters:
 - RDMA principles (covered in the previous article)
 - Lossless Ethernet (PFC + ECN + DCQCN — covered in the congestion control articles)
 - Fat-tree and dragonfly topologies (covered in the HPC topology article)
 - The operational model for RDMA monitoring: tracking CNP rates, PFC pause counts, RDMA retransmit counters
 
-You do not need to have designed and operated an NVIDIA Quantum InfiniBand fabric to have a productive conversation about it in an interview. You need to understand why it exists, what problem it solves, and what the network engineering constraints are. That depth — combined with honesty about hands-on experience — is the right posture.
+Understanding why each technology exists, what problem it solves, and what the network engineering constraints are is more transferable than hands-on experience with any specific vendor's implementation. The underlying principles — lossless fabric, RDMA semantics, congestion signaling — are consistent across InfiniBand and RoCEv2.

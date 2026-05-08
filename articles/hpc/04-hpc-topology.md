@@ -39,6 +39,32 @@ Each level doubles the bandwidth available. At the core level, every aggregation
 
 **Used by:** Most large-scale InfiniBand clusters use fat-tree topology. NVIDIA's DGX SuperPOD uses fat-tree with HDR/NDR InfiniBand. Many RoCEv2 clusters also use fat-tree because the topology maps naturally to spine-leaf (the cloud fat-tree is a two-level version of the same architecture).
 
+```
+Fat-Tree Topology (k=4 example: 4 pods, 16 servers)
+
+                    CORE LAYER
+         [C1]      [C2]      [C3]      [C4]     ← k²/4 = 4 switches
+           │╲       │╲       ╱│       ╱│
+           │  ╲     │  ╲   ╱  │     ╱  │
+           │    ╲   │    ╲╱   │   ╱    │
+           │      ╲ │    ╱╲   │ ╱      │
+ ┌──Pod 0──┼────────┼──╱────╲─┼──────────Pod 1──┐  ...
+ │         │        │╱        ╲│         │       │
+ │    AGGREGATION LAYER         AGGREGATION LAYER │
+ │   [A01]    [A02]            [A11]    [A12]     │
+ │     │  ╲  ╱  │               │  ╲  ╱  │       │
+ │     │   ╲╱   │               │   ╲╱   │       │
+ │     │   ╱╲   │               │   ╱╲   │       │
+ │    EDGE LAYER                EDGE LAYER        │
+ │   [E01]    [E02]            [E11]    [E12]     │
+ │   /   \   /   \             /   \   /   \      │
+ │ S0     S1 S2   S3         S4     S5 S6   S7    │
+ └─────────────────────────────────────────────────┘
+
+Key: Each level has equal uplink and downlink bandwidth → full bisection bandwidth
+     k/2 equal-cost paths between any two pods through the core layer
+```
+
 ## Dragonfly Topology
 
 Fat-tree requires many switches and many cables per server. As cluster sizes grow to tens of thousands of GPUs, fat-tree becomes expensive — both in switch cost and in cabling infrastructure.
@@ -66,6 +92,34 @@ Adaptive routing requires the network to have real-time congestion visibility an
 
 **Dragonfly is used by:** The world's largest supercomputers — Cray Slingshot (used in Frontier, the first exascale computer) uses a dragonfly topology. For AI training clusters at the scale of 100,000+ GPUs, dragonfly becomes cost-competitive with fat-tree while providing similar or better performance.
 
+```
+Dragonfly Topology (simplified: 4 groups, 3 switches per group)
+
+  ┌─────── Group A ───────┐          ┌─────── Group B ───────┐
+  │                       │          │                       │
+  │  [SW1]──[SW2]──[SW3]  │◄────────►│  [SW4]──[SW5]──[SW6]  │
+  │   └──────────┘        │ 1 global │   └──────────┘        │
+  │  (all-to-all within)  │   link   │  (all-to-all within)  │
+  │   │     │     │       │          │   │     │     │       │
+  │  GPUs  GPUs  GPUs     │          │  GPUs  GPUs  GPUs     │
+  └───────────┬───────────┘          └───────────┬───────────┘
+              │ 1 global link                     │ 1 global link
+  ┌───────────┴───────────┐          ┌───────────┴───────────┐
+  │ ┌─────── Group C ─────┤          ├─────── Group D ───────┐ │
+  │ │  [SW7]──[SW8]──[SW9]│◄────────►│[SW10]─[SW11]─[SW12]  │ │
+  │ │   └──────────┘      │ 1 global │   └──────────┘        │ │
+  │ │  (all-to-all within)│   link   │  (all-to-all within)  │ │
+  └─┴─────────────────────┘          └───────────────────────┘─┘
+
+Traffic path (worst case, different groups):
+  GPU → local hop → border switch → global hop → border switch → local hop → GPU
+           (1)                          (2)                          (3)
+  = 3 hops maximum, regardless of total cluster size
+
+Adaptive routing: if Group A→B link is congested, route A→C→B instead (4 hops,
+better throughput than waiting on a saturated direct link)
+```
+
 ## Comparing Fat-Tree and Dragonfly for AI Clusters
 
 | | Fat-Tree | Dragonfly |
@@ -78,10 +132,13 @@ Adaptive routing requires the network to have real-time congestion visibility an
 | Congestion handling | ECMP spreads load | Adaptive routing, congestion-aware |
 | Scale | Excellent to ~32K servers | Better at >32K servers |
 
-## What This Means at LinkedIn Scale
+## Practical Considerations
 
-LinkedIn's AI/ML infrastructure is growing — the JD specifically mentions AI/ML network infrastructure as a preferred qualification. Understanding these topologies is important even if LinkedIn is not operating a 100,000-GPU cluster today:
+Fat-tree is the dominant topology for GPU clusters up to tens of thousands of nodes. Any AI/ML infrastructure team building or operating a GPU cluster is most likely working with InfiniBand fat-tree or RoCEv2 fat-tree — the two-level spine-leaf used in cloud DCs is a degenerate fat-tree, so the concepts map directly.
 
-- **Fat-tree is the near-term topology:** Any GPU cluster LinkedIn operates is most likely using InfiniBand fat-tree or a RoCEv2 fat-tree (which maps directly onto spine-leaf). Understanding fat-tree is directly applicable.
-- **The scale-out question will come up:** As LinkedIn's ML workloads grow, topology choices become network engineering decisions. Knowing the tradeoffs between fat-tree and dragonfly, between InfiniBand and RoCEv2, positions you to contribute to those decisions.
-- **The operating model:** Whether the topology is fat-tree or dragonfly, the operational requirements are the same — lossless Ethernet (or InfiniBand), ECMP or adaptive routing, congestion monitoring, and fast failure detection. These skills transfer.
+Dragonfly becomes relevant at larger scales where cable count and switch cost make fat-tree impractical. The operational demands are higher — adaptive routing requires more sophisticated monitoring and the inter-group links are single points of bandwidth contention — but the reduction in total infrastructure cost at 100K+ GPU scale can justify the complexity.
+
+Regardless of which topology is deployed:
+- The operational requirements are the same: lossless fabric (PFC + ECN for RoCEv2, credit-based for InfiniBand), congestion monitoring, and fast failure detection.
+- Failure domains and blast radius differ: a pod in fat-tree is isolated; a group in dragonfly affects inter-group bandwidth for multiple destinations.
+- Routing correctness is critical: ECMP hash collisions in fat-tree and adaptive routing oscillations in dragonfly both cause performance degradation that is difficult to diagnose without the right telemetry.
