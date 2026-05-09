@@ -77,13 +77,81 @@ The key counters to monitor — on both switches and RNICs:
 
 ## Common Failure Modes
 
-**PFC deadlock.** Symptoms: traffic completely stops in the RDMA priority class; all ports show maximum PFC pause counts; clearing the RDMA flows does not restore forwarding. Requires investigation of the traffic pattern that created the circular dependency. Prevention: ensure the physical topology has no circular buffer dependencies and that RDMA flows do not create routing loops.
+### PFC Deadlock
 
-**RDMA packet reordering.** Symptoms: high out_of_sequence counters, low RDMA throughput despite low PFC counts. Cause: ECMP load balancing that splits individual RDMA flows across multiple paths (because the hash algorithm is insufficiently granular or the flow produces insufficient hash entropy). RDMA requires all packets of a flow to take the same path — reordering triggers retransmission. Solution: ensure ECMP hashing uses 5-tuple or better, and that RDMA flows are classified with consistent headers.
+**What you see:** Traffic completely stops in the RDMA priority class. All ports show maximum PFC pause counts. Clearing RDMA flows does not restore forwarding — the fabric is frozen.
 
-**DCQCN mistuning.** Symptoms: oscillating throughput, alternating periods of high utilization and near-zero utilization. Cause: DCQCN rate recovery is too aggressive — the sender floods the network, ECN marks, sender backs off completely, queue drains, sender floods again. Solution: tune DCQCN rate recovery parameters to reduce oscillation amplitude.
+**Why it happens:** PFC pause propagates upstream to stop senders. If the traffic pattern creates a circular dependency, every switch is waiting for another to drain and none of them can:
 
-**PFC not end-to-end.** Symptoms: packet drops in the RDMA queue appear on specific switch ports. Cause: PFC is not configured on one or more switch ports in the path. The unprotected port's buffer overflows during bursts. Solution: audit PFC configuration across all ports in the RDMA traffic path.
+```
+    SW-A  ←── pauses ───  SW-B
+      │                     │
+   pauses                pauses
+      │                     │
+    SW-C  ───── pauses ──→ SW-D
+                    ↑
+           SW-D also pauses SW-A
+           → circular, no one can drain
+```
+
+**How to prevent it:** Ensure the physical topology has no circular buffer dependencies. RDMA flows must not create routing loops. Fat-tree avoids this naturally; more complex topologies need explicit analysis.
+
+---
+
+### RDMA Packet Reordering
+
+**What you see:** High `out_of_sequence` counters on RNICs. Low RDMA throughput despite clean PFC counts and no discards — the network looks fine but application performance is poor.
+
+**Why it happens:** ECMP is splitting packets of the same RDMA flow across different paths. Each path has a different latency, so packets arrive out of order. RDMA cannot tolerate this — a single out-of-order packet triggers retransmission of everything after it.
+
+```
+GPU-A sends packets P1, P2, P3, P4 to GPU-B (same flow):
+
+         ┌─── Path 1 (latency 10µs) ───┐
+P1, P3 ──┤                              ├──→ GPU-B receives: P1, P3, P2, P4
+P2, P4 ──┤                              │                    ↑
+         └─── Path 2 (latency 15µs) ───┘        out-of-order → retransmit P2, P3, P4
+```
+
+**How to fix it:** Verify ECMP hashing uses the full 5-tuple (src IP, dst IP, src port, dst port, protocol). All packets of the same RDMA flow must hash to the same path.
+
+---
+
+### DCQCN Mistuning
+
+**What you see:** Oscillating throughput — the application alternates between high utilization and near-zero utilization in a repeating pattern.
+
+**Why it happens:** DCQCN rate recovery is too aggressive. The sender never settles at a stable rate:
+
+```
+Throughput
+    │       ┌──┐        ┌──┐        ┌──┐
+    │       │  │        │  │        │  │
+    │  ┌────┘  └──┐  ┌──┘  └──┐  ┌─┘  └─
+    │  │          │  │         │  │
+    └──┘          └──┘         └──┘
+       flood → ECN → back off → flood → repeat
+```
+
+**How to fix it:** Tune DCQCN rate recovery parameters on the RNIC — specifically the rate increase step and timer — to ramp up more gradually after a congestion event. Requires load testing with representative traffic to find stable values.
+
+---
+
+### PFC Not Configured End-to-End
+
+**What you see:** Packet drops in the RDMA queue on specific switch ports, even though PFC appears to be configured. Drops are localized to particular links.
+
+**Why it happens:** PFC must be enabled on every port in the RDMA path. One port missing PFC breaks the lossless guarantee — during a burst, that port's buffer overflows with nothing to stop the upstream sender.
+
+```
+GPU-A → [SW1: PFC ✓] → [SW2: PFC ✓] → [SW3: PFC ✗] → GPU-B
+                                              ↑
+                                    buffer overflows here
+                                    drops RDMA packets
+                                    (PFC cannot propagate past this point)
+```
+
+**How to fix it:** Audit PFC configuration on every port in the RDMA traffic path — not just that PFC is globally enabled, but that it is enabled on the correct priority class on each individual port.
 
 ## The Network Engineer's Role in RDMA Infrastructure
 

@@ -107,6 +107,6 @@ The `<get>` operation in NETCONF is a pull model: you request state, the device 
 
 gNMI defines a `Subscribe` RPC that allows a collector to subscribe to specific paths in the YANG model and receive updates whenever the values change. A subscription to `/interfaces/interface/state/counters/in-octets` delivers interface traffic counters continuously — no polling, no periodic SNMP walks, just a stream of structured updates.
 
-At LinkedIn's scale — monitoring thousands of interfaces across hundreds of switches — streaming telemetry via gNMI replaces SNMP polling with a lower-overhead, lower-latency, structured alternative. The data model is the same YANG model used for configuration, making correlation between configuration state and operational state straightforward.
+At hyperscale — monitoring thousands of interfaces across hundreds of switches — streaming telemetry via gNMI replaces SNMP polling with a lower-overhead, lower-latency, structured alternative. The data model is the same YANG model used for configuration, making correlation between configuration state and operational state straightforward.
 
 This is the convergence that YANG and NETCONF represent: a single data model that describes configuration, operational state, and the telemetry stream — giving automation, operations, and monitoring a shared, consistent language for talking about network state.

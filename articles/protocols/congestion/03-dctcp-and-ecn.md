@@ -81,4 +81,4 @@ DCTCP is deployed in many hyperscale DC environments and is the TCP congestion c
 
 **ECN and WRED can coexist.** In mixed environments where some traffic is ECN-capable and some is not, switches can be configured to mark ECN-capable packets when queue depth exceeds the threshold, while applying WRED drop to non-ECN packets at the same threshold. ECN-capable flows get congestion signals without drops; non-ECN flows get WRED drops as the conventional signal.
 
-DCTCP with ECN represents the state of the art for TCP-based congestion control in data center environments. For any interview discussion about DC networking and performance at LinkedIn's scale, knowing this mechanism — and why standard TCP is inadequate — is essential.
+DCTCP with ECN represents the state of the art for TCP-based congestion control in data center environments. For any interview discussion about DC networking and performance at hyperscale, knowing this mechanism — and why standard TCP is inadequate — is essential.

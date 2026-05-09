@@ -72,7 +72,7 @@ Not all inter-DC traffic is equal. Database replication traffic that runs in the
 
 **QoS on DCI links:** Apply DSCP marking at the ingress to the DCI link based on traffic class. Database replication and real-time services get EF or AF41. Bulk backup traffic gets BE. The DCI link's scheduler enforces these markings, ensuring that bulk traffic never starves latency-sensitive replication traffic.
 
-**Traffic engineering with multiple DCI paths:** When two physically diverse DCI paths are available, you have the option to traffic-engineer: route latency-sensitive traffic via the lower-latency path and bulk traffic via the other. BGP communities and local-preference attributes control which path BGP prefers for different traffic classes. At the scale of LinkedIn's inter-DC traffic, this kind of deliberate traffic engineering prevents the lower-latency path from being saturated by backup traffic.
+**Traffic engineering with multiple DCI paths:** When two physically diverse DCI paths are available, you have the option to traffic-engineer: route latency-sensitive traffic via the lower-latency path and bulk traffic via the other. BGP communities and local-preference attributes control which path BGP prefers for different traffic classes. At hyperscale inter-DC traffic volumes, this kind of deliberate traffic engineering prevents the lower-latency path from being saturated by backup traffic.
 
 **Capacity planning:** DCI bandwidth must be planned based on worst-case requirements, not average requirements. If a DC failure causes all traffic to reroute through the DCI, the DCI must have enough capacity to carry it. This is the "N+1" or "N+N" capacity model — the available DCI capacity (excluding the failed path) must be sufficient for the traffic that would normally use the failed path.
 
@@ -87,4 +87,4 @@ When a DCI incident occurs, the investigation follows a specific sequence:
 5. **Engage the carrier:** If physical layer issues are confirmed, open a carrier ticket immediately with the optical measurements.
 6. **Post-mortem:** After restoration, document the timeline, root cause, and any design improvements that would have reduced impact or detection time.
 
-This is the operational context that LinkedIn's DCI role requires: not just knowing that DCI exists, but knowing how to design it for failure and operate it through incidents.
+This is the operational context that any DCI role requires: not just knowing that DCI exists, but knowing how to design it for failure and operate it through incidents.

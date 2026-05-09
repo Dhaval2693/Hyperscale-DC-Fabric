@@ -19,7 +19,7 @@ Dark fiber is unlit optical fiber — physical glass, leased from a telecom prov
 - Carrier expertise required — managing optical amplification, dispersion compensation, and DWDM channel provisioning requires optical engineering skill sets that most network teams do not have
 - Longer provisioning time — new dark fiber takes months to provision; adding capacity requires either additional fiber or changing the DWDM channel plan
 
-**When to use:** Hyperscalers (Google, Meta, Amazon, LinkedIn) with very high, consistent bandwidth requirements between owned or leased DCs typically use dark fiber for their most critical DC pairs. The economics make sense at scale; the operational complexity is manageable with a dedicated optical engineering team.
+**When to use:** Hyperscalers (Google, Meta, Amazon, Microsoft) with very high, consistent bandwidth requirements between owned or leased DCs typically use dark fiber for their most critical DC pairs. The economics make sense at scale; the operational complexity is manageable with a dedicated optical engineering team.
 
 ## DWDM Leased Wavelengths
 
@@ -83,4 +83,4 @@ In production, DCI transport is almost never a single option. A well-designed DC
 
 The network design must ensure that a single carrier failure, a fiber cut on one path, or a data center peering failure does not cause a complete DCI outage. This requires routing protocols (BGP) at the DCI layer that can detect path failures and shift traffic to the remaining available paths — with monitoring tight enough to detect and alert on any single path failure before a second failure can create a complete outage.
 
-This is the operational context behind the LinkedIn JD's focus on DCI: it is not just "connecting buildings" — it is engineering a resilient, high-bandwidth interconnect that is itself a critical piece of LinkedIn's availability story.
+This is the operational context for any DC network role focused on DCI: it is not just "connecting buildings" — it is engineering a resilient, high-bandwidth interconnect that is itself a critical piece of a hyperscaler's availability story.

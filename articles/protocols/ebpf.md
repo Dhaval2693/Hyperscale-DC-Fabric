@@ -75,4 +75,4 @@ eBPF is increasingly a tool in the network engineer's toolbox, not just the kern
 
 **Host-based congestion control is eBPF-based.** Any future work on DCTCP deployment, host-based ECN, or custom congestion control in your DC fabric will involve eBPF. The network engineer who understands eBPF can participate in these deployments; the one who does not must rely entirely on the kernel team.
 
-LinkedIn's DC team, which operates large-scale Kubernetes infrastructure and is building AI/ML networking capabilities, is an environment where eBPF knowledge is directly applicable and increasingly expected.
+Hyperscale DC teams, which operate large-scale Kubernetes infrastructure and are building AI/ML networking capabilities, are environments where eBPF knowledge is directly applicable and increasingly expected.

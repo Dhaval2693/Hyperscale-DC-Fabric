@@ -59,4 +59,4 @@ The testing approach I used at Arista is directly applicable to validating any n
 
 **Document everything.** At Arista, every test result was documented: platform, EOS version, test case, expected behavior, observed behavior, and pass/fail. This documentation becomes the baseline for regression testing on future software releases — confirming that a known-good behavior still works correctly after a code change.
 
-This systematic approach to hardware and protocol validation is directly what LinkedIn's preferred qualifications describe: "Experience in hardware and software testing using IXIA or other testing platforms." The methodology transfers; the specific tool (IXIA vs. scripted traffic generators vs. Arista's own test tooling) is secondary.
+This systematic approach to hardware and protocol validation is directly what senior DC network roles require: experience with hardware and software testing using platforms like IXIA or equivalent. The methodology transfers; the specific tool (IXIA vs. scripted traffic generators vs. Arista's own test tooling) is secondary.

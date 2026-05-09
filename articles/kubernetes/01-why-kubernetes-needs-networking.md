@@ -36,7 +36,7 @@ There are several ways to bridge this gap:
 
 **Host-local routing:** For single-node setups or test environments, use host routes on each node. Does not scale to multi-node clusters.
 
-In production DC environments — including LinkedIn's — the typical choice is either direct routing via BGP (preferred for performance and simplicity in spine-leaf fabrics) or VXLAN overlay (preferred when the physical network cannot participate in pod routing).
+In production DC environments — including hyperscalers' — the typical choice is either direct routing via BGP (preferred for performance and simplicity in spine-leaf fabrics) or VXLAN overlay (preferred when the physical network cannot participate in pod routing).
 
 ## The Components You Need to Know
 
@@ -59,6 +59,6 @@ When Kubernetes runs in a data center (as opposed to a managed cloud service lik
 - Ensuring the physical network carries the pod-to-pod traffic with appropriate QoS markings
 - Understanding how pod traffic appears on the physical fabric: a 10GbE server uplink that shows unusual traffic patterns may be VXLAN-encapsulated pod traffic, which looks like normal UDP traffic to the switch
 
-LinkedIn's JD lists Kubernetes as a basic qualification — not a nice-to-have. The reason is exactly this: Kubernetes network traffic runs on the DC fabric. A network engineer who does not understand the Kubernetes networking model cannot properly design, operate, or troubleshoot the infrastructure that Kubernetes runs on.
+Modern DC network engineering roles list Kubernetes as a basic qualification — not a nice-to-have. The reason is exactly this: Kubernetes network traffic runs on the DC fabric. A network engineer who does not understand the Kubernetes networking model cannot properly design, operate, or troubleshoot the infrastructure that Kubernetes runs on.
 
 The next articles go deeper into CNI plugins, Services, host networking, and how Kubernetes networking integrates with the DC fabric.

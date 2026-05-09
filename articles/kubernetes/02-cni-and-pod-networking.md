@@ -62,7 +62,7 @@ The direct routing approach has lower overhead (no encapsulation) and is easier 
 
 **Cilium:** Uses eBPF for data-plane packet processing — bypassing iptables entirely for higher performance and lower latency. Supports VXLAN, Geneve, and native routing modes. Increasingly common in high-performance DC environments, particularly for HPC and AI/ML workloads where network latency is critical. Cilium's eBPF data plane provides visibility into pod-level traffic without TCP dump overhead.
 
-**Flannel:** Simple, stable, widely used in development and smaller clusters. VXLAN overlay only — does not support direct routing. Does not implement NetworkPolicy. For production DC environments at LinkedIn's scale, Flannel alone is insufficient, but understanding it provides a baseline for understanding how VXLAN-based pod networking works.
+**Flannel:** Simple, stable, widely used in development and smaller clusters. VXLAN overlay only — does not support direct routing. Does not implement NetworkPolicy. For production DC environments at hyperscale, Flannel alone is insufficient, but understanding it provides a baseline for understanding how VXLAN-based pod networking works.
 
 **AWS VPC CNI:** AWS-specific CNI that assigns actual VPC IP addresses to Pods. Each Pod gets a secondary private IP from the node's ENI (Elastic Network Interface). Pod traffic flows natively through the VPC fabric without any overlay. This is what I operated with at AWS — understanding why AWS's CNI works differently from a generic CNI is directly relevant to the DC networking context.
 

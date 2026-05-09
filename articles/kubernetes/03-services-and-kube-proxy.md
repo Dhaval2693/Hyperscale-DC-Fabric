@@ -42,7 +42,7 @@ IPVS uses hash tables for lookup — O(1) regardless of the number of Services, 
 
 IPVS also supports multiple load balancing algorithms: round-robin, least connections, destination hashing, source hashing. iptables supports only random weighted selection.
 
-For large production clusters — which LinkedIn would operate — IPVS mode is typically recommended. The tradeoff is slightly more complex setup and debugging (IPVS rules are not as easy to inspect as iptables rules).
+For large production clusters at hyperscale, IPVS mode is typically recommended. The tradeoff is slightly more complex setup and debugging (IPVS rules are not as easy to inspect as iptables rules).
 
 ## Service Types
 

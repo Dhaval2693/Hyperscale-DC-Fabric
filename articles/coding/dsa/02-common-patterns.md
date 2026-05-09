@@ -1,6 +1,6 @@
 # Common Coding Patterns for Technical Interviews
 
-Technical interviews for senior engineering roles at companies like LinkedIn often include a coding component. The problems are rarely network-specific — they test general problem-solving ability using standard data structures and algorithms. This article covers the patterns that appear most frequently, with clean Python implementations you can practice from.
+Technical interviews for senior engineering roles at hyperscale companies often include a coding component. The problems are rarely network-specific — they test general problem-solving ability using standard data structures and algorithms. This article covers the patterns that appear most frequently, with clean Python implementations you can practice from.
 
 ## Pattern 1: Sliding Window
 

@@ -51,4 +51,4 @@ A junior engineer thinks about automation as "how do I do this faster." A senior
 
 The distinction matters. Faster-but-unsafe automation is worse than manual operation — it fails faster and at larger scale. Automation built with safety primitives — validation before execution, staged rollout, automated rollback, idempotency, audit logging — produces outcomes that are both faster and more reliable than manual work.
 
-At LinkedIn's scale, where the DC & Core team manages infrastructure across multiple regions and is growing rapidly, this safety-first automation mindset is exactly what the role requires. The specific tools matter less than the engineering discipline behind them.
+At hyperscale, where DC teams manage infrastructure across multiple regions, this safety-first automation mindset is exactly what the role requires. The specific tools matter less than the engineering discipline behind them.

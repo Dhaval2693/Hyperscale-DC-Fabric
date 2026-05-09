@@ -30,17 +30,15 @@ DCI problems fall into three categories:
 
 **Layer 3 routing:** How are IP routes exchanged between DCs? BGP is the universal answer — the same BGP that runs within each DC's spine-leaf fabric is extended across the DCI link between the two fabrics. Route filtering, community-based policy, and BGP path attributes control how traffic is distributed across the DCI.
 
-## DCI at LinkedIn
+## DCI in Practice
 
-LinkedIn's DC & Core team is explicitly responsible for DCI. The JD states: "Design, deploy, and operate a large-scale network for data center infrastructure and backbone across multiple geographical regions."
+At hyperscale — platforms that must maintain high availability across global regions, with data replication requirements between DCs — DCI is not an occasional concern but a core part of the infrastructure. DCs are interconnected by high-bandwidth optical circuits, and the DCI network must carry:
 
-For LinkedIn's use case — a social platform that must maintain high availability across global regions, with data replication requirements between DCs — DCI is not an occasional concern but a core part of the infrastructure. LinkedIn's DCs are interconnected by high-bandwidth optical circuits, and the DCI network must carry:
-
-- LinkedIn's database replication traffic (real-time, latency-sensitive)
-- Member data that must be regionally consistent
+- Database replication traffic (real-time, latency-sensitive)
+- User data that must be regionally consistent
 - Internal service traffic between microservices deployed across multiple regions
 - Infrastructure management traffic (network telemetry, configuration management, monitoring)
 
-Understanding DCI — from the physical transport through the overlay design to the routing policy — is central to what LinkedIn's DC network team does every day.
+Understanding DCI — from the physical transport through the overlay design to the routing policy — is central to what any hyperscale DC network team does every day.
 
 The next articles cover the transport technologies, how EVPN extends across the DCI link, and how failures in DCI are designed for and managed.

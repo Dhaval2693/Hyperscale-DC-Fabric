@@ -41,8 +41,9 @@ With RDMA:
 **What is eliminated:**
 - No kernel system calls for each send/receive
 - No data copies between application memory and kernel buffers
-- No CPU involvement on the receive side for the actual data movement
 - No TCP connection management overhead
+
+The degree of remote CPU involvement depends on which RDMA operation is used — this is covered in the next section. For one-sided operations (Read/Write), the remote CPU is not involved at all. For two-sided operations (Send/Receive), the remote CPU still needs to post a receive buffer ahead of time, but is not involved in the actual data movement — no kernel copies, no context switches, no TCP stack processing.
 
 The result: RDMA latency is measured in single-digit microseconds (versus tens of microseconds for kernel-bypass TCP, and hundreds of microseconds for standard TCP). Throughput saturates the wire because the NIC, not the CPU, drives data movement.
 

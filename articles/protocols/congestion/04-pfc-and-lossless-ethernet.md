@@ -82,4 +82,4 @@ Lossless Ethernet does not mean zero packet loss under all conditions. It means 
 
 Monitoring a lossless RDMA fabric requires tracking PFC pause frame counts, buffer utilization, CNP rates, and RDMA retransmit counters. A well-operated fabric should show near-zero RDMA retransmits and PFC pause frames as a rare event rather than a continuous background condition.
 
-This is the foundation of what the LinkedIn JD means by "AI/ML network infrastructure, e.g. InfiniBand and RoCEv2 networking." The networking knowledge underneath these technologies is PFC, ECN, DCQCN, and lossless fabric design — and that knowledge starts here.
+This is the foundation of what AI/ML network infrastructure roles require — InfiniBand and RoCEv2 networking. The networking knowledge underneath these technologies is PFC, ECN, DCQCN, and lossless fabric design — and that knowledge starts here.

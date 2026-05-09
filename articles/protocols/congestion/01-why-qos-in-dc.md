@@ -56,4 +56,4 @@ The most extreme version of the QoS problem comes with RDMA (Remote Direct Memor
 
 Building a zero-loss Ethernet fabric requires mechanisms beyond standard QoS — specifically Priority Flow Control (PFC) and ECN-based congestion notification. These are covered in a later article, but the foundation is the same problem: different traffic types with incompatible requirements sharing physical infrastructure.
 
-Understanding QoS is not optional in modern DC networking. It is the mechanism that makes shared infrastructure actually work for diverse workloads. And for LinkedIn's team, which specifically calls out RDMA, DCTCP, ECN, and QoS as basic qualifications, it is the area where depth is non-negotiable.
+Understanding QoS is not optional in modern DC networking. It is the mechanism that makes shared infrastructure actually work for diverse workloads. And for any hyperscale DC team, which commonly requires RDMA, DCTCP, ECN, and QoS as core competencies, it is the area where depth is non-negotiable.

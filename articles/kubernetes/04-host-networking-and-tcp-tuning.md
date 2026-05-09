@@ -148,4 +148,4 @@ The configuration stack for HPC pods in Kubernetes:
 5. **TCP stack tuning** on nodes for any remaining TCP traffic
 6. **PFC + ECN** on the DC fabric (covered in the congestion control articles)
 
-This full stack — DC fabric, host networking, TCP tuning, RDMA device access — is what the LinkedIn JD means by "Knowledge in Kubernetes, host networking, host TCP tuning, and HPC networking." It is not a software developer's concern. It is a network engineering concern, because every layer of it intersects with the physical DC network.
+This full stack — DC fabric, host networking, TCP tuning, RDMA device access — is what DC network engineering roles mean by "Knowledge in Kubernetes, host networking, host TCP tuning, and HPC networking." It is not a software developer's concern. It is a network engineering concern, because every layer of it intersects with the physical DC network.
