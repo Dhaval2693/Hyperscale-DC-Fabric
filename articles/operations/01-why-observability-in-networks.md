@@ -61,7 +61,7 @@ Dashboard / Alerting
 (Grafana, PagerDuty, custom)
 ```
 
-At AWS, I built QuickSight dashboards that consumed network telemetry data to drive operational visibility for the deployment and fleet management workflows. The specific toolchain was AWS-internal, but the architecture is the same: devices emit structured data, a pipeline normalizes and stores it, dashboards make it actionable.
+In hyperscale environments, dashboards built on top of network telemetry data drive operational visibility for deployment and fleet management workflows. The specific toolchain varies (Grafana, internal BI tools, cloud dashboards), but the architecture is the same: devices emit structured data, a pipeline normalizes and stores it, dashboards make it actionable.
 
 ## What Good Observability Enables
 
@@ -69,8 +69,8 @@ At AWS, I built QuickSight dashboards that consumed network telemetry data to dr
 
 **Faster diagnosis.** During an incident, good observability means the answer to "what is happening" is available in seconds, not hours of manual CLI investigation. The timeline of events is already in the telemetry database; correlating a traffic drop with a BGP withdrawal with an interface error is a query, not a manual log search across dozens of devices.
 
-**Capacity planning.** Historical telemetry data shows traffic growth trends, identifies bottlenecks before they become incidents, and provides the factual basis for infrastructure investment decisions. At AWS, the QuickSight dashboards I built were used for exactly this — tracking fabric utilization trends and informing decisions about DC expansion timing.
+**Capacity planning.** Historical telemetry data shows traffic growth trends, identifies bottlenecks before they become incidents, and provides the factual basis for infrastructure investment decisions. Capacity dashboards at hyperscale are used for exactly this — tracking fabric utilization trends and informing decisions about DC expansion timing.
 
 **Change validation.** After a configuration change, telemetry data confirms whether the change had the intended effect. Did the BGP session come up? Did traffic shift to the new path? Did error rates change? Validation through telemetry is faster and more reliable than manual CLI verification across many devices.
 
-The next article covers streaming telemetry and gNMI in more depth. The article after covers the dashboards I built at AWS and what metrics I tracked for DC fabric health.
+The next article covers streaming telemetry and gNMI in more depth.

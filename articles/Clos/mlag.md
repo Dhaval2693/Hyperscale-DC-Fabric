@@ -70,5 +70,3 @@ Most MLAG implementations handle this with a **dual-active detection** mechanism
 | When to use | Cost-sensitive, low-bandwidth | High-bandwidth, fully redundant |
 
 In production DC designs at hyperscale, MLAG (or equivalent vendor implementations — Arista uses "MLAG," Cisco NX-OS uses "vPC," Juniper uses "MC-LAG") is common for any server that requires full-bandwidth dual-homing. For servers where the bandwidth of one link is sufficient and switch-level redundancy is provided by the spine-leaf architecture above, active-passive bonding is simpler and sufficient.
-
-My hands-on MLAG experience comes from Arista Networks, where I implemented and validated MLAG configurations as part of the data center validation test suite.

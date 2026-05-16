@@ -64,13 +64,13 @@ PIM Join/Prune messages are sent periodically (every 60 seconds by default) to r
 
 This soft-state model means PIM is self-healing but has a convergence time proportional to the timer values. For production networks with strict multicast availability requirements, Refresh Interval timers should be tuned to converge quickly after a failure. BFD can also be run on PIM-enabled interfaces to detect neighbor failures much faster than the default PIM hello timer allows.
 
-## What I Tested at Arista
+## What to Validate in Production PIM-SM Deployments
 
-At Arista Networks, I validated PIM-SM behavior across multiple hardware platforms:
+When evaluating PIM-SM in a production environment, the validation work spans several categories:
 
-- **RP election and failover:** Testing Anycast RP behavior with MSDP — confirming that when one RP failed, receivers transitioned to the surviving RP and traffic resumed within the expected convergence time.
-- **SPT switchover:** Validating that (S,G) state was correctly built and that the subsequent RP Prune was sent, verifying the traffic path transitioned from shared tree to source tree correctly.
-- **Failure scenarios:** Simulating upstream link failures mid-stream and confirming that the router correctly re-joined via an alternate path and that receivers did not see traffic loss beyond the expected convergence window.
-- **Scalability:** Testing multicast forwarding at high group counts to verify that hardware TCAM utilization remained within bounds and that forwarding rates did not degrade as group count increased.
+- **RP election and failover:** Test Anycast RP behavior with MSDP — confirm that when one RP fails, receivers transition to the surviving RP and traffic resumes within the expected convergence time.
+- **SPT switchover:** Validate that (S,G) state is correctly built and that the subsequent RP Prune is sent, verifying the traffic path transitions from shared tree to source tree correctly.
+- **Failure scenarios:** Simulate upstream link failures mid-stream and confirm that the router correctly re-joins via an alternate path and that receivers do not see traffic loss beyond the expected convergence window.
+- **Scalability:** Test multicast forwarding at high group counts to verify that hardware TCAM utilization remains within bounds and that forwarding rates do not degrade as group count increases.
 
-This hands-on validation work is what gives real credibility to discussing PIM-SM in interview settings — the ability to speak not just about how it works conceptually but about what it looks like when it does not work and how you verify it.
+This hands-on validation is what builds real credibility around PIM-SM — the ability to speak not just about how it works conceptually but about what it looks like when it does not work and how you verify it.

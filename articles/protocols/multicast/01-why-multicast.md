@@ -50,4 +50,4 @@ PIM-SM introduces the concept of a **Rendezvous Point (RP)** — a router that s
 
 **DC fabrics (limited use):** In VXLAN fabrics without EVPN, multicast is used for BUM traffic replication — each VNI is mapped to a multicast group, and BUM frames are flooded via multicast to all VTEPs in that VNI. EVPN replaced this with unicast ingress replication in modern designs, but understanding multicast-based VXLAN is still relevant for operating older deployments.
 
-My hands-on multicast experience comes from Arista Networks, where I tested PIM-SM across multiple hardware platforms — validating rendezvous point behavior, join/prune mechanics, SPT switchover, and failure scenarios across different Arista hardware generations. That experience forms the foundation of the next article, which goes deeper into PIM-SM mechanics.
+The next article goes deeper into PIM-SM mechanics — how the protocol actually builds and maintains multicast distribution trees.

@@ -64,7 +64,7 @@ The direct routing approach has lower overhead (no encapsulation) and is easier 
 
 **Flannel:** Simple, stable, widely used in development and smaller clusters. VXLAN overlay only — does not support direct routing. Does not implement NetworkPolicy. For production DC environments at hyperscale, Flannel alone is insufficient, but understanding it provides a baseline for understanding how VXLAN-based pod networking works.
 
-**AWS VPC CNI:** AWS-specific CNI that assigns actual VPC IP addresses to Pods. Each Pod gets a secondary private IP from the node's ENI (Elastic Network Interface). Pod traffic flows natively through the VPC fabric without any overlay. This is what I operated with at AWS — understanding why AWS's CNI works differently from a generic CNI is directly relevant to the DC networking context.
+**AWS VPC CNI:** AWS-specific CNI that assigns actual VPC IP addresses to Pods. Each Pod gets a secondary private IP from the node's ENI (Elastic Network Interface). Pod traffic flows natively through the VPC fabric without any overlay. Understanding why AWS's CNI works differently from a generic CNI is directly relevant to the DC networking context.
 
 ## IP Address Management (IPAM)
 

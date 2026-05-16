@@ -65,6 +65,6 @@ Both directions use the same VNI for inter-subnet transit — the L3VNI — whic
 
 In hyperscale and large enterprise deployments, **symmetric IRB is the dominant model** — specifically because it solves the VNI scaling problem. Requiring every leaf to hold every VNI becomes operationally untenable as a fabric grows. Symmetric IRB, combined with EVPN Type 5 routes, allows VNI configuration to stay local to the leaves where hosts actually reside.
 
-At AWS, the DC fabric uses models similar to symmetric IRB for exactly this reason: tenant isolation requires per-tenant VRFs and L3VNIs, and the number of distinct tenant segments in a single AZ is far too large to require every leaf to hold every segment.
+Hyperscale DC fabrics typically use symmetric IRB for exactly this reason: tenant isolation requires per-tenant VRFs and L3VNIs, and the number of distinct tenant segments in a single availability zone is far too large to require every leaf to hold every segment.
 
 The mental model: asymmetric is simpler but doesn't scale. Symmetric is more complex but designed for large, multi-tenant fabrics. Any design interview question about EVPN inter-subnet routing is really asking you to know this distinction.

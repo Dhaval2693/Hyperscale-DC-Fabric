@@ -108,4 +108,4 @@ Good alerts are specific and actionable. Bad alerts are vague and noisy. The ope
 - An alert should only fire when the condition requires human action — not as an informational notification
 - Alert fatigue (too many false-positive or informational alerts) causes engineers to start ignoring alerts — which leads to missing the real ones
 
-At AWS, the metric dashboards I built were designed around this principle: the goal was to surface the data that supported proactive decisions (when should we expand capacity?) and reactive diagnosis (which device is causing this incident?) — not to generate noise.
+Well-designed hyperscale telemetry dashboards follow this principle: surface the data that supports proactive decisions (when should we expand capacity?) and reactive diagnosis (which device is causing this incident?) — not to generate noise.

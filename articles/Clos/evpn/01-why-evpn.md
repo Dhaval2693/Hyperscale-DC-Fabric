@@ -38,7 +38,7 @@ The three route types you need to know cold for any hyperscale DC interview:
 
 ## In a Hyperscale Context
 
-At AWS scale — where a single Availability Zone may have hundreds of leaf switches and tens of thousands of servers — flood and learn is simply not an option. The BUM traffic alone would consume meaningful bandwidth on every inter-switch link. ARP flooding from virtualized workloads, where VMs spin up and down constantly, would create continuous noise across the fabric.
+At hyperscale — where a single availability zone may have hundreds of leaf switches and tens of thousands of servers — flood and learn is simply not an option. The BUM traffic alone would consume meaningful bandwidth on every inter-switch link. ARP flooding from virtualized workloads, where VMs spin up and down constantly, would create continuous noise across the fabric.
 
 EVPN with BGP route reflection gives every leaf switch an accurate, proactively populated forwarding table. ARP suppression at the leaf means the server never even sees the ARP request — the switch answers it locally from its BGP-populated table. Unknown unicast flooding becomes a rare exception rather than the normal operating mode.
 

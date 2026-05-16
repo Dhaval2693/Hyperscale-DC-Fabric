@@ -152,4 +152,4 @@ A playbook then applies the role: `roles: [leaf_bgp]`. Any playbook in any proje
 | Configuration templating and push | Fine-grained error handling and retry logic |
 | Reusable roles across projects | One-time data collection/analysis scripts |
 
-In practice, the two complement each other. At AWS, Ansible managed configuration templates and deployment tasks for standardized operations, while Python Lambda functions handled the orchestration logic — deciding what to trigger when, coordinating across systems, and handling complex sequencing that Ansible's linear task model cannot express.
+In practice, the two complement each other. In hyperscale environments, Ansible typically manages configuration templates and deployment tasks for standardized operations, while Python services (often serverless functions) handle the orchestration logic — deciding what to trigger when, coordinating across systems, and handling complex sequencing that Ansible's linear task model cannot express.

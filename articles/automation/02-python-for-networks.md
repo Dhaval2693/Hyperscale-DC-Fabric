@@ -85,27 +85,12 @@ with ThreadPoolExecutor(max_workers=20) as executor:
         print(f"{host}: done")
 ```
 
-This pattern — submitting all tasks to a thread pool and processing results as they complete — is how I automated checks and configuration pushes across hundreds of devices at AWS. A sequential loop that takes 5 minutes per device becomes a parallel operation that takes 30 seconds.
+This pattern — submitting all tasks to a thread pool and processing results as they complete — is how automation runs checks and configuration pushes across hundreds of devices at hyperscale. A sequential loop that takes 5 minutes per device becomes a parallel operation that takes 30 seconds.
 
 **Idempotency.** Production automation should be safe to run multiple times. If you run a script to configure a BGP neighbor and the BGP neighbor is already correctly configured, the script should do nothing — not error, not re-apply the configuration, not create a duplicate. Design every automation operation to first check the current state before applying changes.
 
 **Error handling and logging.** At scale, some devices will fail to respond, some will have authentication errors, some will be in maintenance mode. Automation that crashes on the first error leaves you with a partial deployment. Wrap every device operation in exception handling, log the error with the device identity, and continue to the next device. At the end, report which devices succeeded and which failed — never silently swallow errors.
 
-**Source of truth integration.** The most powerful automation is driven by a source of truth — a database or structured data store that contains the intended state of the network. At AWS, the source of truth for device roles, rack assignments, IP addresses, and network topology drove configuration generation. Changes to the source of truth automatically triggered re-generation and deployment. The configuration on devices was always derived from the source of truth, never manually edited in isolation.
-
-## My Automation Work at AWS
-
-The Lambda-based deployment orchestration service I built is a concrete example of these patterns applied at scale.
-
-The problem: launching a new data center required manually triggering deployment workflows for each project (spine deployment, leaf deployment, management network deployment) in the correct sequence, across multiple AWS services. The triggering was done by engineers looking up the right parameters from multiple systems and running scripts by hand.
-
-The solution: a Python Lambda function that:
-1. Read the DC launch parameters from a source-of-truth database
-2. Validated that prerequisite steps were complete before triggering dependent steps
-3. Called internal AWS APIs to initiate each deployment workflow with the correct parameters
-4. Logged every action with timestamps and triggering context for audit
-5. Sent notifications on failure with enough context for an engineer to diagnose without re-running the whole sequence
-
-The result was that a DC launch sequence that required multiple engineers coordinating over hours became a single trigger with automated sequencing — eliminating over 1,000 hours of deployment delay annually.
+**Source of truth integration.** The most powerful automation is driven by a source of truth — a database or structured data store that contains the intended state of the network. At hyperscale, the source of truth for device roles, rack assignments, IP addresses, and network topology drives configuration generation. Changes to the source of truth automatically trigger re-generation and deployment. The configuration on devices is always derived from the source of truth, never manually edited in isolation.
 
 That is the difference between writing Python scripts and building production automation: the latter is a system with state, safety checks, observability, and defined failure modes.

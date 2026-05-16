@@ -12,7 +12,7 @@ This is why network automation exists. Not as a nice-to-have improvement but as 
 
 **1. Scale.** The number of devices a team manages grows faster than the team does. In a hyperscale environment, headcount cannot grow proportionally with infrastructure. The only way to scale operations is to automate the repetitive, well-defined work so that engineers can focus on the work that requires judgment.
 
-At AWS, I built automation that provisioned thousands of network devices for new data center launches. The alternative — manual provisioning — would have required a team many times larger and still would have produced more configuration drift and human error.
+At hyperscale, automation provisions thousands of network devices for new data center launches. The alternative — manual provisioning — would require a team many times larger and still would produce more configuration drift and human error.
 
 **2. Consistency.** Manual configuration is inherently inconsistent. Even the same engineer, configuring the same feature on fifty switches, will introduce variation — a typo here, a wrong interface there, a misremembered default value somewhere. Automation generates configuration from a single source of truth, ensuring that every device configured by the same template is identical. Consistency is not a luxury; inconsistency is the source of a large category of production incidents.
 
@@ -28,7 +28,7 @@ Network automation is not a single thing. It spans a range from simple scripting
 
 **State Validation (testing automation):** After a configuration is deployed, automatically verifying that the device is in the expected state. Is BGP up? Are the expected routes in the routing table? Is the interface carrying traffic? Tools: custom Python with Netmiko/NAPALM, pyATS/Genie, Batfish for pre-deployment validation.
 
-**Event-Driven Automation (reactive automation):** Triggering automated actions in response to network events. A link goes down → automatically run diagnostics → notify on-call → attempt remediation. Tools: streaming telemetry consumers, event processors, Ansible-AWX/Tower, custom Lambda functions. This is where I built the most impactful work at AWS.
+**Event-Driven Automation (reactive automation):** Triggering automated actions in response to network events. A link goes down → automatically run diagnostics → notify on-call → attempt remediation. Tools: streaming telemetry consumers, event processors, Ansible-AWX/Tower, custom serverless functions. This is where automation generates the highest leverage in operations-heavy environments.
 
 **Orchestration (multi-system automation):** Coordinating changes across multiple systems — network devices, IPAM, CMDB, ticketing systems, monitoring platforms. A single logical operation ("provision a new rack") triggers changes across ten different systems in the correct sequence. Tools: AWS Lambda workflows, Temporal, Prefect, Airflow.
 
@@ -43,7 +43,7 @@ Modern network automation is built on **structured APIs and data models**:
 - **REST APIs:** Most modern network controllers and cloud infrastructure APIs use REST/JSON. OpenConfig-based controllers, SDN controllers, and cloud provider APIs all expose REST endpoints.
 - **OpenConfig:** A vendor-neutral data model for network devices. An OpenConfig YANG model for BGP looks the same whether the device is Arista, Cisco, or Juniper. Writing automation against OpenConfig means the same code works across vendors.
 
-The progression of my automation work at AWS followed this arc: early work used SSH-based Python automation for speed, but as the tooling matured, everything moved toward structured APIs and generated configurations from a source-of-truth database — eliminating the CLI parsing fragility entirely.
+The progression of network automation at hyperscale follows this arc: early work uses SSH-based Python automation for speed, but as the tooling matures, everything moves toward structured APIs and generated configurations from a source-of-truth database — eliminating the CLI parsing fragility entirely.
 
 ## The Automation Mindset for a Senior Engineer
 

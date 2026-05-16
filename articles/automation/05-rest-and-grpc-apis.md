@@ -85,7 +85,7 @@ response = requests.post(
 bgp_data = response.json()["result"][0]
 ```
 
-**AWS APIs / Boto3:** At AWS, everything internal — Lambda invocations, DynamoDB reads, SQS messages, internal service APIs — is accessible via Python's Boto3 SDK, which wraps the AWS REST APIs. The Lambda deployment orchestration I built at AWS used Boto3 to read from DynamoDB (source of truth), invoke other Lambda functions (step sequencing), and put messages on SQS queues (event-driven triggers).
+**AWS APIs / Boto3:** In AWS environments, everything — Lambda invocations, DynamoDB reads, SQS messages, internal service APIs — is accessible via Python's Boto3 SDK, which wraps the AWS REST APIs. A typical Lambda-based deployment orchestration uses Boto3 to read from DynamoDB (source of truth), invoke other Lambda functions (step sequencing), and put messages on SQS queues (event-driven triggers).
 
 ## gRPC: When REST Is Not Enough
 
@@ -100,7 +100,7 @@ For network automation, gRPC is most important for two use cases:
 
 **gNMI (gRPC Network Management Interface):** The standard for streaming telemetry from network devices. A gNMI `Subscribe` call establishes a persistent bidirectional stream. The switch sends telemetry updates continuously as values change — no polling. For collecting interface counters, BGP peer state, or CPU/memory metrics from thousands of devices, gNMI streaming is far more efficient than SNMP or REST polling.
 
-**Internal microservices at hyperscale:** At AWS and similar environments, internal systems communicate via gRPC. An automation service that needs to call an internal provisioning service, a topology database API, or a network state cache typically does so via gRPC, not REST — because the performance and schema-enforcement characteristics matter when a single automation operation calls dozens of internal services in sequence.
+**Internal microservices at hyperscale:** At hyperscale, internal systems commonly communicate via gRPC. An automation service that needs to call an internal provisioning service, a topology database API, or a network state cache typically does so via gRPC, not REST — because the performance and schema-enforcement characteristics matter when a single automation operation calls dozens of internal services in sequence.
 
 **Python gRPC client:**
 
@@ -143,7 +143,7 @@ Every API integration must handle authentication correctly. Common patterns:
 **Mutual TLS (mTLS):** Both client and server present certificates. Used for service-to-service auth in microservice architectures and gNMI.
 **API Keys:** Simple but less secure. Always stored in environment variables or secrets managers — never hardcoded.
 
-At AWS, internal service credentials are provided via IAM roles to Lambda functions — the function never handles static credentials at all. The SDK picks up the credentials automatically from the execution role. This is the right model for production automation: no credentials in code, no credentials on disk, identity managed by the infrastructure.
+In modern cloud environments, internal service credentials are provided via IAM roles to serverless functions — the function never handles static credentials at all. The SDK picks up the credentials automatically from the execution role. This is the right model for production automation: no credentials in code, no credentials on disk, identity managed by the infrastructure.
 
 ## Putting It Together: Multi-System Automation
 
@@ -159,4 +159,4 @@ Real production automation orchestrates across multiple APIs in sequence. A DC d
 
 Each of these is a separate API call, potentially to different systems with different authentication models and error behaviors. Production automation wraps each step in retry logic, handles partial failures gracefully, logs every action for audit, and surfaces meaningful error messages when things go wrong.
 
-This is the architecture behind the Lambda workflow I built at AWS: not a script that does one thing, but an orchestration layer that coordinates multiple systems through their APIs to complete a multi-step deployment safely and repeatably.
+This is the architecture behind production deployment orchestration at hyperscale: not a script that does one thing, but an orchestration layer that coordinates multiple systems through their APIs to complete a multi-step deployment safely and repeatably.
