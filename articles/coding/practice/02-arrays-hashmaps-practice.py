@@ -106,11 +106,11 @@ def group_anagrams(words):
 #
 # Example:
 #   all_pairs_with_sum([1, 5, 3, 7, 2, 4], 6)
-#   -> [(0, 1), (2, 4), (4, 5)]   (1+5, 3+2 doesn't work — note 3 is index 2, 2 is index 4...
-#                                  actually: 1+5=6 ✓, 5+2=7 ✗, ... think it through)
+#   -> [(0, 1), (4, 5)]
+#   (Because: nums[0]+nums[1] = 1+5 = 6 ✓, and nums[4]+nums[5] = 2+4 = 6 ✓)
 #
-# Hint 1: A hash map gets you O(N) for the FIRST pair. To find ALL pairs efficiently,
-#         you may need to think about duplicates carefully.
+# Hint 1: A hash map gets you O(N) for the FIRST pair. To find ALL pairs efficiently
+#         (especially with duplicate values), you may need a slightly different setup.
 # Hint 2: This problem becomes much cleaner if the array is sorted — which is exactly
 #         what the next concept (two pointers) is built for.
 
@@ -127,4 +127,4 @@ if __name__ == "__main__":
     print("Problem 3:", has_pair_with_sum([10, 15, 3, 7], 17))            # True
     print("Problem 4:", first_unique("leetcode"))                         # l
     print("Problem 5:", group_anagrams(["eat", "tea", "tan", "ate"]))     # [[eat,tea,ate],[tan]]
-    print("Challenge:", all_pairs_with_sum([1, 5, 3, 7, 2, 4], 6))
+    print("Challenge:", all_pairs_with_sum([1, 5, 3, 7, 2, 4], 6))  # [(0,1), (4,5)]
