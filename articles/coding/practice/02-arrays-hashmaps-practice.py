@@ -21,11 +21,16 @@
 
 def has_duplicate(nums):
     # your code here
-    pass
+    duplicates = set()
+    for num in nums:
+        if num in duplicates:
+            return True
+        duplicates.add(num)
+    return False
 
 # Pattern used:
-# Time:
-# Space:
+# Time: O(N)
+# Space: O(N)
 
 
 # --- Problem 2: Frequency Counting ---
@@ -37,11 +42,26 @@ def has_duplicate(nums):
 
 def most_common(items):
     # your code here
-    pass
+    common = {}
+    for item in items:
+        if item in common:
+            common[item] += 1
+        else:
+            common[item] = 1
+    
+    best_item = None
+    best_count = 0
+    for item, count in common.items():
+        if count > best_count:
+            best_count = count
+            best_item = item
+    return best_item
+     
+        
 
 # Pattern used:
-# Time:
-# Space:
+# Time: O(N)
+# Space: O(K)
 
 
 # --- Problem 3: Lookup Table ---
@@ -55,11 +75,17 @@ def most_common(items):
 
 def has_pair_with_sum(nums, target):
     # your code here
-    pass
+    seen = set()
+    for num in nums:
+        complement = target - num
+        if complement in seen:
+            return True
+        seen.add(num)
+    return False
 
 # Pattern used:
-# Time:
-# Space:
+# Time: O(N)
+# Space: O(N)
 
 
 # --- Problem 4: Frequency Counting (variant) ---
@@ -73,11 +99,18 @@ def has_pair_with_sum(nums, target):
 
 def first_unique(s):
     # your code here
-    pass
+    counts = {}
+    for ch in s:
+        counts[ch] = counts.get(ch, 0) + 1
+    for ch in s:
+        if counts[ch] == 1:
+            return ch 
+    return None
+
 
 # Pattern used:
-# Time:
-# Space:
+# Time: O(N)
+# Space: O(K)
 
 
 # --- Problem 5: Grouping ---
@@ -92,7 +125,14 @@ def first_unique(s):
 
 def group_anagrams(words):
     # your code here
-    pass
+    anagrams = {}
+    for word in words:
+        key = "".join(sorted(word))
+        if key not in anagrams:
+            anagrams[key] = []
+        anagrams[key].append(word)
+    return list(anagrams.values())
+
 
 # Pattern used:
 # Time:
@@ -116,7 +156,15 @@ def group_anagrams(words):
 
 def all_pairs_with_sum(nums, target):
     # your code here
-    pass
+    all_pairs = []
+    for index, num in enumerate(nums):
+        complement = target - num
+        if complement in nums[:index] + nums[index+1:]:
+            complement_index = nums.index(complement)
+            if index < complement_index:
+                all_pairs.append((index, complement_index))
+    return all_pairs
+
 
 
 # --- Test your solutions ---
