@@ -107,9 +107,9 @@ On a whiteboard from memory:
 
 If you can draw and explain this, you've covered ~80% of the AWS networking interview surface.
 
-## Anthropic-Specific Framing
+## What Senior Cost-Focused Roles Care About
 
-This role cares about **measuring** the network, not just running it. The questions tend toward:
+Senior roles focused on cost efficiency care about **measuring** the network, not just running it. The questions tend toward:
 
 - "Where does cross-AZ traffic come from in our VPC?" → VPC flow logs + attribution
 - "Is this workload's cost dominated by compute or egress?" → tag-based + flow-based attribution

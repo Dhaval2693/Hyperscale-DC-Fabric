@@ -120,15 +120,15 @@ For "have you built/operated one":
 
 - **Builds on:** [01-why-network-automation.md](01-why-network-automation.md), [04-netconf-and-yang.md](04-netconf-and-yang.md), [06-automation-cheatsheet.md](06-automation-cheatsheet.md)
 - **Bridges to:** SLO/SLI work (intent makes drift detection possible), cost optimization (intent enables systematic policy changes)
-- **Relevant for:** any senior network role at hyperscaler; this role specifically asks for it
+- **Relevant for:** any senior network role at hyperscaler
 
-## Anthropic-Specific Framing
+## What Senior Roles Expect
 
-The JD line "extend our intent-based network configuration systems" tells you they have one. You won't be designing it from scratch — you'll be:
+At hyperscalers, you typically join a team that already has an intent-based system in place. You won't be designing it from scratch — you'll be:
 
 - Adding new intent primitives (a new tenant type, a new QoS policy)
 - Extending validation to catch new failure modes
-- Tying the intent system to your cost attribution data ("when intent changes, what's the cost implication?")
+- Tying the intent system to cost attribution data ("when intent changes, what's the cost implication?")
 - Wiring telemetry into the reconciliation loop
 
 Your job is to be conversational about the architecture — not a vendor expert. The interviewer wants to know you've thought beyond "Ansible push" and understand why intent + reconciliation is qualitatively different.

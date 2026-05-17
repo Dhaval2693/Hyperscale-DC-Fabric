@@ -117,7 +117,7 @@ The hard part isn't the protocol — it's the pipeline design, especially the **
 
 > "Flow telemetry covers the 'who-talked-to-whom' question that interface counters can't answer. IPFIX is the standard; sFlow is the lower-overhead alternative. At scale you have to sample — 1:1000 is a reasonable default. The hard engineering is the pipeline: collector, enrichment (IP → workload), tiered storage with aggregation. The protocols are the easy part."
 
-## Anthropic-Specific Framing
+## Applied Example: Cost Attribution Pipeline
 
 > "Per-flow cost attribution is a flow telemetry problem at heart. I'd export IPFIX from backbone routers, sample at 1:1000 to manage volume, enrich at ingest time with source-of-truth identity mapping (IP → team → workload), join against the per-path cost model, store in a columnar warehouse. The pipeline becomes the source of truth for 'who's spending what on egress.'"
 

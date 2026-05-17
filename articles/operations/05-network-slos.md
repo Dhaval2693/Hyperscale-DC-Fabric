@@ -1,6 +1,6 @@
 # Network SLOs and SLIs
 
-SRE practices (Service Level Objectives, Service Level Indicators, error budgets) are well-established for application services. Applying them to **network infrastructure** is newer and harder — but it's exactly what hyperscaler network teams now do, and what the Anthropic role explicitly asks for ("defining SLOs/SLIs for network services, capacity planning with error budgets").
+SRE practices (Service Level Objectives, Service Level Indicators, error budgets) are well-established for application services. Applying them to **network infrastructure** is newer and harder — but it's exactly what hyperscaler network teams now do, and what senior network engineering roles increasingly expect (defining SLOs/SLIs for network services, capacity planning with error budgets).
 
 This article covers how to think about SLOs for network services, the SLI types that matter, and how error budgets shape operational decisions.
 

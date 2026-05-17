@@ -1,6 +1,6 @@
 # Network Cost and Attribution
 
-For most engineers, network cost is "someone else's problem." For roles like Anthropic's Capacity & Efficiency, it **is** the problem. This article covers where the money goes in modern cloud + DC networks, how to attribute spend to teams and workloads, and how to make cost a first-class input to design decisions.
+For most engineers, network cost is "someone else's problem." For network engineering roles focused on infrastructure efficiency, it **is** the problem. This article covers where the money goes in modern cloud + DC networks, how to attribute spend to teams and workloads, and how to make cost a first-class input to design decisions.
 
 ## Where the Money Actually Goes
 
@@ -146,9 +146,9 @@ The numbers may be approximate; the **discipline** of writing it down is what ma
 - The five common cost wins (cross-AZ, replication, image pulls, NAT, idle attachments)
 - The "build vs buy" framework
 
-## Anthropic-Specific Framing
+## How to Frame Cost Conversations in Senior Roles
 
-This role is about **making cost a first-class engineering input.** Frame answers as:
+Cost-efficiency work is about **making cost a first-class engineering input.** Frame answers as:
 
 1. **Show the data** — per-flow attribution, dollar quantification
 2. **Quantify the impact** — dollars/month at current rate
@@ -156,4 +156,4 @@ This role is about **making cost a first-class engineering input.** Frame answer
 4. **Project savings + risks** — 12-month TCO model
 5. **Land it through influence** — convince the team that owns the workload
 
-That sequence is what "drive cost attribution" looks like in practice. The JD explicitly calls out influence-without-authority — being able to make a quantitative case to a research or finance team is the differentiator.
+That sequence is what "drive cost attribution" looks like in practice. Influence-without-authority is the differentiator at senior level — being able to make a quantitative case to a research or finance team is what separates good engineers from great ones.

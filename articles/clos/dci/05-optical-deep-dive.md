@@ -128,9 +128,9 @@ For a DCI design question:
 - **Bridges to:** capacity planning, cost modeling (optical leases), failure scenarios
 - **Relevant for:** backbone roles, DCI design, AI training fabric L1 capacity
 
-## Anthropic-Specific Framing
+## What to Know for Senior Roles
 
-The JD calls out "L1/optical basics (DWDM, coherent, LAGs)" explicitly. Be ready to discuss:
+Senior network engineering roles often call out L1/optical basics (DWDM, coherent, LAGs) explicitly. Be ready to discuss:
 
 1. How a backbone capacity decision works (channels × per-channel rate × number of fiber pairs)
 2. When to use ZR pluggable vs traditional transponder shelf (cost, operational complexity)

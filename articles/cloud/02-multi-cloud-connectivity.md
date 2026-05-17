@@ -100,7 +100,7 @@ At scale, the pattern is:
 
 > "For multi-cloud at scale, public internet hits cost and latency walls quickly. I'd use direct interconnect at a colocation facility — Direct Connect from AWS and Partner Interconnect from GCP terminating at the same Equinix campus, cross-connected. Both clouds charge egress, so the savings come from per-GB rates being lower on dedicated links. BGP at the intermediary handles routing and failover. The trap to watch: egress costs apply on both sides, so when sizing the interconnect, model per-GB savings against the fixed port cost."
 
-## A Likely Anthropic Interview Scenario
+## A Sample Interview Scenario
 
 > "We move 500 TB/month of training data between AWS and GCP. Currently via public internet. What's the right architecture?"
 
@@ -118,7 +118,7 @@ At scale, the pattern is:
    - Transition plan: cut over gradually to avoid disruption
    - Monitor: per-link utilization, BGP session health, egress cost monthly
 
-That quantitative, cost-aware answer is exactly what this role asks for.
+That quantitative, cost-aware answer is exactly what senior infrastructure roles look for.
 
 ## What to Memorize
 

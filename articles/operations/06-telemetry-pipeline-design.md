@@ -149,9 +149,9 @@ The math is "what does my hot store ingest budget look like?" Work backwards fro
 
 > "Telemetry pipeline design is about three tradeoffs: sampling rate, cardinality, and storage tier. At scale you sample (1:1000 IPFIX is a reasonable default). You control cardinality by dropping or aggregating high-cardinality labels at ingest. You tier storage — hot for dashboards (days), warm for analytics (weeks), cold for forensics (months+). The hardest engineering is enrichment: joining raw IPs against source-of-truth identity data, time-correlated. That's what turns raw telemetry into 'team X spent $Y on workload Z'."
 
-## Anthropic-Specific Framing
+## Applied Example: Building a Fabric Observability Stack
 
-The role's representative project — "instrument DCN fabric utilization with streaming telemetry and build the Grafana dashboards that become the team's source of truth" — is exactly this article. The answer to "how would you build this":
+A common senior-role project — "instrument DCN fabric utilization with streaming telemetry and build the dashboards that become the team's source of truth" — is exactly this article. The answer to "how would you build this":
 
 1. **Source layer:** gNMI subscriptions for utilization + interface counters; IPFIX for flow attribution
 2. **Collector:** goflow2 + Telegraf, pre-aggregating to 1-minute summaries
