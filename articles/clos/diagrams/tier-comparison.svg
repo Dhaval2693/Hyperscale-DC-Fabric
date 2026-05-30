@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 490" width="860" height="490">
+<style>
+  .bg { fill:#0f172a; }
+  .sp  { fill:#6366f1; fill-opacity:.18; stroke:#6366f1; stroke-width:1.5; }
+  .lf  { fill:#06b6d4; fill-opacity:.18; stroke:#06b6d4; stroke-width:1.5; }
+  .tr  { fill:#f59e0b; fill-opacity:.18; stroke:#f59e0b; stroke-width:1.5; }
+  .sv  { fill:#10b981; fill-opacity:.18; stroke:#10b981; stroke-width:1.5; }
+  .lnk { stroke:#475569; stroke-width:1.5; stroke-opacity:.4; fill:none; }
+  .pk  { fill:#f43f5e; }
+  .ttl { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:14px; font-weight:700; text-anchor:middle; }
+  .dsc { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:10px; text-anchor:middle; }
+  .nl  { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:11px; font-weight:600; text-anchor:middle; }
+  .sl  { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:9px; text-anchor:middle; }
+  .ll  { font-family:system-ui,sans-serif; font-size:10px; font-weight:600; }
+  .ibt { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:11px; }
+</style>
+
+<rect width="860" height="490" rx="10" class="bg"/>
+
+<!-- Header -->
+<text x="430" y="28" class="ttl" style="font-size:16px">Clos Fabric: Tier Architectures</text>
+<text x="430" y="44" class="dsc">Every switching stage counts — 2-tier vs 3-tier changes cost, latency, and scale</text>
+<line x1="430" y1="52" x2="430" y2="415" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+
+<!-- ═══ LEFT: 2-TIER ═══ -->
+<text x="215" y="66" class="ttl" style="font-size:13px">2-Tier Clos</text>
+<text x="215" y="79" class="dsc">ToR acts as leaf → direct spine connection</text>
+
+<text x="18" y="122" class="ll" fill="#6366f1" opacity=".85">SPINE</text>
+<text x="18" y="215" class="ll" fill="#06b6d4" opacity=".85">LEAF/ToR</text>
+<text x="18" y="320" class="ll" fill="#10b981" opacity=".85">SERVER</text>
+
+<!-- 2T Spines -->
+<rect x="88"  y="105" width="68" height="30" rx="5" class="sp"/>
+<text x="122" y="119" class="nl">Spine</text><text x="122" y="130" class="sl">S1</text>
+<rect x="180" y="105" width="68" height="30" rx="5" class="sp"/>
+<text x="214" y="119" class="nl">Spine</text><text x="214" y="130" class="sl">S2</text>
+<rect x="272" y="105" width="68" height="30" rx="5" class="sp"/>
+<text x="306" y="119" class="nl">Spine</text><text x="306" y="130" class="sl">S3</text>
+
+<!-- 2T Leaves -->
+<rect x="108" y="198" width="74" height="30" rx="5" class="lf"/>
+<text x="145" y="212" class="nl">Leaf/ToR</text><text x="145" y="223" class="sl">L1</text>
+<rect x="248" y="198" width="74" height="30" rx="5" class="lf"/>
+<text x="285" y="212" class="nl">Leaf/ToR</text><text x="285" y="223" class="sl">L2</text>
+
+<!-- 2T Servers -->
+<rect x="66"  y="305" width="58" height="28" rx="5" class="sv"/>
+<text x="95"  y="321" class="nl" style="font-size:10px">Server</text>
+<rect x="146" y="305" width="58" height="28" rx="5" class="sv"/>
+<text x="175" y="321" class="nl" style="font-size:10px">Server</text>
+<rect x="226" y="305" width="58" height="28" rx="5" class="sv"/>
+<text x="255" y="321" class="nl" style="font-size:10px">Server</text>
+<rect x="306" y="305" width="58" height="28" rx="5" class="sv"/>
+<text x="335" y="321" class="nl" style="font-size:10px">Server</text>
+
+<!-- 2T Links spine-leaf -->
+<line x1="122" y1="135" x2="145" y2="198" class="lnk"/>
+<line x1="122" y1="135" x2="285" y2="198" class="lnk"/>
+<line x1="214" y1="135" x2="145" y2="198" class="lnk"/>
+<line x1="214" y1="135" x2="285" y2="198" class="lnk"/>
+<line x1="306" y1="135" x2="145" y2="198" class="lnk"/>
+<line x1="306" y1="135" x2="285" y2="198" class="lnk"/>
+
+<!-- 2T Links leaf-server -->
+<line x1="145" y1="228" x2="95"  y2="305" class="lnk"/>
+<line x1="145" y1="228" x2="175" y2="305" class="lnk"/>
+<line x1="285" y1="228" x2="255" y2="305" class="lnk"/>
+<line x1="285" y1="228" x2="335" y2="305" class="lnk"/>
+
+<!-- 2T Packet paths (hidden guides) -->
+<path id="p2a" d="M95,305 L145,228 L214,135"  fill="none" opacity="0"/>
+<path id="p2b" d="M335,305 L285,228 L306,135" fill="none" opacity="0"/>
+<path id="p2c" d="M175,305 L145,228 L122,135" fill="none" opacity="0"/>
+
+<!-- 2T Animated packets (2 hops — fast) -->
+<circle r="4.5" class="pk">
+  <animateMotion dur="2.0s" repeatCount="indefinite" begin="0s"><mpath href="#p2a"/></animateMotion>
+</circle>
+<circle r="4.5" class="pk">
+  <animateMotion dur="2.0s" repeatCount="indefinite" begin="0.7s"><mpath href="#p2b"/></animateMotion>
+</circle>
+<circle r="4.5" class="pk">
+  <animateMotion dur="2.0s" repeatCount="indefinite" begin="1.3s"><mpath href="#p2c"/></animateMotion>
+</circle>
+
+<!-- ═══ RIGHT: 3-TIER ═══ -->
+<text x="645" y="66" class="ttl" style="font-size:13px">3-Tier Clos</text>
+<text x="645" y="79" class="dsc">ToR → Leaf → Spine — extra switching stage</text>
+
+<text x="445" y="100" class="ll" fill="#6366f1" opacity=".85">SPINE</text>
+<text x="445" y="178" class="ll" fill="#06b6d4" opacity=".85">LEAF</text>
+<text x="445" y="263" class="ll" fill="#f59e0b" opacity=".85">ToR</text>
+<text x="445" y="360" class="ll" fill="#10b981" opacity=".85">SERVER</text>
+
+<!-- 3T Spines -->
+<rect x="555" y="84"  width="68" height="30" rx="5" class="sp"/>
+<text x="589" y="98"  class="nl">Spine</text><text x="589" y="109" class="sl">S1</text>
+<rect x="700" y="84"  width="68" height="30" rx="5" class="sp"/>
+<text x="734" y="98"  class="nl">Spine</text><text x="734" y="109" class="sl">S2</text>
+
+<!-- 3T Leaves -->
+<rect x="555" y="162" width="68" height="30" rx="5" class="lf"/>
+<text x="589" y="176" class="nl">Leaf</text><text x="589" y="187" class="sl">L1</text>
+<rect x="700" y="162" width="68" height="30" rx="5" class="lf"/>
+<text x="734" y="176" class="nl">Leaf</text><text x="734" y="187" class="sl">L2</text>
+
+<!-- 3T ToRs -->
+<rect x="558" y="247" width="62" height="30" rx="5" class="tr"/>
+<text x="589" y="261" class="nl">ToR</text><text x="589" y="272" class="sl">T1</text>
+<rect x="703" y="247" width="62" height="30" rx="5" class="tr"/>
+<text x="734" y="261" class="nl">ToR</text><text x="734" y="272" class="sl">T2</text>
+
+<!-- 3T Servers -->
+<rect x="500" y="343" width="58" height="28" rx="5" class="sv"/>
+<text x="529" y="359" class="nl" style="font-size:10px">Server</text>
+<rect x="578" y="343" width="58" height="28" rx="5" class="sv"/>
+<text x="607" y="359" class="nl" style="font-size:10px">Server</text>
+<rect x="675" y="343" width="58" height="28" rx="5" class="sv"/>
+<text x="704" y="359" class="nl" style="font-size:10px">Server</text>
+<rect x="753" y="343" width="58" height="28" rx="5" class="sv"/>
+<text x="782" y="359" class="nl" style="font-size:10px">Server</text>
+
+<!-- 3T Links spine-leaf -->
+<line x1="589" y1="114" x2="589" y2="162" class="lnk"/>
+<line x1="589" y1="114" x2="734" y2="162" class="lnk"/>
+<line x1="734" y1="114" x2="589" y2="162" class="lnk"/>
+<line x1="734" y1="114" x2="734" y2="162" class="lnk"/>
+
+<!-- 3T Links leaf-ToR -->
+<line x1="589" y1="192" x2="589" y2="247" class="lnk"/>
+<line x1="734" y1="192" x2="734" y2="247" class="lnk"/>
+
+<!-- 3T Links ToR-Server -->
+<line x1="589" y1="277" x2="529" y2="343" class="lnk"/>
+<line x1="589" y1="277" x2="607" y2="343" class="lnk"/>
+<line x1="734" y1="277" x2="704" y2="343" class="lnk"/>
+<line x1="734" y1="277" x2="782" y2="343" class="lnk"/>
+
+<!-- 3T Packet paths -->
+<path id="p3a" d="M529,343 L589,277 L589,192 L589,114"  fill="none" opacity="0"/>
+<path id="p3b" d="M782,343 L734,277 L734,192 L734,114"  fill="none" opacity="0"/>
+<path id="p3c" d="M607,343 L589,277 L589,192 L734,114"  fill="none" opacity="0"/>
+
+<!-- 3T Animated packets (3 hops — slower) -->
+<circle r="4.5" class="pk">
+  <animateMotion dur="2.7s" repeatCount="indefinite" begin="0s"><mpath href="#p3a"/></animateMotion>
+</circle>
+<circle r="4.5" class="pk">
+  <animateMotion dur="2.7s" repeatCount="indefinite" begin="0.9s"><mpath href="#p3b"/></animateMotion>
+</circle>
+<circle r="4.5" class="pk">
+  <animateMotion dur="2.7s" repeatCount="indefinite" begin="1.7s"><mpath href="#p3c"/></animateMotion>
+</circle>
+
+<!-- Info box -->
+<rect x="15" y="422" width="830" height="56" rx="7" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<circle cx="36" cy="441" r="5" fill="#6366f1" opacity=".8"/>
+<text x="47" y="445" class="ll" fill="#94a3b8" style="font-size:10px">Spine</text>
+<circle cx="100" cy="441" r="5" fill="#06b6d4" opacity=".8"/>
+<text x="111" y="445" class="ll" fill="#94a3b8" style="font-size:10px">Leaf / ToR</text>
+<circle cx="185" cy="441" r="5" fill="#f59e0b" opacity=".8"/>
+<text x="196" y="445" class="ll" fill="#94a3b8" style="font-size:10px">ToR (3-tier)</text>
+<circle cx="272" cy="441" r="5" fill="#10b981" opacity=".8"/>
+<text x="283" y="445" class="ll" fill="#94a3b8" style="font-size:10px">Server</text>
+<circle cx="340" cy="441" r="4.5" fill="#f43f5e"/>
+<text x="350" y="445" class="ll" fill="#94a3b8" style="font-size:10px">Packet in flight</text>
+<text x="25" y="464" class="ibt" style="font-size:11px">
+  <tspan fill="#06b6d4" font-weight="bold">2-tier:</tspan><tspan fill="#94a3b8"> ToR acts as leaf, connects directly to spines — fewer hops, simpler cabling, works at moderate scale.   </tspan>
+  <tspan fill="#f59e0b" font-weight="bold">3-tier:</tspan><tspan fill="#94a3b8"> Adds a dedicated leaf layer — enables larger scale, costs one extra switching hop.</tspan>
+</text>
+</svg>
