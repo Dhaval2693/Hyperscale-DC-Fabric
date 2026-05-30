@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 480" width="860" height="480">
+<style>
+  .bg   { fill:#0f172a; }
+  .card { fill:#1e293b; stroke:#334155; stroke-width:1; }
+  .sp   { fill:#6366f1; fill-opacity:.18; stroke:#6366f1; stroke-width:1.5; }
+  .lf   { fill:#06b6d4; fill-opacity:.18; stroke:#06b6d4; stroke-width:1.5; }
+  .sv   { fill:#10b981; fill-opacity:.18; stroke:#10b981; stroke-width:1.5; }
+  .gpu  { fill:#f43f5e; fill-opacity:.18; stroke:#f43f5e; stroke-width:1.5; }
+  .lnk  { stroke:#475569; stroke-width:1.5; stroke-opacity:.4; fill:none; }
+  .cpkt { fill:#f59e0b; }
+  .apkt { fill:#a855f7; }
+  .ttl  { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:13px; font-weight:700; text-anchor:middle; }
+  .sub  { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:10px; text-anchor:middle; }
+  .nl   { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:10px; font-weight:700; text-anchor:middle; }
+  .ll   { font-family:system-ui,sans-serif; font-size:10px; font-weight:600; }
+  .ibt  { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:11px; }
+  .tag  { font-family:system-ui,sans-serif; font-size:10px; font-weight:700; text-anchor:middle; }
+</style>
+
+<rect width="860" height="480" rx="10" class="bg"/>
+
+<!-- Main title -->
+<text x="430" y="28" class="ttl" style="font-size:15px;fill:#f1f5f9">Cloud Fabric vs AI Training Fabric</text>
+<text x="430" y="43" class="sub">Same Clos topology — different traffic patterns change everything</text>
+<line x1="430" y1="50" x2="430" y2="405" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+
+<!-- ═══ LEFT: CLOUD ═══ -->
+<rect x="15" y="54" width="400" height="340" rx="8" fill="#1e293b80" stroke="#334155" stroke-width="1"/>
+<circle cx="36" cy="70" r="5" fill="#f59e0b"/>
+<text x="215" y="70" class="ttl">Cloud / Web Workload</text>
+<text x="215" y="83" class="sub">North-south, sporadic. Statistical multiplexing holds.</text>
+
+<!-- Cloud: Spines -->
+<rect x="80"  y="98" width="62" height="28" rx="4" class="sp"/>
+<text x="111" y="115" class="nl" style="font-size:9px">Spine S1</text>
+<rect x="165" y="98" width="62" height="28" rx="4" class="sp"/>
+<text x="196" y="115" class="nl" style="font-size:9px">Spine S2</text>
+<rect x="250" y="98" width="62" height="28" rx="4" class="sp"/>
+<text x="281" y="115" class="nl" style="font-size:9px">Spine S3</text>
+
+<!-- Cloud: Leaves -->
+<rect x="100" y="168" width="62" height="28" rx="4" class="lf"/>
+<text x="131" y="185" class="nl" style="font-size:9px">Leaf L1</text>
+<rect x="230" y="168" width="62" height="28" rx="4" class="lf"/>
+<text x="261" y="185" class="nl" style="font-size:9px">Leaf L2</text>
+
+<!-- Cloud: Servers -->
+<rect x="50"  y="248" width="54" height="26" rx="4" class="sv"/>
+<text x="77"  y="263" class="nl" style="font-size:9px">SRV 1</text>
+<rect x="115" y="248" width="54" height="26" rx="4" class="sv"/>
+<text x="142" y="263" class="nl" style="font-size:9px">SRV 2</text>
+<rect x="185" y="248" width="54" height="26" rx="4" class="sv"/>
+<text x="212" y="263" class="nl" style="font-size:9px">SRV 3</text>
+<rect x="255" y="248" width="54" height="26" rx="4" class="sv"/>
+<text x="282" y="263" class="nl" style="font-size:9px">SRV 4</text>
+<rect x="318" y="248" width="54" height="26" rx="4" class="sv"/>
+<text x="345" y="263" class="nl" style="font-size:9px">SRV 5</text>
+<rect x="325" y="168" width="62" height="28" rx="4" class="lf"/>
+<text x="356" y="185" class="nl" style="font-size:9px">Leaf L3</text>
+
+<!-- Cloud links: Spine-Leaf -->
+<line x1="111" y1="126" x2="131" y2="168" class="lnk"/>
+<line x1="111" y1="126" x2="261" y2="168" class="lnk"/>
+<line x1="196" y1="126" x2="131" y2="168" class="lnk"/>
+<line x1="196" y1="126" x2="261" y2="168" class="lnk"/>
+<line x1="281" y1="126" x2="261" y2="168" class="lnk"/>
+<line x1="281" y1="126" x2="356" y2="168" class="lnk"/>
+
+<!-- Cloud links: Leaf-Server -->
+<line x1="131" y1="196" x2="77"  y2="248" class="lnk"/>
+<line x1="131" y1="196" x2="142" y2="248" class="lnk"/>
+<line x1="261" y1="196" x2="212" y2="248" class="lnk"/>
+<line x1="261" y1="196" x2="282" y2="248" class="lnk"/>
+<line x1="356" y1="196" x2="345" y2="248" class="lnk"/>
+
+<!-- Cloud packet paths: sparse north-south -->
+<path id="cp1" d="M77,248 L131,196 L196,126"  fill="none" opacity="0"/>
+<path id="cp2" d="M282,248 L261,196 L281,126" fill="none" opacity="0"/>
+<path id="cp3" d="M345,248 L356,196 L281,126" fill="none" opacity="0"/>
+
+<!-- Sparse cloud packets (1-2 at a time) -->
+<circle r="4" class="cpkt">
+  <animateMotion dur="2.5s" repeatCount="indefinite" begin="0s"><mpath href="#cp1"/></animateMotion>
+</circle>
+<circle r="4" class="cpkt">
+  <animateMotion dur="2.5s" repeatCount="indefinite" begin="3.5s"><mpath href="#cp2"/></animateMotion>
+</circle>
+<circle r="4" class="cpkt">
+  <animateMotion dur="2.5s" repeatCount="indefinite" begin="6.0s"><mpath href="#cp3"/></animateMotion>
+</circle>
+
+<!-- Cloud stats -->
+<rect x="25"  y="286" width="110" height="42" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="80"  y="304" class="tag" style="fill:#f59e0b">2:1</text>
+<text x="80"  y="316" class="sub">Oversubscription</text>
+<text x="80"  y="328" class="sub" style="font-size:9px">by design</text>
+
+<rect x="150" y="286" width="110" height="42" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="205" y="304" class="tag" style="fill:#94a3b8">N→S</text>
+<text x="205" y="316" class="sub">Traffic pattern</text>
+<text x="205" y="328" class="sub" style="font-size:9px">sporadic bursts</text>
+
+<rect x="275" y="286" width="110" height="42" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="330" y="304" class="tag" style="fill:#10b981">LOW</text>
+<text x="330" y="316" class="sub">Congestion risk</text>
+<text x="330" y="328" class="sub" style="font-size:9px">mux assumption holds</text>
+
+<text x="215" y="355" class="sub" style="font-size:10px;fill:#94a3b8">~30–40% of servers active at any time</text>
+<text x="215" y="370" class="sub" style="font-size:10px;fill:#f1f5f9">Statistical multiplexing keeps uplinks uncongested</text>
+
+<!-- ═══ RIGHT: AI ═══ -->
+<rect x="445" y="54" width="400" height="340" rx="8" fill="#1e293b80" stroke="#a855f7" stroke-width="1"/>
+<circle cx="466" cy="70" r="5" fill="#a855f7"/>
+<text x="645" y="70" class="ttl" style="fill:#f1f5f9">AI Training Workload</text>
+<text x="645" y="83" class="sub">All-reduce: every GPU to every GPU simultaneously</text>
+
+<!-- AI: Spines -->
+<rect x="535" y="98" width="62" height="28" rx="4" class="sp"/>
+<text x="566" y="115" class="nl" style="font-size:9px">Spine S1</text>
+<rect x="680" y="98" width="62" height="28" rx="4" class="sp"/>
+<text x="711" y="115" class="nl" style="font-size:9px">Spine S2</text>
+
+<!-- AI: Leaves -->
+<rect x="510" y="168" width="62" height="28" rx="4" class="lf"/>
+<text x="541" y="185" class="nl" style="font-size:9px">Leaf L1</text>
+<rect x="625" y="168" width="62" height="28" rx="4" class="lf"/>
+<text x="656" y="185" class="nl" style="font-size:9px">Leaf L2</text>
+<rect x="740" y="168" width="62" height="28" rx="4" class="lf"/>
+<text x="771" y="185" class="nl" style="font-size:9px">Leaf L3</text>
+
+<!-- AI: GPUs (red) -->
+<rect x="460" y="248" width="52" height="26" rx="4" class="gpu"/>
+<text x="486" y="263" class="nl" style="font-size:9px;fill:#f43f5e">GPU 1</text>
+<rect x="522" y="248" width="52" height="26" rx="4" class="gpu"/>
+<text x="548" y="263" class="nl" style="font-size:9px;fill:#f43f5e">GPU 2</text>
+<rect x="584" y="248" width="52" height="26" rx="4" class="gpu"/>
+<text x="610" y="263" class="nl" style="font-size:9px;fill:#f43f5e">GPU 3</text>
+<rect x="646" y="248" width="52" height="26" rx="4" class="gpu"/>
+<text x="672" y="263" class="nl" style="font-size:9px;fill:#f43f5e">GPU 4</text>
+<rect x="708" y="248" width="52" height="26" rx="4" class="gpu"/>
+<text x="734" y="263" class="nl" style="font-size:9px;fill:#f43f5e">GPU 5</text>
+<rect x="770" y="248" width="52" height="26" rx="4" class="gpu"/>
+<text x="796" y="263" class="nl" style="font-size:9px;fill:#f43f5e">GPU 6</text>
+
+<!-- AI links: Spine-Leaf -->
+<line x1="566" y1="126" x2="541" y2="168" class="lnk"/>
+<line x1="566" y1="126" x2="656" y2="168" class="lnk"/>
+<line x1="711" y1="126" x2="656" y2="168" class="lnk"/>
+<line x1="711" y1="126" x2="771" y2="168" class="lnk"/>
+
+<!-- AI links: Leaf-GPU -->
+<line x1="541" y1="196" x2="486" y2="248" class="lnk"/>
+<line x1="541" y1="196" x2="548" y2="248" class="lnk"/>
+<line x1="656" y1="196" x2="610" y2="248" class="lnk"/>
+<line x1="656" y1="196" x2="672" y2="248" class="lnk"/>
+<line x1="771" y1="196" x2="734" y2="248" class="lnk"/>
+<line x1="771" y1="196" x2="796" y2="248" class="lnk"/>
+
+<!-- AI packet paths: dense east-west all-reduce -->
+<!-- GPU1→GPU4 via spine -->
+<path id="ap1" d="M486,248 L541,196 L566,126 L711,126 L656,196 L672,248" fill="none" opacity="0"/>
+<!-- GPU2→GPU5 via spine -->
+<path id="ap2" d="M548,248 L541,196 L566,126 L711,126 L771,196 L734,248" fill="none" opacity="0"/>
+<!-- GPU3→GPU6 via spine -->
+<path id="ap3" d="M610,248 L656,196 L711,126 L566,126 L541,196 L796,248" fill="none" opacity="0"/>
+<!-- GPU4→GPU1 via spine -->
+<path id="ap4" d="M672,248 L656,196 L711,126 L566,126 L541,196 L486,248" fill="none" opacity="0"/>
+<!-- GPU5→GPU2 -->
+<path id="ap5" d="M734,248 L771,196 L711,126 L566,126 L541,196 L548,248" fill="none" opacity="0"/>
+<!-- GPU6→GPU3 -->
+<path id="ap6" d="M796,248 L771,196 L711,126 L656,196 L610,248" fill="none" opacity="0"/>
+
+<!-- Dense AI packets — many at once with small delays -->
+<circle r="4" class="apkt"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0s"><mpath href="#ap1"/></animateMotion></circle>
+<circle r="4" class="apkt"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.27s"><mpath href="#ap2"/></animateMotion></circle>
+<circle r="4" class="apkt"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.54s"><mpath href="#ap3"/></animateMotion></circle>
+<circle r="4" class="apkt"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.81s"><mpath href="#ap4"/></animateMotion></circle>
+<circle r="4" class="apkt"><animateMotion dur="1.6s" repeatCount="indefinite" begin="1.08s"><mpath href="#ap5"/></animateMotion></circle>
+<circle r="4" class="apkt"><animateMotion dur="1.6s" repeatCount="indefinite" begin="1.35s"><mpath href="#ap6"/></animateMotion></circle>
+<!-- Second wave -->
+<circle r="3.5" class="apkt" opacity=".7"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.13s"><mpath href="#ap3"/></animateMotion></circle>
+<circle r="3.5" class="apkt" opacity=".7"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.4s"><mpath href="#ap1"/></animateMotion></circle>
+<circle r="3.5" class="apkt" opacity=".7"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.67s"><mpath href="#ap4"/></animateMotion></circle>
+
+<!-- AI stats -->
+<rect x="455" y="286" width="110" height="42" rx="6" fill="#1e293b" stroke="#a855f7" stroke-width="1"/>
+<text x="510" y="304" class="tag" style="fill:#a855f7">1:1</text>
+<text x="510" y="316" class="sub">Oversubscription</text>
+<text x="510" y="328" class="sub" style="font-size:9px">non-blocking needed</text>
+
+<rect x="580" y="286" width="110" height="42" rx="6" fill="#1e293b" stroke="#a855f7" stroke-width="1"/>
+<text x="635" y="304" class="tag" style="fill:#a855f7">E↔W</text>
+<text x="635" y="316" class="sub">Traffic pattern</text>
+<text x="635" y="328" class="sub" style="font-size:9px">all-reduce bursts</text>
+
+<rect x="705" y="286" width="110" height="42" rx="6" fill="#1e293b" stroke="#ef4444" stroke-width="1"/>
+<text x="760" y="304" class="tag" style="fill:#ef4444">HIGH</text>
+<text x="760" y="316" class="sub">Congestion risk</text>
+<text x="760" y="328" class="sub" style="font-size:9px">w/ oversubscription</text>
+
+<text x="645" y="355" class="sub" style="font-size:10px;fill:#f43f5e">~95–100% of GPUs active simultaneously</text>
+<text x="645" y="370" class="sub" style="font-size:10px;fill:#f1f5f9">Mux assumption fails → tail latency → GPU idle time</text>
+
+<!-- Bottom callout -->
+<rect x="15" y="408" width="830" height="58" rx="7" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="430" y="427" class="ibt" style="text-anchor:middle;font-size:11px">
+  <tspan fill="#a855f7" font-weight="bold">All-reduce</tspan><tspan fill="#94a3b8"> during gradient sync means every node transmits at once. </tspan>
+  <tspan fill="#ef4444" font-weight="bold">Tail latency spikes</tspan><tspan fill="#94a3b8"> reduce GPU utilization.</tspan>
+</text>
+<text x="430" y="448" class="ibt" style="text-anchor:middle;font-size:11px">
+  <tspan fill="#94a3b8">AI fabrics move toward </tspan><tspan fill="#10b981" font-weight="bold">non-blocking (1:1)</tspan><tspan fill="#94a3b8"> design to maintain consistent training iteration times.</tspan>
+</text>
+<circle cx="36" cy="438" r="4" fill="#f59e0b"/>
+<text x="46" y="442" class="ll" fill="#94a3b8" style="font-size:10px">Cloud packet</text>
+<circle cx="130" cy="438" r="4" fill="#a855f7"/>
+<text x="140" y="442" class="ll" fill="#94a3b8" style="font-size:10px">AI all-reduce packet</text>
+</svg>
