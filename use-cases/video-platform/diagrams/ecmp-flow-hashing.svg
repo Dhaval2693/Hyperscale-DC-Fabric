@@ -1,0 +1,188 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 470" width="860" height="470">
+<style>
+  .bg   { fill:#0f172a; }
+  .card { fill:#1e293b; stroke:#334155; stroke-width:1; }
+  .sp   { fill:#6366f1; fill-opacity:.18; stroke:#6366f1; stroke-width:1.5; }
+  .lf   { fill:#06b6d4; fill-opacity:.18; stroke:#06b6d4; stroke-width:1.5; }
+  .sv   { fill:#10b981; fill-opacity:.15; stroke:#10b981; stroke-width:1.2; }
+  .stor { fill:#6366f1; fill-opacity:.12; stroke:#6366f1; stroke-width:1.2; }
+  .ttl  { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:14px; font-weight:700; text-anchor:middle; }
+  .sub  { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:10px; text-anchor:middle; }
+  .nl   { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:10px; font-weight:700; text-anchor:middle; }
+  .sl   { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:9px; text-anchor:middle; }
+  .ll   { font-family:system-ui,sans-serif; font-size:10px; font-weight:600; }
+  .mono { font-family:monospace; font-size:9px; text-anchor:middle; }
+  .lnk  { stroke:#475569; stroke-width:1.5; stroke-opacity:.35; fill:none; }
+
+  /* Flow colors */
+  .f1 { fill:#f43f5e; } .f1s { stroke:#f43f5e; stroke-width:2.5; fill:none; }
+  .f2 { fill:#f59e0b; } .f2s { stroke:#f59e0b; stroke-width:2.5; fill:none; }
+  .f3 { fill:#10b981; } .f3s { stroke:#10b981; stroke-width:2.5; fill:none; }
+  .f4 { fill:#a855f7; } .f4s { stroke:#a855f7; stroke-width:2.5; fill:none; }
+  /* Elephant flow — thick, orange */
+  .ef  { stroke:#f59e0b; stroke-width:6; fill:none; stroke-opacity:.7; }
+  /* Congested spine highlight */
+  @keyframes congest { 0%,100%{fill-opacity:.18;stroke-opacity:1;} 50%{fill-opacity:.4;stroke-opacity:1;stroke:#ef4444;} }
+  .spine-congest { animation: congest 1.8s infinite ease-in-out; fill:#f59e0b; fill-opacity:.18; stroke:#f59e0b; stroke-width:1.5; }
+</style>
+
+<rect width="860" height="470" rx="10" class="bg"/>
+<text x="430" y="26" class="ttl" style="font-size:15px">ECMP — 5-Tuple Hashing Across Spine Paths</text>
+<text x="430" y="42" class="sub">Different flows hash to different spines. Same flow always takes same path. Elephant flows can monopolize a spine.</text>
+
+<!-- ── LEFT PANEL: Normal ECMP ── -->
+<rect x="12" y="52" width="420" height="310" rx="8" fill="#1e293b40" stroke="#334155" stroke-width="1"/>
+<text x="222" y="70" class="ttl" style="font-size:12px;fill:#10b981">Normal ECMP: Flows Distributed</text>
+
+<!-- 4 Spines (left panel) -->
+<rect x="50"  y="84" width="70" height="30" rx="5" class="sp"/>
+<text x="85"  y="99"  class="nl" style="font-size:9px">Spine S1</text>
+<rect x="148" y="84" width="70" height="30" rx="5" class="sp"/>
+<text x="183" y="99"  class="nl" style="font-size:9px">Spine S2</text>
+<rect x="246" y="84" width="70" height="30" rx="5" class="sp"/>
+<text x="281" y="99"  class="nl" style="font-size:9px">Spine S3</text>
+<rect x="344" y="84" width="70" height="30" rx="5" class="sp"/>
+<text x="379" y="99"  class="nl" style="font-size:9px">Spine S4</text>
+
+<!-- Leaf switch (left panel) -->
+<rect x="168" y="188" width="90" height="32" rx="5" class="lf"/>
+<text x="213" y="202" class="nl">Leaf L1</text>
+<text x="213" y="213" class="sl">src worker</text>
+
+<!-- Storage server (left panel) -->
+<rect x="168" y="290" width="90" height="30" rx="5" class="stor"/>
+<text x="213" y="305" class="nl" style="font-size:9px">Storage S1</text>
+<text x="213" y="316" class="sl">dst server</text>
+
+<!-- Links: Leaf to each Spine -->
+<line x1="213" y1="188" x2="85"  y2="114" class="lnk"/>
+<line x1="213" y1="188" x2="183" y2="114" class="lnk"/>
+<line x1="213" y1="188" x2="281" y2="114" class="lnk"/>
+<line x1="213" y1="188" x2="379" y2="114" class="lnk"/>
+<!-- Links: Each Spine to Storage (conceptual) -->
+<line x1="85"  y1="114" x2="213" y2="290" class="lnk"/>
+<line x1="183" y1="114" x2="213" y2="290" class="lnk"/>
+<line x1="281" y1="114" x2="213" y2="290" class="lnk"/>
+<line x1="379" y1="114" x2="213" y2="290" class="lnk"/>
+
+<!-- Flow paths (each through a different spine) -->
+<path id="fl1" d="M213,290 L85,114 L213,188" fill="none" opacity="0"/>
+<path id="fl2" d="M213,290 L183,114 L213,188" fill="none" opacity="0"/>
+<path id="fl3" d="M213,290 L281,114 L213,188" fill="none" opacity="0"/>
+<path id="fl4" d="M213,290 L379,114 L213,188" fill="none" opacity="0"/>
+
+<!-- 4 different flows (colored packets) -->
+<circle r="5" class="f1"><animateMotion dur="2s" repeatCount="indefinite" begin="0s"><mpath href="#fl1"/></animateMotion></circle>
+<circle r="5" class="f2"><animateMotion dur="2s" repeatCount="indefinite" begin="0.5s"><mpath href="#fl2"/></animateMotion></circle>
+<circle r="5" class="f3"><animateMotion dur="2s" repeatCount="indefinite" begin="1.0s"><mpath href="#fl3"/></animateMotion></circle>
+<circle r="5" class="f4"><animateMotion dur="2s" repeatCount="indefinite" begin="1.5s"><mpath href="#fl4"/></animateMotion></circle>
+
+<!-- Hash function box -->
+<rect x="50" y="234" width="128" height="44" rx="6" fill="#1e293b" stroke="#6366f1" stroke-width="1"/>
+<text x="114" y="250" class="nl" style="fill:#6366f1;font-size:10px">5-tuple hash</text>
+<text x="114" y="263" class="mono" style="fill:#f1f5f9">src_ip + dst_ip</text>
+<text x="114" y="274" class="mono" style="fill:#f1f5f9">+ ports + proto</text>
+
+<!-- Flow labels -->
+<text x="38" y="160" class="sl" style="fill:#f43f5e">Flow A → S1</text>
+<text x="148" y="160" class="sl" style="fill:#f59e0b">Flow B → S2</text>
+<text x="260" y="160" class="sl" style="fill:#10b981">Flow C → S3</text>
+<text x="360" y="160" class="sl" style="fill:#a855f7">Flow D → S4</text>
+
+<!-- Utilization bars -->
+<rect x="58"  y="124" width="54" height="8" rx="2" fill="#334155"/>
+<rect x="58"  y="124" width="14" height="8" rx="2" fill="#f43f5e" opacity=".8"/>
+<rect x="156" y="124" width="54" height="8" rx="2" fill="#334155"/>
+<rect x="156" y="124" width="13" height="8" rx="2" fill="#f59e0b" opacity=".8"/>
+<rect x="254" y="124" width="54" height="8" rx="2" fill="#334155"/>
+<rect x="254" y="124" width="14" height="8" rx="2" fill="#10b981" opacity=".8"/>
+<rect x="352" y="124" width="54" height="8" rx="2" fill="#334155"/>
+<rect x="352" y="124" width="13" height="8" rx="2" fill="#a855f7" opacity=".8"/>
+<text x="85"  y="142" class="sl" style="fill:#94a3b8">~25%</text>
+<text x="183" y="142" class="sl" style="fill:#94a3b8">~25%</text>
+<text x="281" y="142" class="sl" style="fill:#94a3b8">~25%</text>
+<text x="379" y="142" class="sl" style="fill:#94a3b8">~25%</text>
+<text x="222" y="345" class="sub" style="font-size:9px;fill:#10b981;font-weight:700">Balanced: 25% per spine</text>
+<text x="222" y="358" class="sub" style="font-size:9px">Different flows, different paths</text>
+
+<!-- ── RIGHT PANEL: Elephant Flow Problem ── -->
+<rect x="448" y="52" width="400" height="310" rx="8" fill="#1e293b40" stroke="#ef4444" stroke-width="1"/>
+<text x="648" y="70" class="ttl" style="font-size:12px;fill:#ef4444">Elephant Flow Problem</text>
+
+<!-- 4 Spines (right panel) -->
+<rect x="475" y="84"  width="70" height="30" rx="5" class="sp"/>
+<text x="510" y="99"  class="nl" style="font-size:9px">Spine S1</text>
+<rect x="565" y="84"  width="70" height="30" rx="5" class="spine-congest"/>
+<text x="600" y="99"  class="nl" style="font-size:9px">Spine S2</text>
+<rect x="655" y="84"  width="70" height="30" rx="5" class="sp"/>
+<text x="690" y="99"  class="nl" style="font-size:9px">Spine S3</text>
+<rect x="745" y="84"  width="70" height="30" rx="5" class="sp"/>
+<text x="780" y="99"  class="nl" style="font-size:9px">Spine S4</text>
+
+<!-- Leaf switch (right panel) -->
+<rect x="593" y="188" width="90" height="32" rx="5" class="lf"/>
+<text x="638" y="202" class="nl">Leaf L1</text>
+<text x="638" y="213" class="sl">src worker</text>
+
+<!-- Storage server (right panel) -->
+<rect x="593" y="290" width="90" height="30" rx="5" class="stor"/>
+<text x="638" y="305" class="nl" style="font-size:9px">Storage S1</text>
+
+<!-- Links -->
+<line x1="638" y1="188" x2="510" y2="114" class="lnk"/>
+<line x1="638" y1="188" x2="600" y2="114" class="lnk"/>
+<line x1="638" y1="188" x2="690" y2="114" class="lnk"/>
+<line x1="638" y1="188" x2="780" y2="114" class="lnk"/>
+<line x1="510" y1="114" x2="638" y2="290" class="lnk"/>
+<line x1="600" y1="114" x2="638" y2="290" class="lnk" stroke="#f59e0b" stroke-width="3" stroke-opacity=".5"/>
+<line x1="690" y1="114" x2="638" y2="290" class="lnk"/>
+<line x1="780" y1="114" x2="638" y2="290" class="lnk"/>
+
+<!-- Elephant flow: thick line on S2 -->
+<path id="ef1" d="M638,290 L600,114 L638,188" fill="none" opacity="0"/>
+<path id="ef2" d="M638,290 L600,114 L638,188" fill="none" opacity="0"/>
+<path id="ef3" d="M638,290 L600,114 L638,188" fill="none" opacity="0"/>
+<!-- Small flows on other spines -->
+<path id="sf1" d="M638,290 L510,114 L638,188" fill="none" opacity="0"/>
+<path id="sf2" d="M638,290 L690,114 L638,188" fill="none" opacity="0"/>
+
+<!-- Elephant flow packets (many, fast, same spine S2) -->
+<circle r="5" class="f2"><animateMotion dur="1.2s" repeatCount="indefinite" begin="0s"><mpath href="#ef1"/></animateMotion></circle>
+<circle r="5" class="f2"><animateMotion dur="1.2s" repeatCount="indefinite" begin="0.3s"><mpath href="#ef2"/></animateMotion></circle>
+<circle r="5" class="f2"><animateMotion dur="1.2s" repeatCount="indefinite" begin="0.6s"><mpath href="#ef3"/></animateMotion></circle>
+<!-- Small flows on other spines (mice) -->
+<circle r="3.5" class="f1"><animateMotion dur="2s" repeatCount="indefinite" begin="0.4s"><mpath href="#sf1"/></animateMotion></circle>
+<circle r="3.5" class="f3"><animateMotion dur="2s" repeatCount="indefinite" begin="1.2s"><mpath href="#sf2"/></animateMotion></circle>
+
+<!-- Congestion callout on S2 -->
+<rect x="588" y="120" width="84" height="20" rx="4" fill="#ef444430" stroke="#ef4444" stroke-width="1"/>
+<text x="630" y="133" class="nl" style="fill:#ef4444;font-size:9px">CONGESTED ~90%</text>
+
+<!-- Utilization bars (right) -->
+<rect x="483" y="124" width="54" height="8" rx="2" fill="#334155"/>
+<rect x="483" y="124" width="8"  height="8" rx="2" fill="#f43f5e" opacity=".8"/>
+<rect x="573" y="124" width="54" height="8" rx="2" fill="#334155"/>
+<rect x="573" y="124" width="48" height="8" rx="2" fill="#f59e0b" opacity=".9"/>
+<rect x="663" y="124" width="54" height="8" rx="2" fill="#334155"/>
+<rect x="663" y="124" width="8"  height="8" rx="2" fill="#10b981" opacity=".8"/>
+<rect x="753" y="124" width="54" height="8" rx="2" fill="#334155"/>
+<rect x="753" y="124" width="6"  height="8" rx="2" fill="#a855f7" opacity=".8"/>
+<text x="510" y="142" class="sl" style="fill:#94a3b8">~10%</text>
+<text x="600" y="142" class="sl" style="fill:#ef4444">~90%</text>
+<text x="690" y="142" class="sl" style="fill:#94a3b8">~10%</text>
+<text x="780" y="142" class="sl" style="fill:#94a3b8">~8%</text>
+
+<text x="648" y="345" class="sub" style="font-size:9px;fill:#ef4444;font-weight:700">Elephant flow saturates S2</text>
+<text x="648" y="358" class="sub" style="font-size:9px">Mice flows on S2 see latency spike</text>
+
+<!-- ── BOTTOM LEGEND ── -->
+<rect x="12" y="372" width="836" height="84" rx="7" class="card"/>
+<text x="430" y="390" class="ttl" style="font-size:12px">ECMP Hash Selection — Consistent Per Flow</text>
+<text x="430" y="406" class="sub" style="font-size:11px;fill:#f1f5f9">Hash(src_ip, dst_ip, src_port, dst_port, proto) → selects spine. Same 5-tuple = same path every time. Different flows = different spines = load balance.</text>
+<text x="430" y="422" class="sub" style="font-size:11px">The elephant problem: one large flow (10 GB file transfer) hashes to the same spine as small RPCs. The large flow fills the queue; RPCs see latency spikes.</text>
+<text x="430" y="438" class="sub" style="font-size:11px;fill:#f1f5f9">Solutions: ECN + DCTCP signals congestion before queues fill. Per-packet (non-flow) load balancing at NIC level (RDMA networks). Randomized source port at sender.</text>
+<circle cx="30" cy="447" r="4" fill="#f59e0b"/>
+<text x="40" y="451" class="ll" fill="#94a3b8" style="font-size:10px">Elephant flow (large, saturates path)</text>
+<circle cx="215" cy="447" r="3.5" fill="#f43f5e"/>
+<text x="225" y="451" class="ll" fill="#94a3b8" style="font-size:10px">Mice flow (small, latency sensitive)</text>
+</svg>
