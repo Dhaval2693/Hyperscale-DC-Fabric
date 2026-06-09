@@ -1,0 +1,191 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 460" width="860" height="460">
+<style>
+  .bg   { fill:#0f172a; }
+  .card { fill:#1e293b; stroke:#334155; stroke-width:1; }
+  .ttl  { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:14px; font-weight:700; text-anchor:middle; }
+  .sub  { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:10px; text-anchor:middle; }
+  .nl   { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:10px; font-weight:700; text-anchor:middle; }
+  .sl   { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:9px; text-anchor:middle; }
+  .ll   { font-family:system-ui,sans-serif; font-size:10px; font-weight:600; }
+  .hit  { fill:#10b981; }
+  .miss { fill:#ef4444; }
+  .req  { fill:#f43f5e; }
+  .resp { fill:#10b981; }
+  .tag  { font-family:system-ui,sans-serif; font-size:12px; font-weight:800; text-anchor:middle; }
+  .mono { font-family:monospace; font-size:9px; text-anchor:middle; }
+  .pipe { stroke:#334155; stroke-width:3; fill:none; }
+
+  /* Hit badge pulse */
+  @keyframes hitpulse { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+  @keyframes reqflow  { from{stroke-dashoffset:30;} to{stroke-dashoffset:0;} }
+
+  .hit-blink { animation: hitpulse 1.2s infinite; }
+  .req-flow  { stroke-dasharray:6,3; animation: reqflow 1s linear infinite; }
+</style>
+
+<rect width="860" height="460" rx="10" class="bg"/>
+<text x="430" y="26" class="ttl" style="font-size:15px">Caching Layers — From Browser to Origin</text>
+<text x="430" y="42" class="sub">A video request checks each cache layer in order. A hit stops the traversal. A miss continues inward.</text>
+
+<!-- ── CACHE LAYER BOXES (left to right) ── -->
+
+<!-- BROWSER -->
+<rect x="14" y="58" width="140" height="250" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+<text x="84" y="78" class="nl" style="fill:#10b981;font-size:11px">BROWSER</text>
+<text x="84" y="92" class="sl">Cache-Control</text>
+<text x="84" y="104" class="sl">headers</text>
+
+<rect x="24" y="116" width="120" height="22" rx="4" fill="#10b98120" stroke="#10b981" stroke-width="1"/>
+<text x="84" y="131" class="mono" style="fill:#10b981">max-age=86400</text>
+<rect x="24" y="142" width="120" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="84" y="157" class="sl">Static assets</text>
+<rect x="24" y="168" width="120" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="84" y="183" class="sl">JS/CSS/thumbnails</text>
+<rect x="24" y="194" width="120" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="84" y="209" class="sl">~1 day TTL</text>
+<rect x="24" y="220" width="120" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="84" y="235" class="sl">Video chunks: no cache</text>
+<rect x="24" y="246" width="120" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="84" y="261" class="sl">Manifest: short TTL</text>
+<text x="84" y="296" class="tag" style="font-size:13px;fill:#10b981">∞</text>
+<text x="84" y="310" class="sl">Fastest possible</text>
+
+<!-- CDN EDGE -->
+<rect x="183" y="58" width="155" height="250" rx="8" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
+<text x="260" y="78" class="nl" style="fill:#06b6d4;font-size:11px">CDN EDGE PoP</text>
+<text x="260" y="92" class="sl">Per-metro node</text>
+<text x="260" y="104" class="sl">LRU cache, hot tier</text>
+
+<rect x="193" y="116" width="135" height="22" rx="4" fill="#06b6d420" stroke="#06b6d4" stroke-width="1"/>
+<text x="260" y="131" class="mono" style="fill:#06b6d4">HIT RATE: ~95%</text>
+<rect x="193" y="142" width="135" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="260" y="157" class="sl">Top 5–10% of catalog</text>
+<rect x="193" y="168" width="135" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="260" y="183" class="sl">200 TB storage / PoP</text>
+<rect x="193" y="194" width="135" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="260" y="209" class="sl">TTL: hours to days</text>
+<rect x="193" y="220" width="135" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="260" y="235" class="sl">LRU eviction</text>
+<rect x="193" y="246" width="135" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="260" y="261" class="sl">~5–50 ms to viewer</text>
+<text x="260" y="296" class="tag" style="fill:#06b6d4">~10 ms</text>
+<text x="260" y="310" class="sl">on cache hit</text>
+
+<!-- CDN REGIONAL -->
+<rect x="367" y="58" width="155" height="250" rx="8" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.5"/>
+<text x="444" y="78" class="nl" style="fill:#8b5cf6;font-size:11px">CDN REGIONAL</text>
+<text x="444" y="92" class="sl">Per-continent node</text>
+<text x="444" y="104" class="sl">Mid-tier cache</text>
+
+<rect x="377" y="116" width="135" height="22" rx="4" fill="#8b5cf620" stroke="#8b5cf6" stroke-width="1"/>
+<text x="444" y="131" class="mono" style="fill:#8b5cf6">HIT RATE: ~80%</text>
+<rect x="377" y="142" width="135" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="444" y="157" class="sl">Wider catalog</text>
+<rect x="377" y="168" width="135" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="444" y="183" class="sl">2+ PB storage</text>
+<rect x="377" y="194" width="135" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="444" y="209" class="sl">TTL: days to weeks</text>
+<rect x="377" y="220" width="135" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="444" y="235" class="sl">Weighted LRU</text>
+<rect x="377" y="246" width="135" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="444" y="261" class="sl">~20–80 ms to edge</text>
+<text x="444" y="296" class="tag" style="fill:#8b5cf6">~80 ms</text>
+<text x="444" y="310" class="sl">on cache hit</text>
+
+<!-- ORIGIN HOT CACHE -->
+<rect x="551" y="58" width="145" height="250" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="623" y="78" class="nl" style="fill:#f59e0b;font-size:11px">ORIGIN CACHE</text>
+<text x="623" y="92" class="sl">Hot tier at origin</text>
+<text x="623" y="104" class="sl">Warms on upload</text>
+
+<rect x="561" y="116" width="125" height="22" rx="4" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/>
+<text x="623" y="131" class="mono" style="fill:#f59e0b">ORIGIN BUFFER</text>
+<rect x="561" y="142" width="125" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="623" y="157" class="sl">Recent uploads</text>
+<rect x="561" y="168" width="125" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="623" y="183" class="sl">Viral content burst</text>
+<rect x="561" y="194" width="125" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="623" y="209" class="sl">Short TTL: mins–hrs</text>
+<rect x="561" y="220" width="125" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="623" y="235" class="sl">Prevents storage storm</text>
+<rect x="561" y="246" width="125" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="623" y="261" class="sl">~1% of all requests</text>
+<text x="623" y="296" class="tag" style="fill:#f59e0b">~150 ms</text>
+<text x="623" y="310" class="sl">on cache hit</text>
+
+<!-- DISTRIBUTED STORAGE -->
+<rect x="723" y="58" width="123" height="250" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+<text x="784" y="78" class="nl" style="fill:#ef4444;font-size:11px">DIST. STORAGE</text>
+<text x="784" y="92" class="sl">Cold/warm store</text>
+<text x="784" y="104" class="sl">Source of truth</text>
+
+<rect x="733" y="116" width="103" height="22" rx="4" fill="#ef444420" stroke="#ef4444" stroke-width="1"/>
+<text x="784" y="131" class="mono" style="fill:#ef4444">FULL MISS</text>
+<rect x="733" y="142" width="103" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="784" y="157" class="sl">100s of EB total</text>
+<rect x="733" y="168" width="103" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="784" y="183" class="sl">All video variants</text>
+<rect x="733" y="194" width="103" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="784" y="209" class="sl">Erasure coded</text>
+<rect x="733" y="220" width="103" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="784" y="235" class="sl">Never expires</text>
+<rect x="733" y="246" width="103" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+<text x="784" y="261" class="sl">~200+ ms</text>
+<text x="784" y="296" class="tag" style="fill:#ef4444">~250 ms</text>
+<text x="784" y="310" class="sl">worst case</text>
+
+<!-- ── ANIMATED CACHE MISS TRAVERSAL ── -->
+<!-- Path A: edge cache HIT (short) -->
+<path id="hit-a" d="M84,340 L260,332" fill="none" opacity="0"/>
+<!-- Path B: full miss to origin (long) -->
+<path id="miss-req" d="M84,348 L260,340 L444,340 L623,340 L784,340" fill="none" opacity="0"/>
+<path id="miss-res" d="M784,356 L623,356 L444,356 L260,356 L84,356" fill="none" opacity="0"/>
+
+<!-- Animated request dot: HIT at edge -->
+<circle r="5" fill="#f43f5e" opacity=".9">
+  <animateMotion dur="5s" repeatCount="indefinite" begin="0s">
+    <mpath href="#hit-a"/>
+  </animateMotion>
+</circle>
+<!-- Animated response dot: from edge back -->
+<circle r="5" fill="#10b981" opacity=".9">
+  <animateMotion dur="5s" repeatCount="indefinite" begin="0.8s">
+    <keySplines>0.5 0 0.5 1</keySplines>
+    <mpath href="#hit-a"/>
+  </animateMotion>
+</circle>
+
+<!-- Animated request: full miss -->
+<circle r="4.5" fill="#f43f5e" opacity=".7">
+  <animateMotion dur="8s" repeatCount="indefinite" begin="6s">
+    <mpath href="#miss-req"/>
+  </animateMotion>
+</circle>
+<circle r="4.5" fill="#10b981" opacity=".7">
+  <animateMotion dur="8s" repeatCount="indefinite" begin="7.8s">
+    <mpath href="#miss-res"/>
+  </animateMotion>
+</circle>
+
+<!-- Scenario labels -->
+<rect x="14" y="322" width="835" height="40" rx="6" fill="#0f172a80" stroke="#1e293b" stroke-width="1"/>
+<circle cx="84" cy="342" r="4" fill="#f43f5e"/>
+<text x="94" y="346" class="ll" fill="#f43f5e" style="font-size:10px">Request</text>
+<circle cx="148" cy="342" r="4" fill="#10b981"/>
+<text x="158" y="346" class="ll" fill="#10b981" style="font-size:10px">Response</text>
+<text x="430" y="334" class="sub" style="font-size:10px;font-weight:700;fill:#f1f5f9">Scenario A (top): Cache HIT at edge PoP — response in ~10ms</text>
+<text x="430" y="350" class="sub" style="font-size:10px;fill:#94a3b8">Scenario B (bottom): Full cache MISS — request traverses all layers, response in ~250ms</text>
+
+<!-- Bottom info box -->
+<rect x="14" y="372" width="835" height="76" rx="7" class="card"/>
+<text x="430" y="391" class="ttl" style="font-size:12px">Why Video Is So Cacheable</text>
+<text x="430" y="408" class="sub" style="font-size:11px;fill:#f1f5f9">Unlike personalized search or social feeds, a YouTube video is identical bytes for every viewer — one cached copy serves thousands simultaneously.</text>
+<text x="430" y="424" class="sub" style="font-size:11px">Top 5% of videos account for ~80% of views. Caching that 5% at every edge PoP achieves the 95% hit rate. The long tail lives in regional and origin.</text>
+<text x="430" y="440" class="sub" style="font-size:11px;fill:#f1f5f9">
+  <tspan fill="#06b6d4">Edge hit: ~10 ms.  </tspan>
+  <tspan fill="#8b5cf6">Regional hit: ~80 ms.  </tspan>
+  <tspan fill="#f59e0b">Origin cache hit: ~150 ms.  </tspan>
+  <tspan fill="#ef4444">Full storage miss: ~250+ ms.  </tspan>
+  <tspan fill="#94a3b8">Goal: 95% stop at edge.</tspan>
+</text>
+</svg>
