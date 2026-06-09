@@ -1,0 +1,202 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 500" width="860" height="500">
+<style>
+  .bg   { fill:#0f172a; }
+  .card { fill:#1e293b; stroke:#334155; stroke-width:1; }
+  .sp   { fill:#6366f1; fill-opacity:.18; stroke:#6366f1; stroke-width:1.5; }
+  .lf   { fill:#06b6d4; fill-opacity:.18; stroke:#06b6d4; stroke-width:1.5; }
+  .ing  { fill:#10b981; fill-opacity:.18; stroke:#10b981; stroke-width:1.5; }
+  .trc  { fill:#f59e0b; fill-opacity:.18; stroke:#f59e0b; stroke-width:1.5; }
+  .sto  { fill:#6366f1; fill-opacity:.12; stroke:#6366f1; stroke-width:1.2; }
+  .cch  { fill:#8b5cf6; fill-opacity:.18; stroke:#8b5cf6; stroke-width:1.5; }
+  .lnk  { stroke:#475569; stroke-width:1.5; stroke-opacity:.4; fill:none; }
+  .hlnk { stroke:#f59e0b; stroke-width:2; stroke-opacity:.6; fill:none; }
+  .slnk { stroke:#6366f1; stroke-width:2; stroke-opacity:.5; fill:none; }
+  .ttl  { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:14px; font-weight:700; text-anchor:middle; }
+  .sub  { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:10px; text-anchor:middle; }
+  .nl   { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:10px; font-weight:700; text-anchor:middle; }
+  .sl   { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:9px; text-anchor:middle; }
+  .ll   { font-family:system-ui,sans-serif; font-size:10px; font-weight:600; }
+  .pk_t { fill:#f59e0b; }
+  .pk_s { fill:#6366f1; }
+  .pk_i { fill:#10b981; }
+  .arrow{ fill:none; stroke:#f59e0b; stroke-width:1.5; marker-end:url(#arrowhead); stroke-dasharray:4,2; }
+
+  @keyframes pulse { 0%,100%{opacity:.8;} 50%{opacity:.3;} }
+  .sp-glow { animation: pulse 2s infinite; }
+</style>
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#f59e0b" opacity=".7"/>
+  </marker>
+</defs>
+
+<rect width="860" height="500" rx="10" class="bg"/>
+
+<!-- Title -->
+<text x="430" y="26" class="ttl" style="font-size:15px">Origin Data Center — Internal Architecture</text>
+<text x="430" y="41" class="sub">East-west traffic dominates: transcoding workers constantly read from and write to distributed storage</text>
+
+<!-- DC border -->
+<rect x="12" y="50" width="836" height="350" rx="8" fill="#1e293b40" stroke="#334155" stroke-width="1" stroke-dasharray="6,3"/>
+<text x="430" y="65" class="sub" style="fill:#475569">ORIGIN DATA CENTER</text>
+
+<!-- ── SPINE LAYER ── -->
+<text x="28" y="92" class="ll" fill="#6366f1" opacity=".9">SPINE</text>
+<rect x="142" y="76" width="72" height="28" rx="5" class="sp"/>
+<text x="178" y="93" class="nl">Spine S1</text>
+<rect x="250" y="76" width="72" height="28" rx="5" class="sp"/>
+<text x="286" y="93" class="nl">Spine S2</text>
+<rect x="358" y="76" width="72" height="28" rx="5" class="sp"/>
+<text x="394" y="93" class="nl">Spine S3</text>
+<rect x="466" y="76" width="72" height="28" rx="5" class="sp"/>
+<text x="502" y="93" class="nl">Spine S4</text>
+<rect x="574" y="76" width="72" height="28" rx="5" class="sp"/>
+<text x="610" y="93" class="nl">Spine S5</text>
+<rect x="682" y="76" width="72" height="28" rx="5" class="sp"/>
+<text x="718" y="93" class="nl">Spine S6</text>
+
+<!-- ── LEAF LAYER ── -->
+<text x="28" y="152" class="ll" fill="#06b6d4" opacity=".9">LEAF</text>
+<rect x="100" y="138" width="66" height="28" rx="5" class="lf"/>
+<text x="133" y="155" class="nl">Leaf L1</text>
+<rect x="192" y="138" width="66" height="28" rx="5" class="lf"/>
+<text x="225" y="155" class="nl">Leaf L2</text>
+<rect x="284" y="138" width="66" height="28" rx="5" class="lf"/>
+<text x="317" y="155" class="nl">Leaf L3</text>
+<rect x="376" y="138" width="66" height="28" rx="5" class="lf"/>
+<text x="409" y="155" class="nl">Leaf L4</text>
+<rect x="468" y="138" width="66" height="28" rx="5" class="lf"/>
+<text x="501" y="155" class="nl">Leaf L5</text>
+<rect x="560" y="138" width="66" height="28" rx="5" class="lf"/>
+<text x="593" y="155" class="nl">Leaf L6</text>
+<rect x="652" y="138" width="66" height="28" rx="5" class="lf"/>
+<text x="685" y="155" class="nl">Leaf L7</text>
+<rect x="744" y="138" width="66" height="28" rx="5" class="lf"/>
+<text x="777" y="155" class="nl">Leaf L8</text>
+
+<!-- Spine-to-leaf links (representative subset) -->
+<line x1="178" y1="104" x2="133" y2="138" class="lnk"/>
+<line x1="178" y1="104" x2="225" y2="138" class="lnk"/>
+<line x1="178" y1="104" x2="317" y2="138" class="lnk"/>
+<line x1="286" y1="104" x2="133" y2="138" class="lnk"/>
+<line x1="286" y1="104" x2="317" y2="138" class="lnk"/>
+<line x1="286" y1="104" x2="409" y2="138" class="lnk"/>
+<line x1="394" y1="104" x2="317" y2="138" class="lnk"/>
+<line x1="394" y1="104" x2="409" y2="138" class="lnk"/>
+<line x1="394" y1="104" x2="501" y2="138" class="lnk"/>
+<line x1="502" y1="104" x2="409" y2="138" class="lnk"/>
+<line x1="502" y1="104" x2="501" y2="138" class="lnk"/>
+<line x1="502" y1="104" x2="593" y2="138" class="lnk"/>
+<line x1="610" y1="104" x2="501" y2="138" class="lnk"/>
+<line x1="610" y1="104" x2="593" y2="138" class="lnk"/>
+<line x1="610" y1="104" x2="685" y2="138" class="lnk"/>
+<line x1="718" y1="104" x2="593" y2="138" class="lnk"/>
+<line x1="718" y1="104" x2="685" y2="138" class="lnk"/>
+<line x1="718" y1="104" x2="777" y2="138" class="lnk"/>
+
+<!-- ── SERVER TIER ── -->
+<text x="28" y="210" class="ll" fill="#94a3b8" opacity=".9">SERVER RACKS</text>
+
+<!-- Ingestion servers (green) under L1-L2 -->
+<rect x="82"  y="196" width="72" height="30" rx="5" class="ing"/>
+<text x="118" y="210" class="nl" style="font-size:9px">Ingest ×48</text>
+<text x="118" y="221" class="sl">Upload layer</text>
+<rect x="174" y="196" width="72" height="30" rx="5" class="ing"/>
+<text x="210" y="210" class="nl" style="font-size:9px">Ingest ×48</text>
+<text x="210" y="221" class="sl">Upload layer</text>
+
+<!-- Transcoding workers (amber) under L3-L5 -->
+<rect x="266" y="196" width="72" height="30" rx="5" class="trc"/>
+<text x="302" y="210" class="nl" style="font-size:9px">Transcode ×64</text>
+<text x="302" y="221" class="sl">CPU+GPU</text>
+<rect x="358" y="196" width="72" height="30" rx="5" class="trc"/>
+<text x="394" y="210" class="nl" style="font-size:9px">Transcode ×64</text>
+<text x="394" y="221" class="sl">CPU+GPU</text>
+<rect x="450" y="196" width="72" height="30" rx="5" class="trc"/>
+<text x="486" y="210" class="nl" style="font-size:9px">Transcode ×64</text>
+<text x="486" y="221" class="sl">CPU+GPU</text>
+
+<!-- Storage servers (indigo) under L5-L7 -->
+<rect x="542" y="196" width="72" height="30" rx="5" class="sto"/>
+<text x="578" y="210" class="nl" style="font-size:9px">Storage ×96</text>
+<text x="578" y="221" class="sl">PB-scale NVMe</text>
+<rect x="634" y="196" width="72" height="30" rx="5" class="sto"/>
+<text x="670" y="210" class="nl" style="font-size:9px">Storage ×96</text>
+<text x="670" y="221" class="sl">PB-scale NVMe</text>
+<rect x="726" y="196" width="72" height="30" rx="5" class="sto"/>
+<text x="762" y="210" class="nl" style="font-size:9px">Storage ×96</text>
+<text x="762" y="221" class="sl">PB-scale NVMe</text>
+
+<!-- Origin cache (purple) -->
+<rect x="82" y="256" width="166" height="30" rx="5" class="cch"/>
+<text x="165" y="271" class="nl" style="font-size:9px">Origin Cache  ×32  (hot tier)</text>
+<text x="165" y="282" class="sl">Recently uploaded + trending</text>
+
+<!-- Leaf to server links -->
+<line x1="133" y1="166" x2="118" y2="196" class="lnk"/>
+<line x1="225" y1="166" x2="210" y2="196" class="lnk"/>
+<line x1="317" y1="166" x2="302" y2="196" class="lnk"/>
+<line x1="409" y1="166" x2="394" y2="196" class="lnk"/>
+<line x1="501" y1="166" x2="486" y2="196" class="lnk"/>
+<line x1="593" y1="166" x2="578" y2="196" class="lnk"/>
+<line x1="685" y1="166" x2="670" y2="196" class="lnk"/>
+<line x1="777" y1="166" x2="762" y2="196" class="lnk"/>
+
+<!-- ── TRANSCODING ↔ STORAGE E-W ANIMATION ── -->
+<!-- Paths: Transcode → (up to leaf/spine) → Storage (east-west) -->
+<path id="ew1" d="M394,196 L394,166 L394,138 L502,104 L610,104 L593,138 L593,166 L578,196" fill="none" opacity="0"/>
+<path id="ew2" d="M302,196 L317,166 L317,138 L394,104 L502,104 L501,138 L501,166 L486,196" fill="none" opacity="0"/>
+<path id="ew3" d="M578,196 L593,166 L593,138 L502,104 L394,104 L409,138 L409,166 L394,196" fill="none" opacity="0"/>
+<path id="ew4" d="M486,196 L501,166 L501,138 L610,104 L718,104 L685,138 L685,166 L670,196" fill="none" opacity="0"/>
+
+<!-- Transcode read from storage -->
+<circle r="4" class="pk_t">
+  <animateMotion dur="2.4s" repeatCount="indefinite" begin="0s"><mpath href="#ew1"/></animateMotion>
+</circle>
+<circle r="4" class="pk_t">
+  <animateMotion dur="2.4s" repeatCount="indefinite" begin="0.6s"><mpath href="#ew2"/></animateMotion>
+</circle>
+<circle r="4" class="pk_s">
+  <animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s"><mpath href="#ew3"/></animateMotion>
+</circle>
+<circle r="4" class="pk_s">
+  <animateMotion dur="2.4s" repeatCount="indefinite" begin="1.8s"><mpath href="#ew4"/></animateMotion>
+</circle>
+
+<!-- Ingest → Transcode flow path -->
+<path id="ing1" d="M118,196 L133,166 L133,138 L286,104 L394,104 L409,138 L409,166 L394,196" fill="none" opacity="0"/>
+<circle r="4" class="pk_i">
+  <animateMotion dur="3.0s" repeatCount="indefinite" begin="0.4s"><mpath href="#ing1"/></animateMotion>
+</circle>
+
+<!-- CDN egress arrow -->
+<line x1="165" y1="256" x2="165" y2="330" class="lnk" stroke-dasharray="3,3"/>
+<rect x="100" y="330" width="130" height="26" rx="5" fill="#1e293b" stroke="#8b5cf6" stroke-width="1"/>
+<text x="165" y="346" class="nl" style="font-size:10px;fill:#8b5cf6">→ CDN / IXP Egress</text>
+
+<!-- E-W label callout -->
+<rect x="330" y="310" width="270" height="52" rx="7" class="card"/>
+<text x="465" y="328" class="sub" style="font-size:11px;fill:#f59e0b;font-weight:700">East-West Traffic Dominates</text>
+<text x="465" y="343" class="sub" style="font-size:10px">Transcoding workers pull raw video from storage,</text>
+<text x="465" y="356" class="sub" style="font-size:10px">write encoded variants back — all across the fabric.</text>
+
+<!-- Legend -->
+<rect x="12" y="408" width="836" height="76" rx="7" class="card"/>
+<circle cx="35" cy="428" r="5" fill="#10b981" opacity=".9"/>
+<text x="46" y="432" class="ll" fill="#10b981" style="font-size:10px">Ingestion</text>
+<circle cx="115" cy="428" r="5" fill="#f59e0b" opacity=".9"/>
+<text x="126" y="432" class="ll" fill="#f59e0b" style="font-size:10px">Transcoding</text>
+<circle cx="210" cy="428" r="5" fill="#6366f1" opacity=".9"/>
+<text x="221" y="432" class="ll" fill="#6366f1" style="font-size:10px">Storage</text>
+<circle cx="285" cy="428" r="5" fill="#8b5cf6" opacity=".9"/>
+<text x="296" y="432" class="ll" fill="#8b5cf6" style="font-size:10px">Origin Cache</text>
+<circle cx="380" cy="428" r="4.5" fill="#f59e0b"/>
+<text x="390" y="432" class="ll" fill="#94a3b8" style="font-size:10px">Transcode R/W packet</text>
+<circle cx="505" cy="428" r="4.5" fill="#6366f1"/>
+<text x="515" y="432" class="ll" fill="#94a3b8" style="font-size:10px">Storage write packet</text>
+<circle cx="620" cy="428" r="4.5" fill="#10b981"/>
+<text x="630" y="432" class="ll" fill="#94a3b8" style="font-size:10px">Ingest handoff</text>
+
+<text x="430" y="458" class="sub" style="font-size:11px;text-anchor:middle;fill:#f1f5f9">At 500 hrs/min upload rate, thousands of concurrent transcoding jobs run in parallel — low-oversubscription Clos fabric is essential.</text>
+<text x="430" y="474" class="sub" style="font-size:11px;text-anchor:middle;fill:#94a3b8">Ingestion hands off uploads instantly. Workers pull from distributed storage and write back encoded variants. Origin cache warms on upload completion.</text>
+</svg>
