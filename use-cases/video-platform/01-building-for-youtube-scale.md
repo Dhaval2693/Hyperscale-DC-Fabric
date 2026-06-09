@@ -42,7 +42,7 @@ The internal network of the origin DC is a Clos fabric, for the same reasons we 
 
 **Transcoding workers:** CPU and GPU intensive servers that pull raw video from storage, process it, and write multiple output files back to storage. A single video generates dozens of simultaneous storage reads and writes — all east-west traffic across the fabric.
 
-**Distributed storage:** Most of the rack count in the origin DC is storage. These servers hold petabytes of video data. They are read and written by transcoding workers, by the ingest layer, and by the cache servers.
+**Distributed storage:** Most of the rack count in the origin DC is storage. These servers hold petabytes of video data. They are read and written by transcoding workers, by the ingest layer, and by the origin cache servers.
 
 **Origin cache:** A warm tier of recently uploaded and highly requested videos, sitting at the edge of the DC network. When the CDN has a cache miss, it first checks origin cache before pulling from distributed storage.
 
@@ -184,6 +184,8 @@ Every switch in the fabric is assigned its own private AS number (from the priva
 
 *An interviewer question at this point: "Why not just use static routes?" The answer: static routes don't react to failure. If a link goes down and you have a static route pointing through it, traffic blackholes until someone manually intervenes. BGP withdraws the route automatically.*
 
+![BGP in the DC Fabric — eBGP peering hierarchy with RFC 7938, animated link failure and rerouting](./diagrams/bgp-in-dc.svg)
+
 ---
 
 ### ECMP: How the Fabric Load Balances Traffic
@@ -200,6 +202,8 @@ This matters enormously for the transcoding pipeline. Thousands of concurrent fl
 - Flow-aware scheduling at the switch (hard to do in hardware)
 - Per-packet load balancing with reordering tolerance at the receiver (RDMA handles this)
 - Explicit congestion notification (ECN) + DCTCP to signal congestion before queues fill
+
+![ECMP 5-Tuple Hashing — flows distributed across spines vs elephant flow problem](./diagrams/ecmp-flow-hashing.svg)
 
 ---
 
@@ -242,6 +246,8 @@ What is less obvious is how the CDN nodes coordinate cache fills — when an edg
 ### The Complete Request Journey
 
 This is the question every interviewer asks when they want to understand how well you know the system end-to-end. Walk through every step from a user pressing play to the first video frame appearing on screen.
+
+![Complete Request Journey — every step from DNS to first video frame with timing](./diagrams/request-journey.svg)
 
 **Step 1: DNS Resolution**
 
@@ -317,6 +323,8 @@ A naive round-robin or random assignment of requests to cache servers means any 
 Consistent hashing solves this. Each video is assigned to a specific server (or a small set of servers) based on a hash of the video ID. When a request arrives for a video, the hash function deterministically identifies which server holds (or should hold) that video. That server either serves from cache or goes upstream to fill.
 
 The "consistent" part matters when servers are added or removed. With standard modular hashing, adding one server remaps roughly N/N+1 of all keys, effectively invalidating most of the cache. With consistent hashing, adding or removing a server only remaps the keys that belonged to that server — a fraction of the total. Cache efficiency is preserved during fleet changes.
+
+![Consistent Hashing Ring — standard hashing remaps all keys vs consistent hashing remaps only an arc](./diagrams/consistent-hashing.svg)
 
 *Interview question: "If you add 10 new cache servers to a PoP, what happens to cache hit rate?" With standard hashing, it collapses temporarily as most requests miss and refill. With consistent hashing, only ~1/N of the cache remaps, and hit rate degrades gracefully.*
 
