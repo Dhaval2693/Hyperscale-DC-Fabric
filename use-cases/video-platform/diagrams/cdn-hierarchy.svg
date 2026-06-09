@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 480" width="860" height="480">
+<style>
+  .bg   { fill:#0f172a; }
+  .card { fill:#1e293b; stroke:#334155; stroke-width:1; }
+  .ttl  { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:14px; font-weight:700; text-anchor:middle; }
+  .sub  { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:10px; text-anchor:middle; }
+  .nl   { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:11px; font-weight:700; text-anchor:middle; }
+  .sl   { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:9.5px; text-anchor:middle; }
+  .ll   { font-family:system-ui,sans-serif; font-size:10px; font-weight:600; }
+  .stat { font-family:system-ui,sans-serif; font-size:18px; font-weight:800; text-anchor:middle; }
+  .req  { fill:#f43f5e; }
+  .res  { fill:#10b981; }
+  .pipe { stroke:#334155; stroke-width:3; fill:none; }
+  .pipeh{ stroke:#f43f5e; stroke-width:2; fill:none; stroke-dasharray:5,3; }
+  .pipeg{ stroke:#10b981; stroke-width:2; fill:none; stroke-dasharray:5,3; }
+</style>
+<defs>
+  <linearGradient id="orig-grad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#f59e0b" stop-opacity=".3"/>
+    <stop offset="100%" stop-color="#f59e0b" stop-opacity=".1"/>
+  </linearGradient>
+  <linearGradient id="reg-grad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#8b5cf6" stop-opacity=".3"/>
+    <stop offset="100%" stop-color="#8b5cf6" stop-opacity=".1"/>
+  </linearGradient>
+  <linearGradient id="edge-grad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#06b6d4" stop-opacity=".3"/>
+    <stop offset="100%" stop-color="#06b6d4" stop-opacity=".1"/>
+  </linearGradient>
+</defs>
+
+<rect width="860" height="480" rx="10" class="bg"/>
+<text x="430" y="26" class="ttl" style="font-size:15px">CDN Three-Tier Hierarchy</text>
+<text x="430" y="42" class="sub">Video request flows inward until a cache hit. Response always flows outward to the viewer.</text>
+
+<!-- ── ORIGIN (right) ── -->
+<rect x="688" y="54" width="155" height="200" rx="8" fill="url(#orig-grad)" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="765" y="74" class="nl" style="fill:#f59e0b">ORIGIN DC</text>
+<text x="765" y="88" class="sl">Master copies</text>
+<text x="765" y="100" class="sl">Transcoding</text>
+<text x="765" y="112" class="sl">Distributed storage</text>
+
+<rect x="706" y="122" width="118" height="24" rx="4" fill="#f59e0b22" stroke="#f59e0b" stroke-width="1"/>
+<text x="765" y="137" class="nl" style="font-size:10px;fill:#f59e0b">~1% of requests</text>
+<rect x="706" y="152" width="118" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="765" y="167" class="nl" style="font-size:10px">~1 Tbps egress</text>
+<rect x="706" y="182" width="118" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="765" y="197" class="nl" style="font-size:10px">100s of EB storage</text>
+<rect x="706" y="212" width="118" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="765" y="227" class="nl" style="font-size:10px;fill:#f59e0b">Cache miss only</text>
+
+<!-- ── REGIONAL (center) ── -->
+<rect x="352" y="54" width="155" height="200" rx="8" fill="url(#reg-grad)" stroke="#8b5cf6" stroke-width="1.5"/>
+<text x="430" y="74" class="nl" style="fill:#8b5cf6">REGIONAL CACHE</text>
+<text x="430" y="88" class="sl">Mid-tier nodes</text>
+<text x="430" y="100" class="sl">~5–8 per continent</text>
+<text x="430" y="112" class="sl">Serves edge misses</text>
+
+<rect x="370" y="122" width="118" height="24" rx="4" fill="#8b5cf622" stroke="#8b5cf6" stroke-width="1"/>
+<text x="430" y="137" class="nl" style="font-size:10px;fill:#8b5cf6">~4% of requests</text>
+<rect x="370" y="152" width="118" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="430" y="167" class="nl" style="font-size:10px">~4 Tbps egress</text>
+<rect x="370" y="182" width="118" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="430" y="197" class="nl" style="font-size:10px">80% hit on misses</text>
+<rect x="430" y="182" width="0" height="0" rx="4"/>
+<rect x="370" y="212" width="118" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="430" y="227" class="nl" style="font-size:10px;fill:#8b5cf6">Long TTL</text>
+
+<!-- ── EDGE (left) ── -->
+<rect x="16" y="54" width="155" height="200" rx="8" fill="url(#edge-grad)" stroke="#06b6d4" stroke-width="1.5"/>
+<text x="94" y="74" class="nl" style="fill:#06b6d4">EDGE PoPs</text>
+<text x="94" y="88" class="sl">100s of locations</text>
+<text x="94" y="100" class="sl">Inside ISP networks</text>
+<text x="94" y="112" class="sl">Closest to users</text>
+
+<rect x="34" y="122" width="118" height="24" rx="4" fill="#06b6d422" stroke="#06b6d4" stroke-width="1"/>
+<text x="94" y="137" class="nl" style="font-size:10px;fill:#06b6d4">~95% of requests</text>
+<rect x="34" y="152" width="118" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="94" y="167" class="nl" style="font-size:10px">~95 Tbps egress</text>
+<rect x="34" y="182" width="118" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="94" y="197" class="nl" style="font-size:10px">200 TB storage / PoP</text>
+<rect x="34" y="212" width="118" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="94" y="227" class="nl" style="font-size:10px;fill:#06b6d4">LRU cache, hot tier</text>
+
+<!-- ── VIEWER (far left) ── -->
+<rect x="16" y="278" width="155" height="70" rx="8" class="card" stroke="#10b981" stroke-width="1.5"/>
+<text x="94" y="300" class="nl" style="fill:#10b981">VIEWER</text>
+<text x="94" y="315" class="sl">Browser / App</text>
+<text x="94" y="328" class="sl">Mobile / Smart TV</text>
+<text x="94" y="341" class="sl">5–50 ms to edge PoP</text>
+
+<!-- ── PIPE CONNECTIONS ── -->
+<!-- Viewer ↔ Edge -->
+<rect x="171" y="158" width="90" height="3" rx="1" fill="#334155"/>
+<text x="216" y="148" class="sub" style="font-size:9px">~5–50 ms</text>
+<text x="216" y="172" class="sub" style="font-size:9px">direct ISP link</text>
+
+<!-- Edge ↔ Regional -->
+<rect x="507" y="158" width="90" height="3" rx="1" fill="#334155"/>
+<text x="552" y="148" class="sub" style="font-size:9px">~20–80 ms</text>
+<text x="552" y="172" class="sub" style="font-size:9px">internet backbone</text>
+
+<!-- Regional ↔ Origin -->
+<rect x="171" y="308" width="0" height="0"/>
+
+<!-- Viewer to Edge vertical connector -->
+<line x1="94" y1="278" x2="94" y2="254" stroke="#10b981" stroke-width="1.5" stroke-opacity=".5"/>
+
+<!-- ── ANIMATED REQUEST (red, left to right) ── -->
+<path id="req-hit"   d="M94,245 L171,174 L262,174"   fill="none" opacity="0"/>
+<path id="req-miss1" d="M94,245 L171,174 L261,174 L352,174" fill="none" opacity="0"/>
+<path id="req-miss2" d="M507,174 L597,174 L688,174"  fill="none" opacity="0"/>
+
+<!-- Cache hit response (green, edge back to viewer) -->
+<path id="res-hit"   d="M171,188 L94,260"  fill="none" opacity="0"/>
+<!-- Miss response from origin → regional → edge → viewer -->
+<path id="res-full"  d="M688,188 L507,188 L352,188 L171,188 L94,260" fill="none" opacity="0"/>
+
+<!-- Scenario A: Cache HIT at edge (request stops at edge, response comes back) -->
+<circle r="4.5" class="req" opacity=".9">
+  <animateMotion dur="4.5s" repeatCount="indefinite" begin="0s">
+    <mpath href="#req-hit"/>
+  </animateMotion>
+</circle>
+<circle r="4.5" class="res" opacity=".9">
+  <animateMotion dur="4.5s" repeatCount="indefinite" begin="0.9s">
+    <mpath href="#res-hit"/>
+  </animateMotion>
+</circle>
+
+<!-- Scenario B: Cache MISS — request traverses to origin (staggered timing) -->
+<circle r="4.5" class="req" opacity=".9">
+  <animateMotion dur="9s" repeatCount="indefinite" begin="5.5s">
+    <mpath href="#req-miss1"/>
+  </animateMotion>
+</circle>
+<circle r="4.5" class="req" opacity=".9">
+  <animateMotion dur="9s" repeatCount="indefinite" begin="6.0s">
+    <mpath href="#req-miss2"/>
+  </animateMotion>
+</circle>
+<circle r="4.5" class="res" opacity=".9">
+  <animateMotion dur="9s" repeatCount="indefinite" begin="7.2s">
+    <mpath href="#res-full"/>
+  </animateMotion>
+</circle>
+
+<!-- HIT callout -->
+<rect x="175" y="270" width="155" height="36" rx="6" class="card" stroke="#10b981" stroke-width="1"/>
+<text x="252" y="287" class="nl" style="font-size:10px;fill:#10b981">✓ Cache HIT at edge</text>
+<text x="252" y="301" class="sl">Response in ~10 ms</text>
+
+<rect x="356" y="270" width="155" height="36" rx="6" class="card" stroke="#f59e0b" stroke-width="1"/>
+<text x="433" y="287" class="nl" style="font-size:10px;fill:#f59e0b">✗ Edge MISS → Regional</text>
+<text x="433" y="301" class="sl">Response in ~80 ms</text>
+
+<rect x="535" y="270" width="155" height="36" rx="6" class="card" stroke="#ef4444" stroke-width="1"/>
+<text x="612" y="287" class="nl" style="font-size:10px;fill:#ef4444">✗✗ Full miss → Origin</text>
+<text x="612" y="301" class="sl">Response in ~200 ms</text>
+
+<!-- Bottom legend -->
+<rect x="16" y="326" width="828" height="140" rx="7" class="card"/>
+<text x="430" y="344" class="ttl" style="font-size:12px">Bandwidth Math at 100 Tbps Total Egress</text>
+<!-- Three columns -->
+<rect x="30"  y="354" width="248" height="96" rx="5" fill="#06b6d410" stroke="#06b6d4" stroke-width="1"/>
+<text x="154" y="372" class="ttl" style="font-size:11px;fill:#06b6d4">Edge PoPs (×hundreds)</text>
+<text x="154" y="389" class="sub" style="font-size:13px;fill:#10b981;font-weight:800">95 Tbps</text>
+<text x="154" y="406" class="sub">~200 TB storage per large PoP</text>
+<text x="154" y="421" class="sub">Popular catalog cached for days</text>
+<text x="154" y="436" class="sub">~95% of all viewers served here</text>
+
+<rect x="306" y="354" width="248" height="96" rx="5" fill="#8b5cf610" stroke="#8b5cf6" stroke-width="1"/>
+<text x="430" y="372" class="ttl" style="font-size:11px;fill:#8b5cf6">Regional (×5–8 per continent)</text>
+<text x="430" y="389" class="sub" style="font-size:13px;fill:#8b5cf6;font-weight:800">4 Tbps</text>
+<text x="430" y="406" class="sub">Larger storage, longer TTL</text>
+<text x="430" y="421" class="sub">Handles edge misses efficiently</text>
+<text x="430" y="436" class="sub">~4% of viewers reach this tier</text>
+
+<rect x="582" y="354" width="248" height="96" rx="5" fill="#f59e0b10" stroke="#f59e0b" stroke-width="1"/>
+<text x="706" y="372" class="ttl" style="font-size:11px;fill:#f59e0b">Origin DC</text>
+<text x="706" y="389" class="sub" style="font-size:13px;fill:#f59e0b;font-weight:800">1 Tbps</text>
+<text x="706" y="406" class="sub">Only on full CDN miss</text>
+<text x="706" y="421" class="sub">Serves new/rare content</text>
+<text x="706" y="436" class="sub">~1% of viewers reach origin</text>
+</svg>
