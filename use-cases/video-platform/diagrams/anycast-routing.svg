@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 450" width="860" height="450">
+<style>
+  .bg   { fill:#0f172a; }
+  .card { fill:#1e293b; stroke:#334155; stroke-width:1; }
+  .ttl  { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:14px; font-weight:700; text-anchor:middle; }
+  .sub  { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:10px; text-anchor:middle; }
+  .nl   { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:10px; font-weight:700; text-anchor:middle; }
+  .sl   { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:9px; text-anchor:middle; }
+  .ll   { font-family:system-ui,sans-serif; font-size:10px; font-weight:600; }
+  .ip   { font-family:monospace; font-size:11px; font-weight:700; text-anchor:middle; }
+  .map  { fill:#1e293b; stroke:#334155; stroke-width:1.5; }
+  .sea  { fill:#0f172a; }
+  .pop  { fill:#06b6d4; fill-opacity:.25; stroke:#06b6d4; stroke-width:1.8; }
+  .usr  { fill:#10b981; fill-opacity:.22; stroke:#10b981; stroke-width:1.5; }
+
+  @keyframes beam1 { 0%{opacity:0;stroke-dashoffset:60;} 20%{opacity:.9;} 80%{opacity:.9;} 100%{opacity:0;stroke-dashoffset:0;} }
+  @keyframes beam2 { 0%{opacity:0;stroke-dashoffset:60;} 20%{opacity:.9;} 80%{opacity:.9;} 100%{opacity:0;stroke-dashoffset:0;} }
+  @keyframes pkpulse { 0%,100%{r:5;opacity:.8;} 50%{r:7;opacity:1;} }
+
+  .beam { stroke-dasharray:8,4; stroke-width:1.8; fill:none; }
+  .b-na { stroke:#f59e0b; animation: beam1 2.5s infinite ease-in-out; }
+  .b-eu { stroke:#a855f7; animation: beam2 2.5s infinite ease-in-out; animation-delay:.6s; }
+  .b-as { stroke:#06b6d4; animation: beam1 2.5s infinite ease-in-out; animation-delay:1.2s; }
+  .b-sa { stroke:#10b981; animation: beam2 2.5s infinite ease-in-out; animation-delay:1.8s; }
+  .b-af { stroke:#f43f5e; animation: beam1 2.5s infinite ease-in-out; animation-delay:2.4s; }
+</style>
+
+<rect width="860" height="450" rx="10" class="bg"/>
+<text x="430" y="26" class="ttl" style="font-size:15px">BGP Anycast — One IP, Many Locations</text>
+<text x="430" y="42" class="sub">The same prefix is announced from every PoP. BGP routes each user to the nearest advertisement automatically.</text>
+
+<!-- ── SIMPLIFIED WORLD MAP ── -->
+<!-- North America -->
+<path d="M60,130 L80,115 L120,110 L155,108 L170,118 L180,130 L185,148 L175,168 L160,175 L155,190 L140,200 L120,195 L100,185 L80,175 L65,165 L55,150 Z" class="map"/>
+<!-- Europe -->
+<path d="M365,95 L395,88 L420,90 L435,100 L430,118 L415,128 L395,132 L375,128 L360,115 Z" class="map"/>
+<!-- Africa -->
+<path d="M370,148 L400,142 L422,148 L428,170 L422,205 L408,228 L390,235 L372,228 L362,205 L358,178 L362,158 Z" class="map"/>
+<!-- Asia -->
+<path d="M490,90 L540,82 L600,85 L640,95 L655,115 L640,135 L610,148 L575,155 L540,152 L510,142 L488,128 L480,110 Z" class="map"/>
+<!-- South America -->
+<path d="M175,230 L210,218 L230,225 L238,248 L232,275 L218,300 L198,308 L180,298 L168,272 L165,248 Z" class="map"/>
+<!-- Australia -->
+<path d="M610,200 L648,195 L665,208 L662,228 L642,240 L618,238 L604,222 Z" class="map"/>
+<!-- Ocean fill -->
+<text x="300" y="270" class="sub" style="fill:#1e293b50">PACIFIC</text>
+
+<!-- ── PoP NODES ── -->
+<!-- North America PoP -->
+<circle cx="130" cy="148" r="18" class="pop"/>
+<text x="130" y="145" class="ip" style="fill:#06b6d4;font-size:9px">203.0.113.1</text>
+<text x="130" y="157" class="nl" style="font-size:9px;fill:#06b6d4">US-WEST</text>
+<text x="130" y="167" class="sl">Los Angeles</text>
+
+<!-- Europe PoP -->
+<circle cx="400" cy="110" r="18" class="pop"/>
+<text x="400" y="107" class="ip" style="fill:#06b6d4;font-size:9px">203.0.113.1</text>
+<text x="400" y="119" class="nl" style="font-size:9px;fill:#06b6d4">EU-WEST</text>
+<text x="400" y="129" class="sl">Amsterdam</text>
+
+<!-- Asia PoP -->
+<circle cx="580" cy="118" r="18" class="pop"/>
+<text x="580" y="115" class="ip" style="fill:#06b6d4;font-size:9px">203.0.113.1</text>
+<text x="580" y="127" class="nl" style="font-size:9px;fill:#06b6d4">APAC</text>
+<text x="580" y="137" class="sl">Tokyo</text>
+
+<!-- South America PoP -->
+<circle cx="200" cy="262" r="18" class="pop"/>
+<text x="200" y="259" class="ip" style="fill:#06b6d4;font-size:9px">203.0.113.1</text>
+<text x="200" y="271" class="nl" style="font-size:9px;fill:#06b6d4">SA</text>
+<text x="200" y="281" class="sl">São Paulo</text>
+
+<!-- Africa PoP -->
+<circle cx="392" cy="192" r="18" class="pop"/>
+<text x="392" y="189" class="ip" style="fill:#06b6d4;font-size:9px">203.0.113.1</text>
+<text x="392" y="201" class="nl" style="font-size:9px;fill:#06b6d4">AF</text>
+<text x="392" y="211" class="sl">Nairobi</text>
+
+<!-- ── USER NODES ── -->
+<!-- NA user -->
+<circle cx="82" cy="178" r="11" class="usr"/>
+<text x="82" y="182" class="nl" style="font-size:8px;fill:#10b981">USER</text>
+
+<!-- EU user -->
+<circle cx="440" cy="108" r="11" class="usr"/>
+<text x="440" y="112" class="nl" style="font-size:8px;fill:#10b981">USER</text>
+
+<!-- Asia user -->
+<circle cx="635" cy="120" r="11" class="usr"/>
+<text x="635" y="124" class="nl" style="font-size:8px;fill:#10b981">USER</text>
+
+<!-- SA user -->
+<circle cx="228" cy="268" r="11" class="usr"/>
+<text x="228" y="272" class="nl" style="font-size:8px;fill:#10b981">USER</text>
+
+<!-- Africa user -->
+<circle cx="415" cy="222" r="11" class="usr"/>
+<text x="415" y="226" class="nl" style="font-size:8px;fill:#10b981">USER</text>
+
+<!-- ── ROUTING BEAMS (user → nearest PoP) ── -->
+<line x1="82" y1="178" x2="130" y2="158" class="beam b-na"/>
+<line x1="440" y1="110" x2="415" y2="112" class="beam b-eu"/>
+<line x1="635" y1="122" x2="598" y2="120" class="beam b-as"/>
+<line x1="228" y1="268" x2="215" y2="265" class="beam b-sa"/>
+<line x1="415" y1="222" x2="400" y2="208" class="beam b-af"/>
+
+<!-- ── BGP EXPLANATION BOX ── -->
+<rect x="660" y="60" width="185" height="200" rx="8" class="card" stroke="#6366f1" stroke-width="1"/>
+<text x="752" y="80" class="nl" style="fill:#6366f1;font-size:11px">How Anycast Works</text>
+<text x="752" y="98" class="sub" style="text-anchor:middle">Same IP prefix announced</text>
+<text x="752" y="112" class="sub" style="text-anchor:middle">from every PoP via BGP:</text>
+<rect x="672" y="122" width="165" height="26" rx="4" fill="#6366f120" stroke="#6366f1" stroke-width="1"/>
+<text x="754" y="133" class="ip" style="fill:#f1f5f9;font-size:9px">BGP ANNOUNCE:</text>
+<text x="754" y="145" class="ip" style="fill:#10b981;font-size:10px">203.0.113.0/24</text>
+<text x="752" y="168" class="sub" style="text-anchor:middle">LA: AS-path length 2</text>
+<text x="752" y="182" class="sub" style="text-anchor:middle">Amsterdam: AS-path 3</text>
+<text x="752" y="196" class="sub" style="text-anchor:middle">Tokyo: AS-path 8</text>
+<text x="752" y="214" class="sub" style="text-anchor:middle;fill:#10b981;font-weight:700">→ LA wins for US users</text>
+<text x="752" y="230" class="sub" style="text-anchor:middle;fill:#94a3b8">BGP picks shortest path</text>
+<text x="752" y="244" class="sub" style="text-anchor:middle;fill:#94a3b8">automatically</text>
+
+<!-- GeoDNS box -->
+<rect x="660" y="272" width="185" height="100" rx="8" class="card" stroke="#8b5cf6" stroke-width="1"/>
+<text x="752" y="292" class="nl" style="fill:#8b5cf6;font-size:11px">+ GeoDNS</text>
+<text x="752" y="310" class="sub" style="text-anchor:middle">DNS resolver location</text>
+<text x="752" y="324" class="sub" style="text-anchor:middle">returns region-specific IPs</text>
+<text x="752" y="342" class="sub" style="text-anchor:middle;fill:#f1f5f9">Brazil resolver → SA pool</text>
+<text x="752" y="356" class="sub" style="text-anchor:middle;fill:#f1f5f9">Tokyo resolver → APAC pool</text>
+
+<!-- Color legend for routing beams -->
+<rect x="15" y="390" width="636" height="48" rx="7" class="card"/>
+<line x1="35" y1="415" x2="70" y2="415" class="beam b-na" style="stroke-dasharray:5,3"/>
+<text x="78" y="419" class="ll" fill="#f59e0b" style="font-size:10px">NA user → US-WEST PoP</text>
+<line x1="185" y1="415" x2="220" y2="415" class="beam b-eu" style="stroke-dasharray:5,3"/>
+<text x="228" y="419" class="ll" fill="#a855f7" style="font-size:10px">EU user → EU-WEST PoP</text>
+<line x1="335" y1="415" x2="370" y2="415" class="beam b-as" style="stroke-dasharray:5,3"/>
+<text x="378" y="419" class="ll" fill="#06b6d4" style="font-size:10px">Asia user → APAC PoP</text>
+<line x1="480" y1="415" x2="515" y2="415" class="beam b-sa" style="stroke-dasharray:5,3"/>
+<text x="523" y="419" class="ll" fill="#10b981" style="font-size:10px">SA user → SA PoP</text>
+<text x="430" y="432" class="sub" style="font-size:10px;fill:#f1f5f9">No DNS tricks needed for routing — the IP routing table does the work. PoP failure = BGP withdrawal = automatic re-route.</text>
+</svg>
