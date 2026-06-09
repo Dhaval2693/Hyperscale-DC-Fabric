@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 500" width="860" height="500">
+<style>
+  .bg   { fill:#0f172a; }
+  .card { fill:#1e293b; stroke:#334155; stroke-width:1; }
+  .sp   { fill:#6366f1; fill-opacity:.18; stroke:#6366f1; stroke-width:1.5; }
+  .lf   { fill:#06b6d4; fill-opacity:.18; stroke:#06b6d4; stroke-width:1.5; }
+  .sv   { fill:#10b981; fill-opacity:.15; stroke:#10b981; stroke-width:1.2; }
+  .ttl  { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:14px; font-weight:700; text-anchor:middle; }
+  .sub  { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:10px; text-anchor:middle; }
+  .nl   { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:10px; font-weight:700; text-anchor:middle; }
+  .asl  { fill:#f59e0b; font-family:monospace; font-size:9px; font-weight:700; text-anchor:middle; }
+  .ll   { font-family:system-ui,sans-serif; font-size:10px; font-weight:600; }
+  .sess { stroke:#10b981; stroke-width:1.5; stroke-opacity:.5; fill:none; stroke-dasharray:3,3; }
+  .lnk  { stroke:#475569; stroke-width:1.5; stroke-opacity:.4; fill:none; }
+  @keyframes linkfail {
+    0%,55%  { stroke:#475569; stroke-opacity:.4; stroke-width:1.5; stroke-dasharray:none; }
+    60%,65% { stroke:#ef4444; stroke-opacity:1;  stroke-width:3; stroke-dasharray:none; }
+    66%,98% { stroke:#ef4444; stroke-opacity:.4; stroke-width:1.5; stroke-dasharray:5,4; }
+    100%    { stroke:#475569; stroke-opacity:.4; stroke-width:1.5; stroke-dasharray:none; }
+  }
+  @keyframes wdshow { 0%,55%{opacity:0;} 62%,92%{opacity:1;} 98%,100%{opacity:0;} }
+  @keyframes sessfail { 0%,55%{stroke:#10b981;stroke-opacity:.5;} 62%,98%{stroke:#ef4444;stroke-opacity:.7;} 100%{stroke:#10b981;stroke-opacity:.5;} }
+  .anim-fail { animation: linkfail 7s infinite ease-in-out; }
+  .anim-wd   { animation: wdshow 7s infinite ease-in-out; }
+  .anim-sess { animation: sessfail 7s infinite ease-in-out; }
+  .pk  { fill:#a855f7; }
+  .pkr { fill:#10b981; }
+</style>
+
+<rect width="860" height="500" rx="10" class="bg"/>
+<text x="430" y="26" class="ttl" style="font-size:15px">BGP in the Data Center Fabric — RFC 7938</text>
+<text x="430" y="42" class="sub">Each adjacent pair runs eBGP with a private ASN. Route withdrawal on failure is automatic — no global recalculation needed.</text>
+
+<!-- SPINE LAYER -->
+<text x="22" y="78" class="ll" fill="#6366f1" opacity=".9">SPINE</text>
+<rect x="110" y="60" width="104" height="42" rx="6" class="sp"/>
+<text x="162" y="77"  class="nl">Spine S1</text>
+<text x="162" y="91"  class="asl">AS 65100</text>
+
+<rect x="378" y="60" width="104" height="42" rx="6" class="sp"/>
+<text x="430" y="77"  class="nl">Spine S2</text>
+<text x="430" y="91"  class="asl">AS 65101</text>
+
+<rect x="646" y="60" width="104" height="42" rx="6" class="sp"/>
+<text x="698" y="77"  class="nl">Spine S3</text>
+<text x="698" y="91"  class="asl">AS 65102</text>
+
+<!-- LEAF LAYER -->
+<text x="22" y="188" class="ll" fill="#06b6d4" opacity=".9">LEAF</text>
+<rect x="58"  y="172" width="104" height="42" rx="6" class="lf"/>
+<text x="110" y="189" class="nl">Leaf L1</text>
+<text x="110" y="203" class="asl">AS 65010</text>
+
+<rect x="244" y="172" width="104" height="42" rx="6" class="lf"/>
+<text x="296" y="189" class="nl">Leaf L2</text>
+<text x="296" y="203" class="asl">AS 65011</text>
+
+<rect x="512" y="172" width="104" height="42" rx="6" class="lf"/>
+<text x="564" y="189" class="nl">Leaf L3</text>
+<text x="564" y="203" class="asl">AS 65012</text>
+
+<rect x="698" y="172" width="104" height="42" rx="6" class="lf"/>
+<text x="750" y="189" class="nl">Leaf L4</text>
+<text x="750" y="203" class="asl">AS 65013</text>
+
+<!-- SERVER LAYER -->
+<text x="22" y="296" class="ll" fill="#10b981" opacity=".9">SERVER</text>
+<rect x="58"  y="280" width="88" height="30" rx="5" class="sv"/>
+<text x="102" y="299" class="nl" style="font-size:9px">10.0.1.0/24</text>
+<rect x="158" y="280" width="88" height="30" rx="5" class="sv"/>
+<text x="202" y="299" class="nl" style="font-size:9px">10.0.2.0/24</text>
+<rect x="258" y="280" width="88" height="30" rx="5" class="sv"/>
+<text x="302" y="299" class="nl" style="font-size:9px">10.0.3.0/24</text>
+<rect x="512" y="280" width="88" height="30" rx="5" class="sv"/>
+<text x="556" y="299" class="nl" style="font-size:9px">10.0.5.0/24</text>
+<rect x="638" y="280" width="88" height="30" rx="5" class="sv"/>
+<text x="682" y="299" class="nl" style="font-size:9px">10.0.6.0/24</text>
+<rect x="764" y="280" width="88" height="30" rx="5" class="sv"/>
+<text x="808" y="299" class="nl" style="font-size:9px">10.0.7.0/24</text>
+
+<!-- eBGP sessions: Spine-Leaf (normal links) -->
+<line x1="162" y1="102" x2="110" y2="172" class="sess"/>
+<line x1="162" y1="102" x2="564" y2="172" class="sess" style="stroke-opacity:.15"/>
+<line x1="430" y1="102" x2="564" y2="172" class="sess"/>
+<line x1="430" y1="102" x2="750" y2="172" class="sess"/>
+<line x1="698" y1="102" x2="564" y2="172" class="sess" style="stroke-opacity:.15"/>
+<line x1="698" y1="102" x2="750" y2="172" class="sess"/>
+
+<!-- eBGP sessions: Spine S2 to Leaf L2 — FAILING LINK (animated) -->
+<line x1="430" y1="102" x2="296" y2="172" class="sess anim-sess"/>
+<!-- Physical link under it that shows as broken -->
+<line x1="430" y1="102" x2="296" y2="172" class="anim-fail"/>
+
+<!-- Spine S1 to Leaf L2 (normal) -->
+<line x1="162" y1="102" x2="296" y2="172" class="sess"/>
+
+<!-- X mark on failing link -->
+<text x="366" y="144" class="anim-wd" style="fill:#ef4444;font-size:16px;font-weight:900;text-anchor:middle">&#x2715;</text>
+
+<!-- BGP WITHDRAW callout -->
+<rect x="452" y="112" width="190" height="44" rx="6" fill="#1e293b" stroke="#ef4444" stroke-width="1.2" class="anim-wd"/>
+<text x="547" y="130" class="nl" style="fill:#ef4444;font-size:11px">BGP WITHDRAW</text>
+<text x="547" y="146" class="sub" style="fill:#94a3b8;font-size:9px">Routes via AS65011 removed from table</text>
+
+<!-- eBGP labels -->
+<text x="130" y="133" class="sub" style="fill:#10b981;font-size:9px;font-weight:700">eBGP</text>
+<text x="232" y="133" class="sub" style="fill:#10b981;font-size:9px;font-weight:700">eBGP</text>
+<text x="612" y="133" class="sub" style="fill:#10b981;font-size:9px;font-weight:700">eBGP</text>
+<text x="726" y="133" class="sub" style="fill:#10b981;font-size:9px;font-weight:700">eBGP</text>
+
+<!-- Leaf-Server sessions -->
+<line x1="110" y1="214" x2="102" y2="280" class="sess"/>
+<line x1="110" y1="214" x2="202" y2="280" class="sess"/>
+<line x1="296" y1="214" x2="202" y2="280" class="sess"/>
+<line x1="296" y1="214" x2="302" y2="280" class="sess"/>
+<line x1="564" y1="214" x2="556" y2="280" class="sess"/>
+<line x1="750" y1="214" x2="682" y2="280" class="sess"/>
+<line x1="750" y1="214" x2="808" y2="280" class="sess"/>
+
+<!-- Animated route-ad packets -->
+<path id="r1" d="M102,280 L110,214 L162,102" fill="none"/>
+<path id="r2" d="M302,280 L296,214 L162,102" fill="none"/>
+<path id="r3" d="M556,280 L564,214 L698,102" fill="none"/>
+<path id="reroute" d="M202,280 L296,214 L162,102 L564,172 L556,280" fill="none"/>
+
+<circle r="4" class="pk"><animateMotion dur="2.8s" repeatCount="indefinite" begin="0s"><mpath href="#r1"/></animateMotion></circle>
+<circle r="4" class="pk"><animateMotion dur="2.8s" repeatCount="indefinite" begin="1s"><mpath href="#r2"/></animateMotion></circle>
+<circle r="4" class="pk"><animateMotion dur="2.8s" repeatCount="indefinite" begin="2s"><mpath href="#r3"/></animateMotion></circle>
+<circle r="4" class="pkr"><animateMotion dur="3.2s" repeatCount="indefinite" begin="4s"><mpath href="#reroute"/></animateMotion></circle>
+
+<!-- Info cards -->
+<rect x="12" y="322" width="252" height="64" rx="6" class="card" stroke="#6366f1" stroke-width="1"/>
+<text x="138" y="340" class="nl" style="fill:#6366f1;font-size:11px">RFC 7938</text>
+<text x="138" y="356" class="sub" style="fill:#f1f5f9">Use of BGP for Routing in</text>
+<text x="138" y="370" class="sub" style="fill:#f1f5f9">Large-Scale Data Centers</text>
+
+<rect x="278" y="322" width="290" height="64" rx="6" class="card" stroke="#f59e0b" stroke-width="1"/>
+<text x="423" y="340" class="nl" style="fill:#f59e0b;font-size:11px">Why Not OSPF?</text>
+<text x="423" y="356" class="sub">OSPF stores the full topology in every router's LSDB.</text>
+<text x="423" y="370" class="sub">At 1,000+ switches: too large, too slow to converge.</text>
+<text x="423" y="382" class="sub" style="fill:#f1f5f9">BGP only knows what neighbours advertise.</text>
+
+<rect x="582" y="322" width="268" height="64" rx="6" class="card" stroke="#ef4444" stroke-width="1"/>
+<text x="716" y="340" class="nl" style="fill:#ef4444;font-size:11px">Failure (animated above)</text>
+<text x="716" y="356" class="sub">S2 ↔ L2 link fails → BGP session drops.</text>
+<text x="716" y="370" class="sub">Routes via AS65011 withdrawn instantly.</text>
+<text x="716" y="382" class="sub" style="fill:#10b981">Traffic reroutes via S1 or S3. No manual fix.</text>
+
+<!-- Bottom legend -->
+<rect x="12" y="398" width="836" height="88" rx="7" class="card"/>
+<text x="430" y="416" class="ttl" style="font-size:12px">How eBGP Scales the Clos Fabric</text>
+<text x="430" y="432" class="sub" style="font-size:11px;fill:#f1f5f9">Every switch has a private ASN (64512–65535). eBGP sessions run between every adjacent pair: Server ↔ ToR ↔ Leaf ↔ Spine.</text>
+<text x="430" y="448" class="sub" style="font-size:11px">Servers announce their subnets to ToR. ToR advertises up to Leaf. Leaf to Spine. Each hop adds an AS number — AS-path prevents loops automatically.</text>
+<text x="430" y="464" class="sub" style="font-size:11px;fill:#f1f5f9">On failure: BGP session for the failed link drops. Only routes learned via that session withdraw. Other paths remain. No SPF recalculation across the full fabric.</text>
+<circle cx="30"  cy="482" r="4" fill="#a855f7"/>
+<text x="40"  y="486" class="ll" fill="#94a3b8" style="font-size:10px">Route advertisement packet (upward)</text>
+<circle cx="230" cy="482" r="4" fill="#10b981"/>
+<text x="240" y="486" class="ll" fill="#94a3b8" style="font-size:10px">Rerouted traffic after failure</text>
+<line x1="365" y1="482" x2="400" y2="482" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3,3" stroke-opacity=".5"/>
+<text x="410" y="486" class="ll" fill="#94a3b8" style="font-size:10px">Active eBGP session</text>
+<line x1="530" y1="482" x2="565" y2="482" stroke="#ef4444" stroke-width="2" stroke-opacity=".8"/>
+<text x="575" y="486" class="ll" fill="#ef4444" style="font-size:10px">Failed link / withdrawn session</text>
+</svg>
