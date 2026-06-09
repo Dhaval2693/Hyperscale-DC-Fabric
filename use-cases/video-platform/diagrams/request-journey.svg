@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 500" width="860" height="500">
+<style>
+  .bg   { fill:#0f172a; }
+  .card { fill:#1e293b; stroke:#334155; stroke-width:1; }
+  .ttl  { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:14px; font-weight:700; text-anchor:middle; }
+  .sub  { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:10px; text-anchor:middle; }
+  .nl   { fill:#f1f5f9; font-family:system-ui,sans-serif; font-size:10px; font-weight:700; text-anchor:middle; }
+  .sl   { fill:#94a3b8; font-family:system-ui,sans-serif; font-size:9px; text-anchor:middle; }
+  .ll   { font-family:system-ui,sans-serif; font-size:10px; font-weight:600; }
+  .num  { font-family:system-ui,sans-serif; font-size:11px; font-weight:800; text-anchor:middle; }
+  .mono { font-family:monospace; font-size:9px; text-anchor:middle; }
+  .req  { fill:#f43f5e; }
+  .res  { fill:#10b981; }
+  .pipe { stroke:#334155; stroke-width:2; fill:none; }
+  .hit  { stroke:#10b981; stroke-width:1.5; fill:none; stroke-dasharray:4,3; }
+  .miss { stroke:#ef4444; stroke-width:1.5; fill:none; stroke-dasharray:4,3; }
+
+  .n-user  { fill:#10b981; fill-opacity:.2; stroke:#10b981; stroke-width:1.5; }
+  .n-dns   { fill:#f59e0b; fill-opacity:.18; stroke:#f59e0b; stroke-width:1.5; }
+  .n-geo   { fill:#8b5cf6; fill-opacity:.18; stroke:#8b5cf6; stroke-width:1.5; }
+  .n-quic  { fill:#06b6d4; fill-opacity:.18; stroke:#06b6d4; stroke-width:1.5; }
+  .n-edge  { fill:#06b6d4; fill-opacity:.22; stroke:#06b6d4; stroke-width:2; }
+  .n-reg   { fill:#8b5cf6; fill-opacity:.18; stroke:#8b5cf6; stroke-width:1.5; }
+  .n-orig  { fill:#f59e0b; fill-opacity:.18; stroke:#f59e0b; stroke-width:1.5; }
+</style>
+
+<rect width="860" height="500" rx="10" class="bg"/>
+<text x="430" y="26" class="ttl" style="font-size:15px">Complete Request Journey — User Presses Play</text>
+<text x="430" y="42" class="sub">Every hop from DNS resolution to first video frame. The answer an interviewer expects you to walk through fully.</text>
+
+<!-- ── STEP NODES ── -->
+
+<!-- 1: User -->
+<rect x="12"  y="60" width="86" height="72" rx="7" class="n-user"/>
+<text x="55" y="82"  class="num" style="fill:#10b981">①</text>
+<text x="55" y="96"  class="nl" style="font-size:10px;fill:#10b981">USER</text>
+<text x="55" y="110" class="sl">presses play</text>
+<text x="55" y="121" class="sl">mobile / browser</text>
+<text x="55" y="136" class="mono" style="fill:#10b981">0 ms</text>
+
+<!-- 2: DNS Resolver -->
+<rect x="120" y="60" width="86" height="72" rx="7" class="n-dns"/>
+<text x="163" y="82"  class="num" style="fill:#f59e0b">②</text>
+<text x="163" y="96"  class="nl" style="font-size:10px;fill:#f59e0b">DNS</text>
+<text x="163" y="110" class="sl">ISP or 8.8.8.8</text>
+<text x="163" y="121" class="sl">recursive resolver</text>
+<text x="163" y="136" class="mono" style="fill:#f59e0b">~2 ms</text>
+
+<!-- 3: GeoDNS -->
+<rect x="228" y="60" width="86" height="72" rx="7" class="n-geo"/>
+<text x="271" y="82"  class="num" style="fill:#8b5cf6">③</text>
+<text x="271" y="96"  class="nl" style="font-size:10px;fill:#8b5cf6">GeoDNS</text>
+<text x="271" y="110" class="sl">YouTube auth DNS</text>
+<text x="271" y="121" class="sl">returns region IP</text>
+<text x="271" y="136" class="mono" style="fill:#8b5cf6">~4 ms</text>
+
+<!-- 4: QUIC / TLS -->
+<rect x="336" y="60" width="86" height="72" rx="7" class="n-quic"/>
+<text x="379" y="82"  class="num" style="fill:#06b6d4">④</text>
+<text x="379" y="96"  class="nl" style="font-size:10px;fill:#06b6d4">QUIC+TLS</text>
+<text x="379" y="110" class="sl">1-RTT handshake</text>
+<text x="379" y="121" class="sl">0-RTT if returning</text>
+<text x="379" y="136" class="mono" style="fill:#06b6d4">~8 ms</text>
+
+<!-- 5: Edge PoP -->
+<rect x="444" y="60" width="94" height="72" rx="7" class="n-edge"/>
+<text x="491" y="82"  class="num" style="fill:#06b6d4">⑤</text>
+<text x="491" y="96"  class="nl" style="font-size:10px;fill:#06b6d4">EDGE PoP</text>
+<text x="491" y="110" class="sl">manifest + segments</text>
+<text x="491" y="121" class="sl">cache check here</text>
+<text x="491" y="136" class="mono" style="fill:#06b6d4">~10 ms</text>
+
+<!-- 6: Regional Cache -->
+<rect x="570" y="60" width="86" height="72" rx="7" class="n-reg"/>
+<text x="613" y="82"  class="num" style="fill:#8b5cf6">⑥</text>
+<text x="613" y="96"  class="nl" style="font-size:10px;fill:#8b5cf6">REGIONAL</text>
+<text x="613" y="110" class="sl">mid-tier cache</text>
+<text x="613" y="121" class="sl">on edge miss</text>
+<text x="613" y="136" class="mono" style="fill:#8b5cf6">~80 ms</text>
+
+<!-- 7: Origin -->
+<rect x="678" y="60" width="86" height="72" rx="7" class="n-orig"/>
+<text x="721" y="82"  class="num" style="fill:#f59e0b">⑦</text>
+<text x="721" y="96"  class="nl" style="font-size:10px;fill:#f59e0b">ORIGIN DC</text>
+<text x="721" y="110" class="sl">full miss only</text>
+<text x="721" y="121" class="sl">~1% of requests</text>
+<text x="721" y="136" class="mono" style="fill:#f59e0b">~200 ms</text>
+
+<!-- Connecting arrows (forward) -->
+<line x1="98"  y1="96" x2="120" y2="96" stroke="#334155" stroke-width="2"/>
+<line x1="206" y1="96" x2="228" y2="96" stroke="#334155" stroke-width="2"/>
+<line x1="314" y1="96" x2="336" y2="96" stroke="#334155" stroke-width="2"/>
+<line x1="422" y1="96" x2="444" y2="96" stroke="#334155" stroke-width="2"/>
+<line x1="538" y1="96" x2="570" y2="96" stroke="#334155" stroke-width="2" stroke-dasharray="4,3"/>
+<line x1="656" y1="96" x2="678" y2="96" stroke="#334155" stroke-width="2" stroke-dasharray="4,3"/>
+
+<!-- ── DETAIL CARDS per step ── -->
+<!-- Step 1 detail -->
+<rect x="12" y="148" width="86" height="52" rx="5" class="card"/>
+<text x="55" y="163" class="sl" style="fill:#10b981;font-weight:700">Click play →</text>
+<text x="55" y="176" class="sl">App resolves</text>
+<text x="55" y="187" class="sl">googlevideo.com</text>
+<text x="55" y="198" class="sl">DNS lookup</text>
+
+<!-- Step 2 detail -->
+<rect x="120" y="148" width="86" height="52" rx="5" class="card"/>
+<text x="163" y="163" class="sl" style="fill:#f59e0b;font-weight:700">EDNS ECS</text>
+<text x="163" y="175" class="sl">forwards client</text>
+<text x="163" y="186" class="sl">subnet to auth</text>
+<text x="163" y="197" class="sl">DNS (GeoDNS)</text>
+
+<!-- Step 3 detail -->
+<rect x="228" y="148" width="86" height="52" rx="5" class="card"/>
+<text x="271" y="163" class="sl" style="fill:#8b5cf6;font-weight:700">Returns anycast</text>
+<text x="271" y="175" class="sl">IP for nearest</text>
+<text x="271" y="186" class="sl">regional PoP pool</text>
+<text x="271" y="197" class="sl">BGP handles rest</text>
+
+<!-- Step 4 detail -->
+<rect x="336" y="148" width="86" height="52" rx="5" class="card"/>
+<text x="379" y="163" class="sl" style="fill:#06b6d4;font-weight:700">0-RTT resumption</text>
+<text x="379" y="175" class="sl">for returning users</text>
+<text x="379" y="186" class="sl">TLS 1.3 in QUIC</text>
+<text x="379" y="197" class="sl">no HoL blocking</text>
+
+<!-- Step 5 detail -->
+<rect x="444" y="148" width="94" height="52" rx="5" class="card"/>
+<text x="491" y="163" class="sl" style="fill:#06b6d4;font-weight:700">Fetch manifest</text>
+<text x="491" y="175" class="sl">.mpd or .m3u8</text>
+<text x="491" y="186" class="sl">Lists segments</text>
+<text x="491" y="197" class="sl">by bitrate/res</text>
+
+<!-- Step 6 detail -->
+<rect x="570" y="148" width="86" height="52" rx="5" class="card"/>
+<text x="613" y="163" class="sl" style="fill:#8b5cf6;font-weight:700">Cache fill req</text>
+<text x="613" y="175" class="sl">if edge misses</text>
+<text x="613" y="186" class="sl">80% hit rate</text>
+<text x="613" y="197" class="sl">on edge misses</text>
+
+<!-- Step 7 detail -->
+<rect x="678" y="148" width="86" height="52" rx="5" class="card"/>
+<text x="721" y="163" class="sl" style="fill:#f59e0b;font-weight:700">Serves segment</text>
+<text x="721" y="175" class="sl">warms regional</text>
+<text x="721" y="186" class="sl">and edge cache</text>
+<text x="721" y="197" class="sl">for next viewers</text>
+
+<!-- ── ABR PLAYER LOOP ── -->
+<rect x="12" y="218" width="756" height="68" rx="7" class="card" stroke="#06b6d4" stroke-width="1"/>
+<text x="390" y="235" class="ttl" style="font-size:11px;fill:#06b6d4">⑧ Adaptive Bitrate Streaming (ABR) — Continuous Loop</text>
+<text x="390" y="251" class="sub" style="font-size:10px;fill:#f1f5f9">Player fetches 2–10s video segments. Monitors download speed vs segment bitrate.</text>
+<text x="390" y="265" class="sub" style="font-size:10px">Buffer filling fast? → step up quality. Buffer draining? → step down. Each segment independently cacheable at CDN.</text>
+<text x="390" y="279" class="sub" style="font-size:10px;fill:#f1f5f9">QUIC streams: video + audio + metadata fetched in parallel with independent loss recovery.</text>
+
+<!-- Cache HIT branch indicator -->
+<rect x="444" y="298" width="118" height="28" rx="5" fill="#10b98115" stroke="#10b981" stroke-width="1"/>
+<text x="503" y="314" class="nl" style="fill:#10b981;font-size:10px">✓ HIT → ~10 ms</text>
+
+<rect x="570" y="298" width="118" height="28" rx="5" fill="#8b5cf615" stroke="#8b5cf6" stroke-width="1"/>
+<text x="629" y="314" class="nl" style="fill:#8b5cf6;font-size:10px">Regional HIT → ~80 ms</text>
+
+<rect x="696" y="298" width="68" height="28" rx="5" fill="#ef444415" stroke="#ef4444" stroke-width="1"/>
+<text x="730" y="314" class="nl" style="fill:#ef4444;font-size:10px">Full miss ~250ms</text>
+
+<!-- ── ANIMATED PACKET TRAVERSAL ── -->
+<path id="pjreq" d="M55,132 L163,132 L271,132 L379,132 L491,132 L613,132 L721,132" fill="none" opacity="0"/>
+<path id="pjres" d="M491,132 L379,132 L271,132 L163,132 L55,132" fill="none" opacity="0"/>
+<path id="pjhit" d="M55,132 L163,132 L271,132 L379,132 L491,132" fill="none" opacity="0"/>
+<path id="pjhitback" d="M491,132 L55,132" fill="none" opacity="0"/>
+
+<!-- Request going out (full miss scenario) -->
+<circle r="5" fill="#f43f5e">
+  <animateMotion dur="8s" repeatCount="indefinite" begin="0s"><mpath href="#pjreq"/></animateMotion>
+</circle>
+<!-- Response coming back -->
+<circle r="5" fill="#10b981">
+  <animateMotion dur="8s" repeatCount="indefinite" begin="4.5s"><mpath href="#pjres"/></animateMotion>
+</circle>
+
+<!-- Cache HIT scenario (faster, stops at edge) -->
+<circle r="4" fill="#f43f5e" opacity=".7">
+  <animateMotion dur="9s" repeatCount="indefinite" begin="9s"><mpath href="#pjhit"/></animateMotion>
+</circle>
+<circle r="4" fill="#10b981" opacity=".7">
+  <animateMotion dur="9s" repeatCount="indefinite" begin="10.2s"><mpath href="#pjhitback"/></animateMotion>
+</circle>
+
+<!-- ── BOTTOM SECTION ── -->
+<rect x="12" y="340" width="836" height="148" rx="7" class="card"/>
+<text x="430" y="358" class="ttl" style="font-size:12px">The Interview Questions Behind Each Step</text>
+
+<rect x="22" y="368" width="268" height="108" rx="5" fill="#10b98108" stroke="#10b981" stroke-width="1"/>
+<text x="156" y="384" class="nl" style="fill:#10b981;font-size:10px">Steps ①–③: DNS + Anycast</text>
+<text x="156" y="398" class="sub" style="font-size:9px">"What is EDNS Client Subnet?"</text>
+<text x="156" y="411" class="sub" style="font-size:9px">GeoDNS alone can't handle ISP resolvers</text>
+<text x="156" y="424" class="sub" style="font-size:9px">in different countries. ECS sends the</text>
+<text x="156" y="437" class="sub" style="font-size:9px">actual client subnet to the auth server.</text>
+<text x="156" y="450" class="sub" style="font-size:9px">"GeoDNS answers based on resolver</text>
+<text x="156" y="463" class="sub" style="font-size:9px">location, not user — ECS fixes this."</text>
+
+<rect x="298" y="368" width="268" height="108" rx="5" fill="#06b6d408" stroke="#06b6d4" stroke-width="1"/>
+<text x="432" y="384" class="nl" style="fill:#06b6d4;font-size:10px">Steps ④–⑤: QUIC + Manifest</text>
+<text x="432" y="398" class="sub" style="font-size:9px">"Why QUIC over TCP for video?"</text>
+<text x="432" y="411" class="sub" style="font-size:9px">TCP HoL blocking: packet loss stalls</text>
+<text x="432" y="424" class="sub" style="font-size:9px">all streams. QUIC streams are independent.</text>
+<text x="432" y="437" class="sub" style="font-size:9px">"What is 0-RTT and its risk?"</text>
+<text x="432" y="450" class="sub" style="font-size:9px">Replay attacks on 0-RTT data. Safe</text>
+<text x="432" y="463" class="sub" style="font-size:9px">only for idempotent GET requests.</text>
+
+<rect x="574" y="368" width="264" height="108" rx="5" fill="#f59e0b08" stroke="#f59e0b" stroke-width="1"/>
+<text x="706" y="384" class="nl" style="fill:#f59e0b;font-size:10px">Steps ⑥–⑧: Cache + ABR</text>
+<text x="706" y="398" class="sub" style="font-size:9px">"What is cache stampede?"</text>
+<text x="706" y="411" class="sub" style="font-size:9px">Many nodes miss simultaneously.</text>
+<text x="706" y="424" class="sub" style="font-size:9px">Coalescing + stale-while-revalidate.</text>
+<text x="706" y="437" class="sub" style="font-size:9px">"Why are ABR segments independently</text>
+<text x="706" y="450" class="sub" style="font-size:9px">cacheable?" Fixed-size, immutable,</text>
+<text x="706" y="463" class="sub" style="font-size:9px">stable URL — identical for all viewers.</text>
+</svg>
