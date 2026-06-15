@@ -1,0 +1,312 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 480" width="860" height="480">
+<style>
+  text { font-family: system-ui, sans-serif; }
+  .ttl { font-size:15px; font-weight:700; fill:#f1f5f9; text-anchor:middle; }
+  .sub { font-size:10px; fill:#94a3b8; text-anchor:middle; }
+  .hd  { font-size:10px; font-weight:700; text-anchor:middle; }
+  .lbl { font-size:9px;  fill:#94a3b8;  text-anchor:middle; }
+  .mono{ font-family:monospace; font-size:9px; text-anchor:middle; }
+  .ll  { font-size:10px; font-weight:600; }
+</style>
+
+<!-- Background -->
+<rect width="860" height="480" rx="10" fill="#0f172a"/>
+
+<!-- Title -->
+<text x="430" y="26" class="ttl">AWS US-EAST-1 — Failure Cascade  (Oct 20, 2025)</text>
+<text x="430" y="42" class="sub">SMIL animation: watch the failure propagate from Health Monitor → DNS → DynamoDB → all services  (14s loop)</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- STAGE TIMELINE BAR                                                 -->
+<!-- Each rect lights up via SMIL at the right time                    -->
+<!-- Total: 14s loop                                                    -->
+<!-- Stage 1 normal: 0–15% (0–2.1s)                                    -->
+<!-- Stage 2 monitor: 15–28% (2.1–3.9s)                                -->
+<!-- Stage 3 nlb+net: 28–42% (3.9–5.9s)                                -->
+<!-- Stage 4 dns:     42–57% (5.9–8s)                                  -->
+<!-- Stage 5 dynamo:  57–70% (8–9.8s)                                  -->
+<!-- Stage 6 cascade: 70–85% (9.8–11.9s)                               -->
+<!-- Stage 7 recov:   85–100% (11.9–14s)                               -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+
+<rect x="12" y="52" width="836" height="22" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+
+<!-- Stage labels (static) -->
+<rect x="14"  y="54" width="94" height="18" rx="3" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-width="0.5"/>
+<text x="61"  y="66" class="mono" fill="#10b981" style="font-size:8px">Normal  T+0:00</text>
+
+<rect x="114" y="54" width="108" height="18" rx="3" fill="#f59e0b" fill-opacity="0.1" stroke="#f59e0b" stroke-width="0.5"/>
+<text x="168" y="66" class="mono" fill="#fbbf24" style="font-size:8px">Monitor fails T+1:00</text>
+
+<rect x="228" y="54" width="108" height="18" rx="3" fill="#f97316" fill-opacity="0.1" stroke="#f97316" stroke-width="0.5"/>
+<text x="282" y="66" class="mono" fill="#fb923c" style="font-size:8px">NLBs disrupted T+1:30</text>
+
+<rect x="342" y="54" width="108" height="18" rx="3" fill="#ef4444" fill-opacity="0.12" stroke="#ef4444" stroke-width="0.5"/>
+<text x="396" y="66" class="mono" fill="#f87171" style="font-size:8px">DNS fails  T+2:00</text>
+
+<rect x="456" y="54" width="108" height="18" rx="3" fill="#ef4444" fill-opacity="0.18" stroke="#ef4444" stroke-width="0.8"/>
+<text x="510" y="66" class="mono" fill="#fca5a5" style="font-size:8px">DynamoDB  T+2:30</text>
+
+<rect x="570" y="54" width="120" height="18" rx="3" fill="#ef4444" fill-opacity="0.3"  stroke="#ef4444" stroke-width="1.2"/>
+<text x="630" y="66" class="mono" fill="#fca5a5" style="font-size:8px">100+ cascade T+3:00</text>
+
+<rect x="696" y="54" width="150" height="18" rx="3" fill="#a855f7" fill-opacity="0.12" stroke="#a855f7" stroke-width="0.5"/>
+<text x="771" y="66" class="mono" fill="#c084fc" style="font-size:8px">Recovery T+7:00+</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- COMPONENT: HEALTH MONITOR  (fails at 15%)                         -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<rect x="12" y="84" width="148" height="68" rx="6">
+  <animate attributeName="fill"         values="#f59e0b;#f59e0b;#ef4444;#ef4444;#f59e0b" keyTimes="0;0.14;0.2;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.13;0.13;0.35;0.35;0.13"               keyTimes="0;0.14;0.2;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke"       values="#f59e0b;#f59e0b;#ef4444;#ef4444;#f59e0b" keyTimes="0;0.14;0.2;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-width" values="1.5;1.5;3;3;1.5"                         keyTimes="0;0.14;0.2;0.86;1" dur="14s" repeatCount="indefinite"/>
+</rect>
+<text x="86" y="103" class="hd" fill="#fbbf24">HEALTH MONITOR</text>
+<text x="86" y="117" class="lbl">Polls NLB target health</text>
+<text x="86" y="130" class="lbl">Sends routing signals</text>
+<!-- Status text cycling -->
+<text x="86" y="145" class="mono" fill="#10b981">
+  <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.14;0.2;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ● Normal
+</text>
+<text x="86" y="145" class="mono" fill="#ef4444">
+  <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.14;0.2;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ✕ MALFUNCTIONING
+</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- ARROW: Monitor → NLBs                                              -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<line x1="160" y1="118" x2="200" y2="118" stroke-width="1.5" fill="none">
+  <animate attributeName="stroke" values="#f59e0b;#f59e0b;#ef4444;#ef4444;#f59e0b" keyTimes="0;0.14;0.28;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-opacity" values="0.6;0.6;1;1;0.6" keyTimes="0;0.14;0.28;0.86;1" dur="14s" repeatCount="indefinite"/>
+</line>
+<text x="180" y="112" class="lbl" style="font-size:8px">health</text>
+<text x="180" y="122" class="lbl" style="font-size:8px">signals</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- COMPONENT: NETWORK LOAD BALANCERS  (disrupted at 28%)             -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<rect x="200" y="84" width="148" height="68" rx="6">
+  <animate attributeName="fill"         values="#8b5cf6;#8b5cf6;#ef4444;#ef4444;#8b5cf6" keyTimes="0;0.26;0.35;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.13;0.13;0.3;0.3;0.13"                  keyTimes="0;0.26;0.35;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke"       values="#8b5cf6;#8b5cf6;#ef4444;#ef4444;#8b5cf6" keyTimes="0;0.26;0.35;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-width" values="1.5;1.5;2.5;2.5;1.5"                     keyTimes="0;0.26;0.35;0.86;1" dur="14s" repeatCount="indefinite"/>
+</rect>
+<text x="274" y="103" class="hd" fill="#c4b5fd">NETWORK LBs</text>
+<text x="274" y="117" class="lbl">Distribute EC2 traffic</text>
+<text x="274" y="130" class="lbl">Receive health signals</text>
+<text x="274" y="145" class="mono" fill="#10b981">
+  <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.26;0.35;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ● Routing correctly
+</text>
+<text x="274" y="145" class="mono" fill="#ef4444">
+  <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.26;0.35;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ✕ BAD ROUTING DATA
+</text>
+
+<!-- ARROW: NLBs → Internal Network -->
+<line x1="348" y1="118" x2="390" y2="118" stroke-width="1.5" fill="none">
+  <animate attributeName="stroke" values="#06b6d4;#06b6d4;#ef4444;#ef4444;#06b6d4" keyTimes="0;0.3;0.42;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-opacity" values="0.5;0.5;1;1;0.5" keyTimes="0;0.3;0.42;0.86;1" dur="14s" repeatCount="indefinite"/>
+</line>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- COMPONENT: INTERNAL NETWORK  (degrades at 35%)                    -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<rect x="390" y="84" width="148" height="68" rx="6">
+  <animate attributeName="fill"         values="#06b6d4;#06b6d4;#ef4444;#ef4444;#06b6d4" keyTimes="0;0.33;0.44;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.12;0.12;0.28;0.28;0.12"                keyTimes="0;0.33;0.44;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke"       values="#06b6d4;#06b6d4;#ef4444;#ef4444;#06b6d4" keyTimes="0;0.33;0.44;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-width" values="1.5;1.5;2.5;2.5;1.5"                    keyTimes="0;0.33;0.44;0.86;1" dur="14s" repeatCount="indefinite"/>
+</rect>
+<text x="464" y="103" class="hd" fill="#67e8f9">INTERNAL NETWORK</text>
+<text x="464" y="117" class="lbl">Service-to-service fabric</text>
+<text x="464" y="130" class="lbl">Routes all internal traffic</text>
+<text x="464" y="145" class="mono" fill="#10b981">
+  <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.33;0.44;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ● ~30% utilisation
+</text>
+<text x="464" y="145" class="mono" fill="#ef4444">
+  <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.33;0.44;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ✕ DEGRADED — dropping pkts
+</text>
+
+<!-- ARROW: Internal Network → Internal DNS -->
+<line x1="538" y1="118" x2="580" y2="118" stroke-width="1.5" fill="none">
+  <animate attributeName="stroke" values="#f59e0b;#f59e0b;#ef4444;#ef4444;#f59e0b" keyTimes="0;0.4;0.5;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-opacity" values="0.6;0.6;1;1;0.6" keyTimes="0;0.4;0.5;0.86;1" dur="14s" repeatCount="indefinite"/>
+</line>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- COMPONENT: INTERNAL DNS  (fails at 42%)                           -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<rect x="580" y="84" width="148" height="68" rx="6">
+  <animate attributeName="fill"         values="#f59e0b;#f59e0b;#ef4444;#ef4444;#f59e0b" keyTimes="0;0.4;0.5;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.13;0.13;0.35;0.35;0.13"               keyTimes="0;0.4;0.5;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke"       values="#f59e0b;#f59e0b;#ef4444;#ef4444;#f59e0b" keyTimes="0;0.4;0.5;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-width" values="1.5;1.5;3;3;1.5"                         keyTimes="0;0.4;0.5;0.86;1" dur="14s" repeatCount="indefinite"/>
+</rect>
+<text x="654" y="103" class="hd" fill="#fbbf24">INTERNAL DNS</text>
+<text x="654" y="117" class="lbl">Service hostname resolver</text>
+<text x="654" y="130" class="lbl">Used by every AWS service</text>
+<text x="654" y="145" class="mono" fill="#10b981">
+  <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.4;0.5;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ● &lt;5ms per query
+</text>
+<text x="654" y="145" class="mono" fill="#ef4444">
+  <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.4;0.5;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ✕ TIMEOUTS — unreachable
+</text>
+
+<!-- ARROW: DNS → DynamoDB (down-left) -->
+<line x1="654" y1="152" x2="654" y2="178" stroke-width="1.5" fill="none">
+  <animate attributeName="stroke" values="#ef4444;#ef4444;#ef4444;#ef4444;#ef4444" keyTimes="0;0.5;0.58;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-opacity" values="0.2;0.2;1;1;0.2" keyTimes="0;0.5;0.58;0.86;1" dur="14s" repeatCount="indefinite"/>
+</line>
+<text x="675" y="168" class="lbl" style="font-size:8px">endpoint</text>
+<text x="675" y="178" class="lbl" style="font-size:8px">unresolvable</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- COMPONENT: DYNAMO DB  (fails at 57%)                              -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<rect x="470" y="178" width="368" height="64" rx="6">
+  <animate attributeName="fill"         values="#ef4444;#ef4444;#ef4444;#ef4444;#ef4444" keyTimes="0;0.55;0.62;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.08;0.08;0.38;0.38;0.08"               keyTimes="0;0.55;0.62;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke"       values="#ef4444;#ef4444;#ef4444;#ef4444;#ef4444" keyTimes="0;0;0;0;0" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-width" values="1.5;1.5;3;3;1.5"                         keyTimes="0;0.55;0.62;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-opacity" values="0.3;0.3;1;1;0.3"                       keyTimes="0;0.55;0.62;0.86;1" dur="14s" repeatCount="indefinite"/>
+</rect>
+<text x="654" y="198" class="hd" fill="#fca5a5">DynamoDB  —  Endpoint unreachable via DNS</text>
+<text x="654" y="213" class="lbl" style="fill:#fca5a5">100+ AWS services depend on this for config, state, and authentication reads</text>
+<text x="654" y="228" class="mono" fill="#10b981">
+  <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.55;0.62;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ● Serving all dependent services
+</text>
+<text x="654" y="228" class="mono" fill="#ef4444">
+  <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.55;0.62;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ✕ UNREACHABLE — all 100+ deps cascading
+</text>
+
+<!-- Arrow DynamoDB → all services (down) -->
+<line x1="654" y1="242" x2="654" y2="268" stroke="#ef4444" stroke-width="1.5" stroke-opacity="0.5" fill="none">
+  <animate attributeName="stroke-opacity" values="0.2;0.2;0.9;0.9;0.2" keyTimes="0;0.62;0.72;0.86;1" dur="14s" repeatCount="indefinite"/>
+</line>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SERVICES ROW — all cascade after DynamoDB                         -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+
+<!-- Lambda -->
+<rect x="12" y="178" width="90" height="52" rx="5">
+  <animate attributeName="fill"         values="#10b981;#10b981;#ef4444;#ef4444;#10b981" keyTimes="0;0.68;0.74;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.12;0.12;0.3;0.3;0.12"                 keyTimes="0;0.68;0.74;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke"       values="#10b981;#10b981;#ef4444;#ef4444;#10b981" keyTimes="0;0.68;0.74;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-width" values="1.5;1.5;2.5;2.5;1.5"                    keyTimes="0;0.68;0.74;0.86;1" dur="14s" repeatCount="indefinite"/>
+</rect>
+<text x="57" y="197" class="hd" fill="#6ee7b7">Lambda</text>
+<text x="57" y="213" class="lbl">Bootstrap needs</text>
+<text x="57" y="224" class="lbl">DynamoDB config</text>
+
+<!-- Connect -->
+<rect x="112" y="178" width="90" height="52" rx="5">
+  <animate attributeName="fill"         values="#10b981;#10b981;#ef4444;#ef4444;#10b981" keyTimes="0;0.70;0.76;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.12;0.12;0.3;0.3;0.12"                 keyTimes="0;0.70;0.76;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke"       values="#10b981;#10b981;#ef4444;#ef4444;#10b981" keyTimes="0;0.70;0.76;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-width" values="1.5;1.5;2.5;2.5;1.5"                    keyTimes="0;0.70;0.76;0.86;1" dur="14s" repeatCount="indefinite"/>
+</rect>
+<text x="157" y="197" class="hd" fill="#6ee7b7">Connect</text>
+<text x="157" y="213" class="lbl">Agent auth reads</text>
+<text x="157" y="224" class="lbl">from DynamoDB</text>
+
+<!-- Config -->
+<rect x="212" y="178" width="90" height="52" rx="5">
+  <animate attributeName="fill"         values="#10b981;#10b981;#ef4444;#ef4444;#10b981" keyTimes="0;0.72;0.78;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.12;0.12;0.3;0.3;0.12"                 keyTimes="0;0.72;0.78;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke"       values="#10b981;#10b981;#ef4444;#ef4444;#10b981" keyTimes="0;0.72;0.78;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-width" values="1.5;1.5;2.5;2.5;1.5"                    keyTimes="0;0.72;0.78;0.86;1" dur="14s" repeatCount="indefinite"/>
+</rect>
+<text x="257" y="197" class="hd" fill="#6ee7b7">Config</text>
+<text x="257" y="213" class="lbl">State recording</text>
+<text x="257" y="224" class="lbl">needs DynamoDB</text>
+
+<!-- Bedrock -->
+<rect x="312" y="178" width="90" height="52" rx="5">
+  <animate attributeName="fill"         values="#10b981;#10b981;#ef4444;#ef4444;#10b981" keyTimes="0;0.74;0.80;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.12;0.12;0.3;0.3;0.12"                 keyTimes="0;0.74;0.80;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke"       values="#10b981;#10b981;#ef4444;#ef4444;#10b981" keyTimes="0;0.74;0.80;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-width" values="1.5;1.5;2.5;2.5;1.5"                    keyTimes="0;0.74;0.80;0.86;1" dur="14s" repeatCount="indefinite"/>
+</rect>
+<text x="357" y="197" class="hd" fill="#6ee7b7">Bedrock</text>
+<text x="357" y="213" class="lbl">Model state in</text>
+<text x="357" y="224" class="lbl">DynamoDB</text>
+
+<!-- Alexa/Prime -->
+<rect x="412" y="178" width="50" height="52" rx="5">
+  <animate attributeName="fill"         values="#10b981;#10b981;#ef4444;#ef4444;#10b981" keyTimes="0;0.76;0.82;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.12;0.12;0.3;0.3;0.12"                 keyTimes="0;0.76;0.82;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke"       values="#10b981;#10b981;#ef4444;#ef4444;#10b981" keyTimes="0;0.76;0.82;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-width" values="1.5;1.5;2.5;2.5;1.5"                    keyTimes="0;0.76;0.82;0.86;1" dur="14s" repeatCount="indefinite"/>
+</rect>
+<text x="437" y="197" class="hd" fill="#6ee7b7" style="font-size:8px">Alexa</text>
+<text x="437" y="213" class="lbl" style="font-size:8px">+Prime</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- THIRD-PARTY CASCADE (far right)                                    -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<rect x="470" y="268" width="368" height="60" rx="6">
+  <animate attributeName="fill"         values="#1e293b;#1e293b;#ef4444;#ef4444;#1e293b" keyTimes="0;0.80;0.85;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="1;1;1;1;1"                               keyTimes="0;0.80;0.85;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke"       values="#475569;#475569;#ef4444;#ef4444;#475569" keyTimes="0;0.80;0.85;0.86;1" dur="14s" repeatCount="indefinite"/>
+  <animate attributeName="stroke-width" values="1;1;2.5;2.5;1"                           keyTimes="0;0.80;0.85;0.86;1" dur="14s" repeatCount="indefinite"/>
+</rect>
+<text x="654" y="287" class="hd" fill="#94a3b8">THIRD-PARTY SERVICES</text>
+<text x="654" y="301" class="lbl">Slack  •  Uber  •  Spotify  •  Delta  •  Coinbase  •  WhatsApp  •  Zoom  •  Reddit  …and hundreds more</text>
+<text x="654" y="317" class="mono" fill="#10b981">
+  <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.80;0.85;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ● Serving users normally
+</text>
+<text x="654" y="317" class="mono" fill="#ef4444">
+  <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.80;0.85;0.86;1" dur="14s" repeatCount="indefinite"/>
+  ✕ USER-FACING FAILURES — global impact
+</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- RECOVERY INDICATOR                                                 -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<rect x="12" y="268" width="440" height="60" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="226" y="288" class="hd" fill="#a855f7" style="font-size:11px">Recovery path (T+6:00 → T+7:00+)</text>
+<text x="226" y="304" class="lbl" style="fill:#c084fc">1. Halt health monitor automation</text>
+<text x="226" y="318" class="lbl" style="fill:#c084fc">2. Stabilise internal DNS manually   3. Restore services in dependency order</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- LEGEND                                                             -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<rect x="12" y="346" width="836" height="124" rx="7" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="430" y="365" class="hd" fill="#f1f5f9" style="font-size:12px">The Three Cascading Assumptions That Failed</text>
+
+<rect x="24" y="374" width="256" height="86" rx="5" fill="#f59e0b" fill-opacity="0.06" stroke="#f59e0b" stroke-width="1"/>
+<text x="152" y="391" class="hd" fill="#fbbf24" style="font-size:10px">① Health Monitor Is Not Critical</text>
+<text x="152" y="406" class="lbl" style="fill:#f1f5f9">The monitoring subsystem was not</text>
+<text x="152" y="419" class="lbl" style="fill:#f1f5f9">classified as primary infrastructure.</text>
+<text x="152" y="432" class="lbl">No redundancy, no isolation — if it</text>
+<text x="152" y="445" class="lbl">sends bad signals, NLBs follow.</text>
+<text x="152" y="458" class="lbl" style="fill:#fbbf24">Fix: isolate monitoring from monitored.</text>
+
+<rect x="292" y="374" width="256" height="86" rx="5" fill="#ef4444" fill-opacity="0.06" stroke="#ef4444" stroke-width="1"/>
+<text x="420" y="391" class="hd" fill="#f87171" style="font-size:10px">② DNS Will Always Be Available</text>
+<text x="420" y="406" class="lbl" style="fill:#f1f5f9">Internal DNS had no reserved capacity,</text>
+<text x="420" y="419" class="lbl" style="fill:#f1f5f9">no independent network path. When</text>
+<text x="420" y="432" class="lbl">the internal network degraded, DNS</text>
+<text x="420" y="445" class="lbl">became unreachable with it.</text>
+<text x="420" y="458" class="lbl" style="fill:#f87171">Fix: DNS = critical infra, own path.</text>
+
+<rect x="560" y="374" width="276" height="86" rx="5" fill="#a855f7" fill-opacity="0.06" stroke="#a855f7" stroke-width="1"/>
+<text x="698" y="391" class="hd" fill="#c084fc" style="font-size:10px">③ DynamoDB Dependency Concentration</text>
+<text x="698" y="406" class="lbl" style="fill:#f1f5f9">100+ services all depend on DynamoDB.</text>
+<text x="698" y="419" class="lbl" style="fill:#f1f5f9">Its DNS endpoint is a single point that,</text>
+<text x="698" y="432" class="lbl">if unresolvable, causes all 100+</text>
+<text x="698" y="445" class="lbl">dependents to fail simultaneously.</text>
+<text x="698" y="458" class="lbl" style="fill:#c084fc">Fix: cache + circuit-break every dep.</text>
+</svg>
