@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 450" width="860" height="450">
+<style>
+  text { font-family: system-ui, sans-serif; }
+  .ttl { font-size:15px; font-weight:700; fill:#f1f5f9; text-anchor:middle; }
+  .sub { font-size:10px; fill:#94a3b8; text-anchor:middle; }
+  .hd  { font-size:11px; font-weight:700; text-anchor:middle; }
+  .lbl { font-size:9px;  fill:#94a3b8;  text-anchor:middle; }
+  .note{ font-size:9px;  fill:#f1f5f9;  text-anchor:middle; }
+  .mono{ font-family:monospace; font-size:9px; text-anchor:middle; }
+  .ll  { font-size:10px; font-weight:600; }
+</style>
+<defs>
+  <marker id="arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <path d="M0,0 L7,3.5 L0,7 Z" fill="#475569"/>
+  </marker>
+  <marker id="arr-g" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <path d="M0,0 L7,3.5 L0,7 Z" fill="#10b981"/>
+  </marker>
+  <marker id="arr-y" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <path d="M0,0 L7,3.5 L0,7 Z" fill="#f59e0b"/>
+  </marker>
+</defs>
+
+<!-- Background -->
+<rect width="860" height="450" rx="10" fill="#0f172a"/>
+
+<!-- Title -->
+<text x="430" y="26" class="ttl">AWS US-EAST-1 — Normal Architecture (Oct 20, 2025)</text>
+<text x="430" y="42" class="sub">Five-layer dependency chain — healthy state. Each arrow is a critical path that the failure disrupted.</text>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ROW 1: EXTERNAL                            -->
+<!-- ═══════════════════════════════════════════ -->
+
+<!-- Users -->
+<rect x="12" y="58" width="90" height="68" rx="6" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+<text x="57" y="76"  class="hd" fill="#94a3b8">USERS</text>
+<text x="57" y="91"  class="lbl">API calls</text>
+<text x="57" y="104" class="lbl">Console</text>
+<text x="57" y="117" class="lbl">Apps</text>
+
+<!-- AWS Edge -->
+<rect x="118" y="58" width="120" height="68" rx="6" fill="#6366f1" fill-opacity="0.12" stroke="#6366f1" stroke-width="1.5"/>
+<text x="178" y="76"  class="hd" fill="#818cf8">AWS EDGE</text>
+<text x="178" y="91"  class="lbl">Route 53 (external)</text>
+<text x="178" y="104" class="lbl">CloudFront / CDN</text>
+<text x="178" y="117" class="mono" fill="#10b981">● HEALTHY</text>
+
+<!-- Arrow Users → Edge -->
+<line x1="102" y1="92" x2="118" y2="92" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+<!-- Spacer + label for EC2 Core section -->
+<text x="410" y="58" class="hd" fill="#94a3b8" style="font-size:10px">EC2 INTERNAL CORE  (US-EAST-1)</text>
+<rect x="255" y="62" width="390" height="64" rx="6" fill="#1e293b" fill-opacity="0.5" stroke="#334155" stroke-width="1" stroke-dasharray="4,3"/>
+
+<!-- Health Monitor (inside EC2 core, top) -->
+<rect x="264" y="68" width="118" height="52" rx="5" fill="#f59e0b" fill-opacity="0.14" stroke="#f59e0b" stroke-width="2"/>
+<text x="323" y="83"  class="hd" fill="#fbbf24">HEALTH MONITOR</text>
+<text x="323" y="96"  class="lbl">Polls NLB targets</text>
+<text x="323" y="109" class="mono" fill="#10b981">● MONITORING</text>
+
+<!-- NLBs -->
+<rect x="396" y="68" width="118" height="52" rx="5" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="1.5"/>
+<text x="455" y="83"  class="hd" fill="#c4b5fd">NETWORK LBs</text>
+<text x="455" y="96"  class="lbl">Distribute EC2 traffic</text>
+<text x="455" y="109" class="mono" fill="#10b981">● ROUTING OK</text>
+
+<!-- Internal Network -->
+<rect x="528" y="68" width="108" height="52" rx="5" fill="#06b6d4" fill-opacity="0.12" stroke="#06b6d4" stroke-width="1.5"/>
+<text x="582" y="83"  class="hd" fill="#67e8f9">INT. NETWORK</text>
+<text x="582" y="96"  class="lbl">Service-to-service</text>
+<text x="582" y="109" class="mono" fill="#10b981">● ~30% util</text>
+
+<!-- Arrow Edge → Health Monitor -->
+<line x1="238" y1="92" x2="264" y2="92" stroke="#6366f1" stroke-width="1.5" stroke-opacity="0.6" marker-end="url(#arr)"/>
+
+<!-- Arrow Health Monitor → NLBs -->
+<line x1="382" y1="94" x2="396" y2="94" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-y)"/>
+
+<!-- Arrow NLBs → Internal Network -->
+<line x1="514" y1="94" x2="528" y2="94" stroke="#8b5cf6" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr)"/>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ROW 2: DNS + DynamoDB                      -->
+<!-- ═══════════════════════════════════════════ -->
+
+<!-- Arrow Internal Network → Internal DNS (down) -->
+<line x1="582" y1="120" x2="582" y2="155" stroke="#06b6d4" stroke-width="1.5" stroke-opacity="0.5" marker-end="url(#arr)"/>
+<text x="600" y="143" class="lbl" style="font-size:8px">service</text>
+<text x="600" y="153" class="lbl" style="font-size:8px">discovery</text>
+
+<!-- Internal DNS -->
+<rect x="490" y="155" width="184" height="64" rx="6" fill="#f59e0b" fill-opacity="0.14" stroke="#f59e0b" stroke-width="2"/>
+<text x="582" y="173" class="hd" fill="#fbbf24">INTERNAL DNS</text>
+<text x="582" y="187" class="lbl">Resolves all service-to-service hostnames</text>
+<text x="582" y="200" class="lbl">Shared by every AWS service in US-EAST-1</text>
+<text x="582" y="213" class="mono" fill="#10b981">● &lt;5ms per query  —  HEALTHY</text>
+
+<!-- Arrow Internal DNS → DynamoDB (left) -->
+<line x1="490" y1="187" x2="420" y2="187" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.6" marker-end="url(#arr-y)"/>
+<text x="455" y="180" class="lbl" style="font-size:8px">resolves</text>
+<text x="455" y="190" class="lbl" style="font-size:8px">endpoint</text>
+
+<!-- DynamoDB -->
+<rect x="248" y="155" width="166" height="64" rx="6" fill="#ef4444" fill-opacity="0.10" stroke="#ef4444" stroke-width="2"/>
+<text x="331" y="173" class="hd" fill="#fca5a5">DynamoDB</text>
+<text x="331" y="187" class="lbl">Operational data store</text>
+<text x="331" y="200" class="lbl" fill="#fca5a5" style="font-weight:700">Underpins 100+ AWS services</text>
+<text x="331" y="213" class="mono" fill="#10b981">● SERVING — all deps healthy</text>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ROW 3: SERVICES                            -->
+<!-- ═══════════════════════════════════════════ -->
+
+<!-- Arrow DynamoDB → Services (down) -->
+<line x1="331" y1="219" x2="331" y2="250" stroke="#ef4444" stroke-width="1.5" stroke-opacity="0.4" marker-end="url(#arr)"/>
+<text x="310" y="243" class="lbl" style="font-size:8px">config +</text>
+<text x="310" y="253" class="lbl" style="font-size:8px">state reads</text>
+
+<!-- Service boxes -->
+<rect x="12"  y="252" width="92" height="44" rx="5" fill="#10b981" fill-opacity="0.12" stroke="#10b981" stroke-width="1.5"/>
+<text x="58"  y="268" class="hd" fill="#6ee7b7" style="font-size:9px">Lambda</text>
+<text x="58"  y="285" class="mono" fill="#10b981">● OK</text>
+
+<rect x="114" y="252" width="92" height="44" rx="5" fill="#10b981" fill-opacity="0.12" stroke="#10b981" stroke-width="1.5"/>
+<text x="160" y="268" class="hd" fill="#6ee7b7" style="font-size:9px">Connect</text>
+<text x="160" y="285" class="mono" fill="#10b981">● OK</text>
+
+<rect x="216" y="252" width="92" height="44" rx="5" fill="#10b981" fill-opacity="0.12" stroke="#10b981" stroke-width="1.5"/>
+<text x="262" y="268" class="hd" fill="#6ee7b7" style="font-size:9px">Config</text>
+<text x="262" y="285" class="mono" fill="#10b981">● OK</text>
+
+<rect x="318" y="252" width="92" height="44" rx="5" fill="#10b981" fill-opacity="0.12" stroke="#10b981" stroke-width="1.5"/>
+<text x="364" y="268" class="hd" fill="#6ee7b7" style="font-size:9px">Bedrock</text>
+<text x="364" y="285" class="mono" fill="#10b981">● OK</text>
+
+<rect x="420" y="252" width="92" height="44" rx="5" fill="#10b981" fill-opacity="0.12" stroke="#10b981" stroke-width="1.5"/>
+<text x="466" y="268" class="hd" fill="#6ee7b7" style="font-size:9px">S3 / SQS</text>
+<text x="466" y="285" class="mono" fill="#10b981">● OK</text>
+
+<rect x="522" y="252" width="100" height="44" rx="5" fill="#10b981" fill-opacity="0.12" stroke="#10b981" stroke-width="1.5"/>
+<text x="572" y="268" class="hd" fill="#6ee7b7" style="font-size:9px">Alexa/Prime</text>
+<text x="572" y="285" class="mono" fill="#10b981">● OK</text>
+
+<!-- Third-party apps -->
+<rect x="638" y="252" width="210" height="44" rx="5" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+<text x="743" y="268" class="hd" fill="#94a3b8" style="font-size:9px">Third-party: Slack, Uber, Spotify, Banks…</text>
+<text x="743" y="285" class="mono" fill="#10b981">● SERVING USERS</text>
+
+<!-- Arrow services → third-party -->
+<line x1="622" y1="274" x2="638" y2="274" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.5" marker-end="url(#arr-g)"/>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ANIMATED PACKETS: normal flow              -->
+<!-- ═══════════════════════════════════════════ -->
+<path id="p1" d="M102,92 L118,92" fill="none"/>
+<path id="p2" d="M382,94 L396,94" fill="none"/>
+<path id="p3" d="M582,120 L582,155" fill="none"/>
+<path id="p4" d="M490,187 L420,187" fill="none"/>
+<path id="p5" d="M331,219 L331,252" fill="none"/>
+<path id="p6" d="M622,274 L638,274" fill="none"/>
+
+<circle r="4" fill="#818cf8"><animateMotion dur="1.5s" repeatCount="indefinite" begin="0s"><mpath href="#p1"/></animateMotion></circle>
+<circle r="4" fill="#fbbf24"><animateMotion dur="1.2s" repeatCount="indefinite" begin="0s"><mpath href="#p2"/></animateMotion></circle>
+<circle r="4" fill="#fbbf24"><animateMotion dur="1.2s" repeatCount="indefinite" begin="0.6s"><mpath href="#p2"/></animateMotion></circle>
+<circle r="4" fill="#67e8f9"><animateMotion dur="1.0s" repeatCount="indefinite" begin="0.2s"><mpath href="#p3"/></animateMotion></circle>
+<circle r="4" fill="#fbbf24"><animateMotion dur="1.0s" repeatCount="indefinite" begin="0.1s"><mpath href="#p4"/></animateMotion></circle>
+<circle r="4" fill="#fca5a5"><animateMotion dur="1.0s" repeatCount="indefinite" begin="0.3s"><mpath href="#p5"/></animateMotion></circle>
+<circle r="4" fill="#10b981"><animateMotion dur="1.2s" repeatCount="indefinite" begin="0.4s"><mpath href="#p6"/></animateMotion></circle>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- LEGEND                                     -->
+<!-- ═══════════════════════════════════════════ -->
+<rect x="12" y="312" width="836" height="128" rx="7" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<text x="430" y="330" class="hd" fill="#f1f5f9" style="font-size:12px">The Hidden Risk: Everything Runs Through One Chain</text>
+
+<text x="430" y="348" class="sub" style="font-size:10px;fill:#f1f5f9">Under normal load, the dependency chain (Health Monitor → NLBs → Internal Network → DNS → DynamoDB → 100+ Services) holds without issue.</text>
+<text x="430" y="364" class="sub" style="font-size:10px">The Health Monitor is not classified as critical infrastructure — it is a supporting subsystem. But if it fails, it propagates into the NLBs it controls.</text>
+<text x="430" y="380" class="sub" style="font-size:10px;fill:#f1f5f9">Disrupted NLBs degrade the internal network. A degraded internal network makes Internal DNS unreliable. Unreliable DNS means DynamoDB's endpoint cannot be resolved.</text>
+<text x="430" y="396" class="sub" style="font-size:10px">DynamoDB unreachable → 100+ dependent services fail. None of this was visible until it happened. Every assumption in the chain was correct — under normal load.</text>
+<text x="430" y="412" class="sub" style="font-size:10px;fill:#fbbf24">Yellow border = components that played a central role in the failure cascade. Watch the animated diagram to see how the failure propagates.</text>
+
+<!-- Legend items -->
+<rect x="24"  y="422" width="14" height="14" rx="2" fill="#f59e0b" fill-opacity="0.14" stroke="#f59e0b" stroke-width="2"/>
+<text x="44" y="433" class="ll" fill="#94a3b8" style="font-size:9px">Central failure path (health monitor → DNS → DynamoDB)</text>
+<rect x="280" y="422" width="14" height="14" rx="2" fill="#10b981" fill-opacity="0.12" stroke="#10b981" stroke-width="1.5"/>
+<text x="300" y="433" class="ll" fill="#94a3b8" style="font-size:9px">Healthy services — all downstream from DynamoDB</text>
+<rect x="540" y="422" width="14" height="14" rx="2" fill="#ef4444" fill-opacity="0.10" stroke="#ef4444" stroke-width="2"/>
+<text x="560" y="433" class="ll" fill="#fca5a5" style="font-size:9px">DynamoDB — 100+ service dependency concentration point</text>
+</svg>
