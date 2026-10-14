@@ -79,6 +79,31 @@ RoCEv2 and QoS/ECN are inseparable — anyone operating RoCEv2 infrastructure mu
 
 **Hybrid:** Some large-scale deployments use InfiniBand for GPU-to-GPU RDMA (the training fabric) and Ethernet for storage, management, and general compute traffic. The GPU servers have two NICs: an IB HCA for RDMA and an Ethernet NIC for everything else.
 
+## The third option: where EFA/SRD fits
+
+The comparison above is the classic two-way choice, but on the public cloud there is a third answer: **AWS EFA**, running the **SRD** transport (covered in the RDMA article). It belongs in this comparison because it makes a fundamentally different bet than either InfiniBand or RoCEv2. InfiniBand builds a bespoke lossless fabric; RoCEv2 forces commodity Ethernet to behave losslessly with PFC and ECN; EFA/SRD gives up on in-order, lossless delivery entirely and instead sprays packets across many paths, tolerates reordering, and reassembles in the NIC — which lets it sidestep the PFC fragility that makes RoCEv2 hard to operate at scale. EFA is AWS-proprietary (EC2 only), so it is not a fabric you choose on a spec sheet against the other two — it is the one you get when you train on AWS.
+
+| | InfiniBand (NDR) | RoCEv2 (100GbE) | AWS EFA / SRD |
+|---|---|---|---|
+| Latency | ~500ns (lowest) | 1-2 µs (tuned) | low, consistent tail |
+| Losslessness | Native (credit-based) | Requires PFC + ECN | Not required (tolerates loss/reorder) |
+| Multipath | Limited (in-order) | Limited (in-order, PFC) | Native packet spray |
+| Fabric | Dedicated IB switches | Shared Ethernet | AWS Nitro / EC2 only |
+| Portability | On-prem & some clouds | On-prem & multi-vendor | AWS only (proprietary) |
+| Operational burden | Subnet Manager, IB skills | PFC/ECN/DCQCN tuning | Managed by AWS |
+
+## Which one, and when
+
+For a network engineer being asked "which should we deploy," the decision is less about raw numbers and more about constraints:
+
+- **Choose InfiniBand** when you are building a dedicated, tightly-coupled training cluster, performance is the top priority, and the budget supports a bespoke fabric and the specialized operations it demands. Every microsecond of synchronization latency multiplies across thousands of GPUs, so for the largest, most latency-sensitive training jobs IB's co-designed fabric still wins on pure performance.
+
+- **Choose RoCEv2** when you want to run RDMA on the Ethernet fabric and skills you already have, when the cluster shares infrastructure with other workloads or is multi-tenant, or when cost and vendor flexibility matter more than squeezing out the last microsecond. The tradeoff you are accepting is operational: you must engineer and monitor losslessness (PFC, ECN, DCQCN) correctly, because a misconfigured lossless fabric fails in subtle, hard-to-diagnose ways. The industry has been steadily voting this way — a growing majority of new AI fabric deployments now choose Ethernet-based RDMA over InfiniBand, as Ultra Ethernet matures and hyperscalers validate RoCE at scale.
+
+- **Choose EFA/SRD** when you are training on AWS — which effectively makes the choice for you, since it is the RDMA fabric AWS offers. Its multipath, loss-tolerant design is genuinely well-matched to large, elastic cloud clusters where links fail and congestion shifts, and it removes the PFC-tuning burden entirely. You give up the absolute lowest latency of a dedicated IB fabric in exchange for cloud elasticity and a transport AWS operates for you.
+
+The honest one-line summary: **InfiniBand** for a dedicated performance-first cluster you own and operate; **RoCEv2** to run RDMA on commodity Ethernet you already know; **EFA/SRD** because you are on AWS. All three solve the same problem — move gradients between thousands of GPUs faster than the GPUs can notice they are waiting — and the right answer is dictated by where you are deploying and what you are optimizing for.
+
 ## What a Network Engineer Needs to Know
 
 For a network engineer working with AI/ML infrastructure, the foundational knowledge that matters:

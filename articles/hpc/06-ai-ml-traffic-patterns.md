@@ -167,7 +167,8 @@ Diagnostic checklist:
 This article builds on the HPC sequence:
 - [01-why-rdma.md](01-why-rdma.md) — why kernel-bypass is needed
 - [02-infiniband-vs-roce.md](02-infiniband-vs-roce.md) — the IB vs RoCE choice
-- [03-lossless-ethernet-for-rdma.md](03-lossless-ethernet-for-rdma.md) — PFC, ECN, DCQCN mechanics
-- [04-hpc-topology.md](04-hpc-topology.md) — bisection bandwidth, fat-tree designs
+- [03-rdma-packet-anatomy.md](03-rdma-packet-anatomy.md) — the three transports' packets on the wire
+- [04-lossless-ethernet-for-rdma.md](04-lossless-ethernet-for-rdma.md) — PFC, ECN, DCQCN mechanics
+- [05-hpc-topology.md](05-hpc-topology.md) — bisection bandwidth, fat-tree designs
 
 If those clicked, this should feel like the "so what does the traffic actually look like" follow-up — the workload patterns that make all that lossless, full-bisection infrastructure necessary.

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 262" font-family="monospace">
+  <text x="230" y="16" fill="#64748b" font-size="11" text-anchor="middle">The same RDMA transport, wrapped three different ways</text>
+  <text x="85.0" y="38" fill="#334155" font-size="11" text-anchor="middle" font-weight="bold">InfiniBand</text>
+  <rect x="30" y="48" width="110" height="24" rx="3" fill="#0891b21a" stroke="#0891b2" stroke-width="1.3"/>
+  <text x="85.0" y="64" fill="#334155" font-size="9.5" text-anchor="middle">LRH (LID)</text>
+  <rect x="30" y="76" width="110" height="24" rx="3" fill="#7c3aed1a" stroke="#7c3aed" stroke-width="1.3"/>
+  <text x="85.0" y="92" fill="#334155" font-size="9.5" text-anchor="middle">BTH  opcode/QP</text>
+  <rect x="30" y="104" width="110" height="24" rx="3" fill="none" stroke="#64748b" stroke-width="1.3"/>
+  <text x="85.0" y="120" fill="#334155" font-size="9.5" text-anchor="middle">Payload</text>
+  <rect x="30" y="132" width="110" height="24" rx="3" fill="#64748b1a" stroke="#64748b" stroke-width="1.3"/>
+  <text x="85.0" y="148" fill="#334155" font-size="9.5" text-anchor="middle">ICRC</text>
+  <text x="230.0" y="38" fill="#334155" font-size="11" text-anchor="middle" font-weight="bold">RoCEv2</text>
+  <rect x="175" y="48" width="110" height="24" rx="3" fill="#0891b21a" stroke="#0891b2" stroke-width="1.3"/>
+  <text x="230.0" y="64" fill="#334155" font-size="9.5" text-anchor="middle">Ethernet (MAC)</text>
+  <rect x="175" y="76" width="110" height="24" rx="3" fill="#0891b21a" stroke="#0891b2" stroke-width="1.3"/>
+  <text x="230.0" y="92" fill="#334155" font-size="9.5" text-anchor="middle">IP  (routable)</text>
+  <rect x="175" y="104" width="110" height="24" rx="3" fill="#0891b21a" stroke="#0891b2" stroke-width="1.3"/>
+  <text x="230.0" y="120" fill="#334155" font-size="9.5" text-anchor="middle">UDP  :4791</text>
+  <rect x="175" y="132" width="110" height="24" rx="3" fill="#7c3aed1a" stroke="#7c3aed" stroke-width="1.3"/>
+  <text x="230.0" y="148" fill="#334155" font-size="9.5" text-anchor="middle">BTH  opcode/QP</text>
+  <rect x="175" y="160" width="110" height="24" rx="3" fill="none" stroke="#64748b" stroke-width="1.3"/>
+  <text x="230.0" y="176" fill="#334155" font-size="9.5" text-anchor="middle">Payload</text>
+  <rect x="175" y="188" width="110" height="24" rx="3" fill="#64748b1a" stroke="#64748b" stroke-width="1.3"/>
+  <text x="230.0" y="204" fill="#334155" font-size="9.5" text-anchor="middle">ICRC</text>
+  <text x="375.0" y="38" fill="#334155" font-size="11" text-anchor="middle" font-weight="bold">EFA / SRD</text>
+  <rect x="320" y="48" width="110" height="24" rx="3" fill="#0891b21a" stroke="#0891b2" stroke-width="1.3"/>
+  <text x="375.0" y="64" fill="#334155" font-size="9.5" text-anchor="middle">Ethernet (MAC)</text>
+  <rect x="320" y="76" width="110" height="24" rx="3" fill="#0891b21a" stroke="#0891b2" stroke-width="1.3"/>
+  <text x="375.0" y="92" fill="#334155" font-size="9.5" text-anchor="middle">IP</text>
+  <rect x="320" y="104" width="110" height="24" rx="3" fill="#dc26261a" stroke="#dc2626" stroke-width="1.3"/>
+  <text x="375.0" y="120" fill="#334155" font-size="9.5" text-anchor="middle">SRD  multipath</text>
+  <rect x="320" y="132" width="110" height="24" rx="3" fill="none" stroke="#64748b" stroke-width="1.3"/>
+  <text x="375.0" y="148" fill="#334155" font-size="9.5" text-anchor="middle">Payload</text>
+  
+  <text x="230" y="226" fill="#64748b" font-size="10.5" font-family="sans-serif" text-anchor="middle">
+  <tspan x="230" dy="0">Peel back RoCEv2 and you find InfiniBand's own transport header (BTH) inside Ethernet/IP/UDP.</tspan>
+  <tspan x="230" dy="14">EFA swaps that transport for AWS's SRD; only the end NICs ever read the inner transport.</tspan>
+  </text>
+</svg>
