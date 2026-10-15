@@ -1,167 +1,109 @@
-# Lossless Ethernet for RDMA: Making It Work in Practice
+# Lossless Ethernet for RDMA: How to Stop a Network From Dropping Packets
 
-The theory of lossless Ethernet for RoCEv2 is covered in the PFC and ECN articles. This article focuses on what it looks like to actually deploy and operate a lossless Ethernet fabric for RDMA — the configuration, the monitoring, and the failure modes that matter in production.
+A training job that had been humming along at full tilt suddenly crawls. The GPUs are still busy, the switches show plenty of free bandwidth, the links are not saturated — and yet a step that used to finish in a few hundred milliseconds now takes seconds. Someone eventually finds the cause buried in a NIC counter: a handful of packets were dropped on one congested port, out of trillions sent. Not a cut cable, not a dead switch. A handful of drops. And they brought a cluster of expensive accelerators to its knees.
 
-## The Target Operating State
+That is the problem this article is about. In [the last article](03-rdma-packet-anatomy.md) we followed a single gradient update across the wire as a RoCEv2 packet — InfiniBand's transport wrapped in Ethernet, IP and a UDP header. We noted, almost in passing, that the fabric underneath RoCEv2 is ordinary best-effort Ethernet, and that ordinary Ethernet drops packets when a queue overflows. This article is the consequence of that sentence. We are going to find out why those few drops hurt so much, and then build — layer by careful layer — the machinery that stops them: a *lossless* Ethernet, where a switch would rather pause a sender than throw a packet away. Each layer exists only because the previous one left a problem behind, so we will meet the problems in the order the engineers who built this actually met them.
 
-A correctly operating lossless RDMA fabric should exhibit:
+## Why does one dropped packet cost so much?
 
-- **Near-zero RDMA retransmits.** If DCQCN and ECN are working correctly, senders reduce their rate before queue depths reach PFC threshold. PFC should rarely trigger. RDMA retransmits should be essentially zero in steady state.
-- **Low, stable PFC pause frame counts.** Some PFC activity is expected during sudden burst events. Continuous, high PFC pause rates indicate chronic congestion that ECN/DCQCN is not managing. This needs investigation.
-- **ECN marks on 5-20% of packets during peak load.** ECN is working as designed if marks appear under load but queue depths stay below PFC threshold. Zero ECN marks under load suggests ECN threshold is set too high.
-- **Zero packet drops in the RDMA priority class.** Any discard counters in the RDMA QoS class should alarm immediately — this indicates PFC is failing to prevent drops.
+To see why a drop is catastrophic, you have to remember where RoCEv2's transport came from. **RoCEv2 (RDMA over Converged Ethernet, version 2)** reuses InfiniBand's transport logic — the part of the protocol that tracks what has been sent and what has arrived — and InfiniBand was built for a fabric that *never drops packets*. On InfiniBand, credit-based flow control means a sender is simply never allowed to transmit more than the receiver has buffer space for, so loss is designed out of existence [1]. The transport that RoCE inherited was written for that world. It did not need a clever, fast loss-recovery mechanism, because loss was not supposed to happen.
 
-## Configuration Components
+So when a RoCE NIC does lose a packet, its recovery is blunt. Many RoCE NICs use **go-back-N**: the receiver will not accept any packet that arrives after a gap, so when packet 3 goes missing, packets 4 and 5 — which may already have arrived safely — are discarded, and the sender rewinds and retransmits everything from 3 onward [2]. One lost packet does not cost you one packet; it costs you that packet and everything sent after it until the sender notices and starts over.
 
-**Step 1: Define QoS classes and DSCP markings**
+![Five packets leave a sender; the third is dropped at a switch, and the sender resends the third, fourth and fifth packets from the start.](./diagrams/lossless-go-back-n.svg)
 
-RDMA traffic must be marked with a specific DSCP value so switches can classify it into the correct QoS queue. Common choice: DSCP 26 (AF31) or a vendor-recommended value. All RNICs must be configured to mark RDMA traffic with this DSCP value at the source.
+Now scale that up. In a large training job, thousands of GPUs finish their local computation at nearly the same instant and all try to exchange gradients at once — a burst of enormous, synchronized flows. That burst is exactly when a switch queue is most likely to overflow, which is exactly when ordinary Ethernet drops. And because the GPUs are running a *collective* operation where everyone waits for everyone, the slowest straggler sets the pace. A single go-back-N storm on one flow stalls one GPU, and one stalled GPU stalls the step, and the whole cluster idles waiting for it. The economics are brutal: the accelerators are the expensive part, and loss leaves them waiting on a network that is otherwise nearly empty.
 
-```
-# RDMA traffic: DSCP 26 → CoS 4 → RDMA queue with PFC enabled
-```
+The fix has to attack the root cause. If the transport cannot tolerate loss, then the fabric must not lose. We need an Ethernet that, when a queue is about to overflow, tells the device feeding it to *stop for a moment* instead of dropping what it cannot hold.
 
-**Step 2: Enable PFC on the correct priority**
+## PFC: pausing one lane instead of the whole road
 
-PFC is enabled per-priority-class (0-7). Enable PFC only on the RDMA priority:
+The first layer is a pause button. **PFC (Priority Flow Control, standardized as IEEE 802.1Qbb)** lets a switch send a special PAUSE frame back to the device upstream of it, saying "stop sending for a short while." The upstream device holds its traffic, the congested queue drains, and nothing had to be dropped [3].
 
-```
-# Arista EOS example
-priority-flow-control mode on
-priority-flow-control priority 4 no-drop  # CoS 4 = RDMA, lossless
-```
+The word *priority* is the clever part. Ethernet carries eight traffic classes (priorities 0 through 7), and PFC can pause them independently. If it could only pause the entire link, pausing to protect RDMA would also freeze every other kind of traffic sharing that wire — storage, management, ordinary TCP. Instead, PFC pauses one class at a time. You put RDMA in its own class, enable PFC on that class alone, and when the RDMA queue fills you pause *only RDMA* on the link upstream. The other seven lanes keep moving [3].
 
-PFC must be enabled end-to-end: on every switch port in the RDMA traffic path, including server-facing ports, spine uplinks, and spine ports. A single switch port in the path without PFC enabled breaks the lossless guarantee.
+A switch does not pause the instant a queue has anything in it; that would throttle traffic needlessly. It watches two water lines on the queue. When the queue fills past the upper line — call it **XOFF** — the switch fires a PAUSE upstream. As the queue drains back down past a lower line — **XON** — it sends the all-clear and traffic resumes. The gap between the two lines keeps the switch from flapping between stop and go on every packet.
 
-**Step 3: Configure ECN thresholds**
+![A switch with eight priority queues; the RDMA queue fills, a pause frame travels upstream to the sender, the RDMA flow stops while other flows continue, then resumes.](./diagrams/lossless-pfc-pause.svg)
 
-ECN marking begins when queue depth exceeds the configured threshold. The threshold must be below the PFC pause threshold (otherwise ECN signals too late and PFC must trigger):
+### The bytes already on the wire: headroom
 
-```
-# Typical values for a 100GbE port with 4MB buffer
-ECN marking threshold: 800KB (20% of buffer)
-PFC pause threshold: 1.5MB (37.5% of buffer)
-Headroom (in-flight packets at 100GbE × RTT): ~200KB
-```
+PFC has a subtlety that trips up anyone configuring it for the first time, and it is pure physics. When the switch decides to send PAUSE, that frame is not teleported to the sender. It travels back down the cable, the sender's NIC has to notice it and react, and in all the time that takes, bytes the sender had *already* committed to the wire keep arriving. The switch asked everyone to stop, but a train's worth of packets is still in the tunnel. Every one of them has to land somewhere, or the drop we were trying to prevent happens anyway.
 
-These values depend on link speed, RTT, and switch buffer size. They require tuning based on measured queue depth under representative load.
+So a lossless queue reserves space above its XOFF line — **headroom** — sized to catch exactly those in-flight bytes. You can estimate how much with grade-school arithmetic once you state the assumptions. Take a 100 Gb/s link, which moves 100 billion bits — about 12.5 gigabytes — per second, or roughly 12.5 bytes per nanosecond. Suppose the sender sits 100 metres away down the cable. Light in fibre travels at about 5 nanoseconds per metre, so the PAUSE needs about 500 ns to reach the sender, and bytes already sent need up to another 500 ns to arrive — call it 1,000 ns round-trip, before adding the sender's own reaction time. At 12.5 bytes per nanosecond, that window alone is about 12.5 kilobytes of data per link that must have a home. Make the link faster or the cable longer and the number grows in direct proportion. That reserved slice of buffer is not waste; it is the margin that makes "lossless" true.
 
-**Step 4: Enable DCQCN on the RNICs**
+![A sender and a switch; after XOFF a pause frame travels back along the cable, and packets already in flight keep arriving and fill the reserved headroom.](./diagrams/lossless-headroom.svg)
 
-DCQCN (Data Center Quantized Congestion Notification) is the congestion response algorithm on the RDMA NIC. When the NIC receives a CNP (Congestion Notification Packet — sent by the receiver when it sees CE-marked packets), it reduces its sending rate proportionally.
+## PFC solved one problem and created four
 
-DCQCN parameters are configured on the RDMA NIC driver (typically through Mellanox's mlnx-tools or OFED configuration):
-- Rate reduction on CNP receipt
-- Rate recovery rate after CNP stops
-- Initial and minimum rate limits
+A pause button that stops a sender rather than dropping its packets sounds like the whole answer. It is not. Pausing a sender has consequences that ripple outward, and every large RoCE deployment has been bitten by them. Microsoft documented these failure modes vividly in their SIGCOMM 2016 paper on running RDMA over commodity Ethernet at scale, which is the best public account of what goes wrong [4].
 
-These parameters interact with the switch ECN thresholds. If the RNIC recovers too aggressively, queue depths oscillate. If it recovers too conservatively, throughput suffers after a congestion event. Tuning requires load testing with realistic traffic patterns.
+The gentlest problem is **head-of-line blocking**. A PAUSE stops an entire traffic class on a link, not an individual flow. If one flow in the RDMA class is causing the congestion, the pause stops *every* RDMA flow on that link — including flows that were behaving perfectly and heading somewhere else entirely. The congestion caused by one noisy GPU becomes a stall for an innocent bystander that merely shared a link with it.
 
-## Monitoring a Lossless RDMA Fabric
+![Two flows share one upstream link; a pause caused by the congested flow also halts the second, unrelated flow that happens to share the link.](./diagrams/lossless-victim.svg)
 
-The key counters to monitor — on both switches and RNICs:
+That spreading is worse than it first looks, because the pause propagates. The upstream device, now paused, fills its own queue, crosses *its* XOFF line, and sends a PAUSE further upstream. Congestion at one hot spot travels backward through the fabric, hop by hop, pausing links that are nowhere near the original trouble. This is **congestion spreading**, and it means a single hot receiver can quietly throttle traffic across a surprising fraction of the network.
 
-**Switch-side counters:**
-- `PFC pause frames sent` per priority per port: Should be low. High rates indicate the downstream device is congested and sending pauses upstream.
-- `PFC pause frames received` per priority per port: Should be low. High rates indicate this port is being paused by upstream congestion.
-- `ECN CE marks` per queue: Should increase under load. Zero marks under load suggests ECN threshold is too high.
-- `Discards` in the RDMA queue: Should be zero. Any non-zero value is a critical alert.
+Then there is the **pause storm**. If a NIC misbehaves — a firmware bug, a stuck receive queue — it can emit a relentless stream of PAUSE frames. The link upstream obediently stops and stays stopped, and because pauses propagate, the dead silence spreads outward from the broken NIC. One faulty device can take down connectivity for a whole swath of the fabric. The defence is a **PFC watchdog**: logic on each switch that notices a queue has been paused for too long with no progress and, as a last resort, starts dropping that queue's traffic to break the spell — trading the lossless guarantee for the survival of everything else.
 
-**RNIC-side counters (via perfquery, rdma stat, or vendor tools):**
-- `out_of_buffer`: Packets dropped because the receive queue was full — indicates receiver is not posting receives fast enough
-- `out_of_sequence`: Packets received out of order — indicates reordering in the fabric (ECMP hash causing reordering, which is catastrophic for RDMA)
-- `rdma_rnr_nak`: Receiver Not Ready NAKs — receiver had no posted receive when a Send arrived
-- `roce_rx_pkts`, `roce_tx_pkts`: Baseline traffic counters
+The most feared problem is **deadlock**. PFC makes one switch wait for another to drain. Arrange the waiting in a circle — switch A paused by B, B paused by C, C paused by D, D paused by A — and every switch is waiting for the next one around the ring, so none of them can ever drain. The traffic class simply freezes, and clearing the flows does not thaw it. Microsoft reported this is not merely theoretical: it happened in production [4].
 
-**Application-level throughput:** The ultimate validation is the application's measured throughput and GPU utilization during training. An RDMA fabric that shows clean switch counters but degrades training throughput has a subtle problem — often reordering, DCQCN mistuning, or slow RDMA library paths.
+![Four switches arranged in a square, each sending a pause to the next around the ring, so none can drain and the traffic class is frozen.](./diagrams/lossless-deadlock.svg)
 
-## Common Failure Modes
+Deadlock needs a cyclic *buffer* dependency to form, which is why the physical topology matters. A clean [fat-tree, the subject of the next article](05-hpc-topology.md), where traffic goes up to a common ancestor and back down, does not naturally create these cycles; more exotic wiring, or routing that lets traffic bounce sideways, can. The lesson that stuck from this era is blunt: PFC is a powerful backstop, but you do not want it firing often. It should be the fire alarm, not the thermostat. Which means we need a thermostat.
 
-### PFC Deadlock
+## ECN and DCQCN: a gentler word before the pause
 
-**What you see:** Traffic completely stops in the RDMA priority class. All ports show maximum PFC pause counts. Clearing RDMA flows does not restore forwarding — the fabric is frozen.
+The thermostat is **ECN (Explicit Congestion Notification, defined in RFC 3168)**. Instead of waiting until a queue is nearly full and slamming the pause button, ECN lets a switch set a single bit in a passing packet's IP header the moment its queue starts to build — a quiet "I'm getting busy" marked right on the traffic, with nothing dropped and nothing paused [5]. The marked packet continues to its destination exactly as it would have.
 
-**Why it happens:** PFC pause propagates upstream to stop senders. If the traffic pattern creates a circular dependency, every switch is waiting for another to drain and none of them can:
+On its own, a mark on an arriving packet does nothing useful — the receiver is not the one sending too fast. So ECN is paired with a response loop. When the receiver sees a marked packet, it sends a small **CNP (Congestion Notification Packet)** back to the sender. The sender's NIC takes the CNP as a signal to ease off, reducing its transmit rate; when the CNPs stop coming, it gradually ramps back up. That whole control loop — mark, notify, slow down, recover — is **DCQCN (Data Center Quantized Congestion Notification)**, developed jointly by Microsoft and Mellanox and published at SIGCOMM 2015 [6]. It is the mechanism that keeps RoCE queues shallow enough that PFC rarely has to act.
 
-```
-    SW-A  ←── pauses ───  SW-B
-      │                     │
-   pauses                pauses
-      │                     │
-    SW-C  ───── pauses ──→ SW-D
-                    ↑
-           SW-D also pauses SW-A
-           → circular, no one can drain
-```
+![A switch queue with a lower ECN threshold and a higher PFC threshold; a marked packet reaches the receiver, which sends a notification back, and the sender reduces rate.](./diagrams/lossless-ecn-cnp.svg)
 
-**How to prevent it:** Ensure the physical topology has no circular buffer dependencies. RDMA flows must not create routing loops. Fat-tree avoids this naturally; more complex topologies need explicit analysis.
+The relationship between the two signals is the single most important thing to get right, and it is a matter of where you draw the water lines. The **ECN marking threshold is set below the PFC pause threshold on the same queue**. As a queue fills, it crosses the lower ECN line *first*, so the gentle rate-slowing signal fires early and the senders back off before the queue ever reaches the higher PFC line. ECN is the signal you want to do the real work; PFC is the hard backstop for a burst so sudden that the slow control loop could not react in time. Get the order wrong — PFC line below ECN — and you pause constantly while the gentle signal never gets a chance, inheriting all of PFC's side effects for nothing.
 
----
+## Putting it together on real switches and NICs
 
-### RDMA Packet Reordering
+With the pieces understood, the configuration is almost a formality — it is just naming the class, drawing the thresholds, and making sure nothing in the path forgot to participate.
 
-**What you see:** High `out_of_sequence` counters on RNICs. Low RDMA throughput despite clean PFC counts and no discards — the network looks fine but application performance is poor.
+First, RDMA traffic has to be recognizable so switches can steer it into its own lossless class. It is marked with a **DSCP (Differentiated Services Code Point)** value — a few bits in the IP header reserved for exactly this kind of classification. The conventional choice on NVIDIA (formerly Mellanox) hardware is DSCP 26, mapped to priority 3; PFC is enabled on priority 3 and DCQCN runs on it [7]. The specific numbers are a convention, not a law — what matters is that every device in the path agrees on them.
 
-**Why it happens:** ECMP is splitting packets of the same RDMA flow across different paths. Each path has a different latency, so packets arrive out of order. RDMA cannot tolerate this — a single out-of-order packet triggers retransmission of everything after it.
+From there the recipe is: enable PFC on that one RDMA priority, and *only* that one; set the ECN marking threshold below the PFC threshold; give the CNPs their own high-priority treatment so the "slow down" message is never itself stuck behind the congestion it is trying to relieve; and arm the PFC watchdog so a pause storm cannot freeze the fabric forever. The rule that catches people is that **PFC must be enabled on every single port in the RDMA path** — server-facing ports, leaf uplinks, spine ports, all of them. One port that trusts the DSCP marking but was never told to honour PFC becomes a silent hole: during a burst its buffer overflows with nothing to pause the sender, and it drops RDMA packets even though PFC is configured everywhere else in the path [4].
 
-```
-GPU-A sends packets P1, P2, P3, P4 to GPU-B (same flow):
+## What healthy looks like, and the ways it breaks
 
-         ┌─── Path 1 (latency 10µs) ───┐
-P1, P3 ──┤                              ├──→ GPU-B receives: P1, P3, P2, P4
-P2, P4 ──┤                              │                    ↑
-         └─── Path 2 (latency 15µs) ───┘        out-of-order → retransmit P2, P3, P4
-```
+Once it is running, operating a lossless fabric is mostly about reading a few counters and knowing which story they are telling. In steady state, a correctly tuned fabric shows **near-zero RDMA retransmits** — if DCQCN is doing its job, senders slow down before queues reach the pause line. You expect to see **ECN marks appearing under load** (they are the sign the gentle signal is working), **low and bursty PFC pause counts** rather than a continuous stream, and **zero discards in the RDMA class**. A single discard in that class is an alarm, not a statistic.
 
-**How to fix it:** Verify ECMP hashing uses the full 5-tuple (src IP, dst IP, src port, dst port, protocol). All packets of the same RDMA flow must hash to the same path.
+When it goes wrong, it usually tells one of four stories.
 
----
+The first is **deadlock**: traffic in the RDMA class stops dead, every port shows its pause counter pinned at maximum, and clearing flows does nothing. That is the frozen ring from earlier, and the fix is structural — remove the cyclic buffer dependency in the topology or routing, and lean on the watchdog to recover the fabric in the meantime.
 
-### DCQCN Mistuning
+The second is a **pause storm**: PFC pause-frame counts climbing relentlessly on ports fanning out from one device. Trace it back to the source NIC, because one misbehaving adapter is almost always the origin, and let the watchdog contain the blast radius until it is isolated.
 
-**What you see:** Oscillating throughput — the application alternates between high utilization and near-zero utilization in a repeating pattern.
+The third is **one port missing PFC**: localized RDMA drops on specific links even though PFC "is configured." The audit is per-port, not global — confirm PFC is on, on the correct priority, on *that* link, because a single gap breaks the end-to-end guarantee.
 
-**Why it happens:** DCQCN rate recovery is too aggressive. The sender never settles at a stable rate:
+The fourth is **reordering**, and it is worth dwelling on because the old folklore gets it backwards. If a RoCE flow's packets arrive out of order, go-back-N punishes it exactly as a drop would. The usual culprit named is ECMP — **Equal-Cost Multi-Path**, the standard way a fabric spreads traffic across the several equally-good paths between two points. But standard ECMP hashes *per flow*: it picks a path from fields that are constant for the life of a flow, so every packet of one flow follows the same path and order is preserved. For RoCEv2 the hash entropy comes from the **UDP source port** — the destination port is fixed at 4791, so the sender varies the source port to spread different flows across paths. Plain ECMP does not reorder a flow. Reordering comes from *per-packet* spraying, from adaptive routing that moves a flow mid-stream, or from a path changing under load. If you see out-of-order counters climbing, that is where to look — not at a correctly behaving per-flow hash.
 
-```
-Throughput
-    │       ┌──┐        ┌──┐        ┌──┐
-    │       │  │        │  │        │  │
-    │  ┌────┘  └──┐  ┌──┘  └──┐  ┌─┘  └─
-    │  │          │  │         │  │
-    └──┘          └──┘         └──┘
-       flood → ECN → back off → flood → repeat
-```
+## Where this is all heading: making loss survivable
 
-**How to fix it:** Tune DCQCN rate recovery parameters on the RNIC — specifically the rate increase step and timer — to ramp up more gradually after a congestion event. Requires load testing with representative traffic to find stable values.
+Step back and the whole edifice looks a little precarious. We took a transport that assumes a perfect network and then spent four layers of mechanism — PFC, headroom, ECN, DCQCN, watchdogs, careful thresholds, per-port audits — forcing a commodity network to pretend it is perfect. It works, and it runs enormous clusters today, but a reasonable person might ask whether the harder problem is the transport, not the fabric.
 
----
+A growing part of the industry thinks so, and the direction is to make the transport *tolerate* loss and reordering rather than forbid them — which would let the fabric drop the fragile PFC machinery entirely. The academic marker is **IRN (Improved RoCE NIC)**, from a 2018 SIGCOMM paper that argued a NIC with a better, selective loss-recovery scheme does not need PFC at all; the authors showed IRN without PFC beating conventional RoCE with PFC by 6 to 83% across typical scenarios [8]. [AWS's SRD takes the same bet in production](03-rdma-packet-anatomy.md), spraying packets across many paths and reassembling order at the receiving NIC, which lets it skip PFC and route around trouble packet by packet. NVIDIA's Spectrum-X platform leans the same way, pairing RoCE with adaptive routing and congestion control that it reports delivers up to 95% effective bandwidth at scale [9]. And in June 2025 the **Ultra Ethernet Consortium**, founded in 2023 by AMD, Arista, Broadcom, Cisco, Eviden, HPE, Intel, Meta and Microsoft [10], published its 1.0 specification for an open, Ethernet-based transport designed from the start for multipath, out-of-order-tolerant AI traffic, so that losslessness is no longer the load-bearing assumption [11].
 
-### PFC Not Configured End-to-End
+So the handful of dropped packets that stalled our training job will, over time, matter less — not because the fabric got more perfect, but because the endpoints learned to shrug off imperfection. For now, though, if you are running RoCEv2, losslessness is still your job, and the layers in this article are how you do it: PFC as the backstop, ECN and DCQCN as the thermostat, headroom for the physics, and a careful eye on the counters that tell you which story the fabric is living through.
 
-**What you see:** Packet drops in the RDMA queue on specific switch ports, even though PFC appears to be configured. Drops are localized to particular links.
+Those thousands of GPUs still have to be wired together before any of this traffic can flow. [In the next article](05-hpc-topology.md) we look at how you physically connect them — bisection bandwidth, oversubscription, fat-trees and rail-optimized designs — and why the shape of the network decides how fast the training step can finish.
 
-**Why it happens:** PFC must be enabled on every port in the RDMA path. One port missing PFC breaks the lossless guarantee — during a burst, that port's buffer overflows with nothing to stop the upstream sender.
+## References
 
-```
-GPU-A → [SW1: PFC ✓] → [SW2: PFC ✓] → [SW3: PFC ✗] → GPU-B
-                                              ↑
-                                    buffer overflows here
-                                    drops RDMA packets
-                                    (PFC cannot propagate past this point)
-```
-
-**How to fix it:** Audit PFC configuration on every port in the RDMA traffic path — not just that PFC is globally enabled, but that it is enabled on the correct priority class on each individual port.
-
-## The Network Engineer's Role in RDMA Infrastructure
-
-When something goes wrong in an RDMA cluster, the investigation requires cooperation between the network team, the server team, and the application team — because the problem could be at any layer:
-
-- Switch misconfiguration (PFC not enabled, ECN threshold wrong)
-- RNIC misconfiguration (wrong DCQCN parameters, wrong priority mapping)
-- Application misconfiguration (wrong QP parameters, incorrect memory registration)
-- Physical layer (cable errors, optic degradation causing CRC errors that cause RNICs to drop flows)
-
-The network engineer's contribution is clarity on the switch layer: "PFC is enabled on priority 4 on all ports in the path. ECN marks are appearing at the expected rate. No discards in the RDMA queue. Switch-side is clean." That definitive answer narrows the investigation to the server or application layers.
-
-That clarity — being able to confirm or eliminate the network as the cause of an RDMA performance problem — is exactly what the DC network team is responsible for providing.
+1. *InfiniBand Credit-Based Link-Level Flow Control* (a sender transmits only when the receiver has advertised buffer space). Crupnicoff, Mellanox, tutorial to IEEE 802.1, 2014. https://www.ieee802.org/1/files/public/docs2014/new-dcb-crupnicoff-ibcreditstutorial-0314.pdf
+2. *Revisiting Network Support for RDMA* (go-back-N loss recovery in conventional RoCE NICs). Mittal et al., SIGCOMM 2018. https://arxiv.org/pdf/1806.08159v1
+3. *802.1Qbb — Priority-based Flow Control.* IEEE 802.1 Working Group. https://www.ieee802.org/1/pages/802.1bb.html
+4. *RDMA over Commodity Ethernet at Scale* (head-of-line blocking, congestion spreading, pause storm, PFC deadlock, DSCP-based PFC). Guo et al., SIGCOMM 2016. https://utadvnetworks.github.io/papers/RoCEatScale.pdf
+5. *RFC 3168: The Addition of Explicit Congestion Notification (ECN) to IP.* IETF, 2001. https://www.rfc-editor.org/rfc/rfc3168
+6. *Congestion Control for Large-Scale RDMA Deployments* (DCQCN). Zhu et al., SIGCOMM 2015. https://dl.acm.org/doi/abs/10.1145/2829988.2787484
+7. *Lossless RoCE Configuration in DSCP-Based QoS Mode* (DSCP 26 mapped to priority 3; PFC and ECN on priority 3). NVIDIA Enterprise Support. https://enterprise-support.nvidia.com/s/article/lossless-roce-configuration-for-mlnx-os-switches-in-dscp-based-qos-mode--advanced-mode-x
+8. *Revisiting Network Support for RDMA* (IRN without PFC outperforms RoCE with PFC by 6-83%). Mittal et al., SIGCOMM 2018. https://arxiv.org/html/1806.08159v1
+9. *Turbocharging Generative AI Workloads with the NVIDIA Spectrum-X Networking Platform* (RoCE adaptive routing and congestion control; up to 95% effective bandwidth). NVIDIA Developer Blog, 2024. https://developer.nvidia.com/blog/turbocharging-ai-workloads-with-nvidia-spectrum-x-networking-platform
+10. *Leading Cloud Service, Semiconductor, and System Providers Unite to Form Ultra Ethernet Consortium* (founding members). Eviden/Atos press release, July 19, 2023. https://atos.net/en/2023/press-release_2023_07_19/leading-cloud-service-semiconductor-and-system-providers-unite-to-form-ultra-ethernet-consortium
+11. *Ultra Ethernet Consortium Launches Specification 1.0.* Ultra Ethernet Consortium / Linux Foundation, June 11, 2025. https://www.linuxfoundation.org/press/uec-launches-spec-1.0

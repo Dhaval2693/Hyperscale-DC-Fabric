@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 330" width="700" height="412" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" role="img" aria-label="Three GPU servers feed one leaf switch whose uplink is one third of their combined bandwidth; a buffer bar fills up as traffic backs up.">
+  <title>A 3:1 oversubscribed leaf stalls all-reduce</title>
+  <rect x="0.5" y="0.5" width="559" height="329" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="280" y="20" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" letter-spacing="1">A 3:1 OVERSUBSCRIBED LEAF STALLS ALL-REDUCE</text>
+  <g transform="translate(0,30)">
+    <g><rect x="220" y="30" width="120" height="34" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="280" y="50.3" fill="#334155" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">leaf switch</text></g>
+    <g><rect x="40" y="190" width="100" height="34" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="90" y="210" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">server 1</text></g>
+    <path d="M90,190 L280,64" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="0.9s" repeatCount="indefinite"/></path>
+    <g><rect x="230" y="190" width="100" height="34" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="280" y="210" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">server 2</text></g>
+    <path d="M280,190 L280,64" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="0.9s" repeatCount="indefinite"/></path>
+    <g><rect x="420" y="190" width="100" height="34" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="470" y="210" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">server 3</text></g>
+    <path d="M470,190 L280,64" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="0.9s" repeatCount="indefinite"/></path>
+    <path d="M280,30 L280,8" fill="none" stroke="#dc2626" stroke-width="3" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="1.4s" repeatCount="indefinite"/></path>
+    <text x="360" y="20" fill="#dc2626" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="start">uplink: 1/3 of demand</text>
+    <text x="150" y="92" fill="#64748b" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="end">buffer</text>
+    <rect x="160" y="80" width="240" height="20" rx="3" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <g transform="translate(162,82)"><g><animateTransform attributeName="transform" type="scale" additive="sum" values="0.04 1;0.04 1;1 1;1 1;0.04 1;0.04 1" keyTimes="0;0.0625;0.625;0.875;0.925;1" dur="8s" repeatCount="indefinite"/><rect x="0" y="0" width="236" height="16" rx="3" fill="#dc2626" stroke="#dc2626" stroke-width="1.5"/></g></g>
+    <text x="280" y="240" fill="#64748b" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">GPUs idle, waiting on the starved uplink</text>
+  </g>
+  <text x="280" y="298" fill="#64748b" font-size="10.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="280" dy="0">Three servers each send at full rate, but the single uplink carries only a third of their demand.</tspan><tspan x="280" dy="14">Watch the queue fill and the uplink stay pinned.</tspan></text>
+</svg>

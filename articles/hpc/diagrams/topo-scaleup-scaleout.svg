@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 330" width="725" height="412" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" role="img" aria-label="A server of GPUs linked by fast NVLink inside, each with a single slower NIC connecting out to a shared switch fabric.">
+  <title>Two networks per GPU: scale-up vs scale-out</title>
+  <rect x="0.5" y="0.5" width="579" height="329" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="290" y="20" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" letter-spacing="1">TWO NETWORKS PER GPU: SCALE-UP VS SCALE-OUT</text>
+  <g transform="translate(0,30)">
+    <rect x="24" y="40" width="250" height="170" rx="10" fill="none" stroke="#0891b2" stroke-width="1.5"/>
+    <text x="149" y="58" fill="#0891b2" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">scale-up domain (NVLink)</text>
+    <g><rect x="38" y="70" width="64" height="32" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="70" y="89" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GPU1</text></g>
+    <g><rect x="158" y="70" width="64" height="32" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="190" y="89" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GPU2</text></g>
+    <g><rect x="38" y="134" width="64" height="32" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="70" y="153" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GPU3</text></g>
+    <g><rect x="158" y="134" width="64" height="32" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="190" y="153" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GPU4</text></g>
+    <path d="M70,86 L190,86" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="0.6s" repeatCount="indefinite"/></path>
+    <path d="M70,150 L190,150" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="0.6s" repeatCount="indefinite"/></path>
+    <path d="M70,86 L70,150" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="0.6s" repeatCount="indefinite"/></path>
+    <path d="M190,86 L190,150" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="0.6s" repeatCount="indefinite"/></path>
+    <text x="149" y="122" fill="#16a34a" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">~1.8 TB/s / GPU</text>
+    <g><rect x="430" y="100" width="120" height="44" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="490" y="118.15" fill="#334155" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">scale-out</text><text x="490" y="132.45" fill="#334155" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">switch</text></g>
+    <path d="M274,118 L430,122" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="1.4s" repeatCount="indefinite"/></path>
+    <text x="352" y="104" fill="#dc2626" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">1 NIC/GPU</text>
+    <text x="352" y="150" fill="#dc2626" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">~400 Gb/s (50 GB/s)</text>
+    <text x="290" y="235" fill="#64748b" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">crossing the domain boundary is a &gt;10x bandwidth drop</text>
+  </g>
+  <text x="290" y="298" fill="#64748b" font-size="10.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="290" dy="0">Inside the box, NVLink joins GPUs at terabytes per second. Leaving the box, each GPU gets one ~400</tspan><tspan x="290" dy="14">Gb/s NIC onto the scale-out fabric — an order-of-magnitude cliff.</tspan></text>
+</svg>
