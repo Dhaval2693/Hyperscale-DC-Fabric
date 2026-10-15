@@ -62,7 +62,7 @@ The honest answer is the one every good network engineer gives: *it depends on w
 
 A useful way to hold it: **InfiniBand** engineers a perfect network and makes the packet trust it; **RoCEv2** reuses a commodity network and forces it to behave; **EFA/SRD** assumes the network is imperfect and engineers the endpoints to cope. Three philosophies, one goal — move gradients between thousands of GPUs before the GPUs notice they are waiting.
 
-The broader industry is converging on SRD's philosophy, by the way. The **Ultra Ethernet Consortium (UEC)** — backed by AWS, Microsoft, Meta, Broadcom, and others — is standardizing an open transport that embraces exactly this multipath, out-of-order-tolerant approach for AI fabrics [8], which is the subject the series turns to next.
+The broader industry is converging on SRD's philosophy, by the way. The **Ultra Ethernet Consortium (UEC)** is standardizing an open transport that embraces exactly this multipath, out-of-order-tolerant approach for AI fabrics [8]. Until that arrives everywhere, though, most RoCEv2 fabrics still depend on an Ethernet that never drops packets, and building one is the subject of [the next article](04-lossless-ethernet-for-rdma.md).
 
 ## References
 

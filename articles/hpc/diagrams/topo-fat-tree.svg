@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 370" width="725" height="462" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" role="img" aria-label="A three-layer fat-tree of core, aggregation and edge switches over two pods; two equal-length paths between a left and right host highlight in turn.">
+  <title>A k=4 fat-tree: equal-cost paths light up</title>
+  <rect x="0.5" y="0.5" width="579" height="369" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="290" y="20" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" letter-spacing="1">A K=4 FAT-TREE: EQUAL-COST PATHS LIGHT UP</text>
+  <g transform="translate(0,30)">
+    <g><rect x="130" y="30" width="48" height="28" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="154" y="47" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">C1</text></g>
+    <g><rect x="230" y="30" width="48" height="28" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="254" y="47" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">C2</text></g>
+    <g><rect x="330" y="30" width="48" height="28" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="354" y="47" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">C3</text></g>
+    <g><rect x="430" y="30" width="48" height="28" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="454" y="47" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">C4</text></g>
+    <g><rect x="70" y="110" width="48" height="28" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="94" y="127" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">A1</text></g>
+    <g><rect x="170" y="110" width="48" height="28" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="194" y="127" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">A2</text></g>
+    <g><rect x="390" y="110" width="48" height="28" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="414" y="127" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">A3</text></g>
+    <g><rect x="490" y="110" width="48" height="28" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="514" y="127" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">A4</text></g>
+    <g><rect x="70" y="190" width="48" height="28" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="94" y="207" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">E1</text></g>
+    <g><rect x="170" y="190" width="48" height="28" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="194" y="207" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">E2</text></g>
+    <g><rect x="390" y="190" width="48" height="28" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="414" y="207" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">E3</text></g>
+    <g><rect x="490" y="190" width="48" height="28" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="514" y="207" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">E4</text></g>
+    <g><rect x="70" y="254" width="48" height="26" rx="6" fill="#e1f3e7" stroke="#16a34a" stroke-width="1.5"/><text x="94" y="270" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">H L</text></g>
+    <g><rect x="490" y="254" width="48" height="26" rx="6" fill="#e1f3e7" stroke="#16a34a" stroke-width="1.5"/><text x="514" y="270" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">H R</text></g>
+    <line x1="94" y1="138" x2="154" y2="58" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="94" y1="138" x2="254" y2="58" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="194" y1="138" x2="154" y2="58" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="194" y1="138" x2="354" y2="58" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="414" y1="138" x2="254" y2="58" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="414" y1="138" x2="454" y2="58" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="514" y1="138" x2="354" y2="58" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="514" y1="138" x2="454" y2="58" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="94" y1="218" x2="94" y2="138" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="94" y1="218" x2="194" y2="138" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="194" y1="218" x2="94" y2="138" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="194" y1="218" x2="194" y2="138" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="414" y1="218" x2="414" y2="138" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="414" y1="218" x2="514" y2="138" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="514" y1="218" x2="414" y2="138" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="514" y1="218" x2="514" y2="138" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="94" y1="254" x2="94" y2="216" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="514" y1="254" x2="514" y2="216" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.0333;0.0667;0.4778;0.5111;1" dur="9s" repeatCount="indefinite"/><path d="M94,254 L94,218 L94,138 L154,58 L414,138 L414,218 L514,254" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="1.1s" repeatCount="indefinite"/></path></g>
+    <g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.5111;0.5444;0.9556;0.9889;1" dur="9s" repeatCount="indefinite"/><path d="M94,254 L94,218 L190,138 L354,58 L490,138 L490,218 L514,254" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="1.1s" repeatCount="indefinite"/></path></g>
+    <text x="290" y="20" fill="#64748b" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">(k/2)^2 equal-cost paths between pods; ECMP spreads flows</text>
+  </g>
+  <text x="290" y="338" fill="#64748b" font-size="10.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="290" dy="0">Between two hosts in different pods there are several equal-cost paths through the core. Watch two of</tspan><tspan x="290" dy="14">them light up as ECMP spreads the traffic.</tspan></text>
+</svg>

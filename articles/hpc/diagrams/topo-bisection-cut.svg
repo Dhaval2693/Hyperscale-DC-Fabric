@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 310" width="700" height="388" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" role="img" aria-label="Two halves of GPUs with traffic crossing a central cut; a full fabric carries all flows across, an oversubscribed one has a narrow pinch point.">
+  <title>Bisection bandwidth: cut the cluster in half</title>
+  <rect x="0.5" y="0.5" width="559" height="309" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="280" y="20" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" letter-spacing="1">BISECTION BANDWIDTH: CUT THE CLUSTER IN HALF</text>
+  <g transform="translate(0,30)">
+    <g><rect x="30" y="48" width="70" height="32" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="65" y="67" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GPU L1</text></g>
+    <g><rect x="460" y="48" width="70" height="32" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="495" y="67" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GPU R1</text></g>
+    <g><rect x="30" y="96" width="70" height="32" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="65" y="115" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GPU L2</text></g>
+    <g><rect x="460" y="96" width="70" height="32" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="495" y="115" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GPU R2</text></g>
+    <g><rect x="30" y="144" width="70" height="32" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="65" y="163" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GPU L3</text></g>
+    <g><rect x="460" y="144" width="70" height="32" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="495" y="163" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GPU R3</text></g>
+    <line x1="280" y1="30" x2="280" y2="200" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="4 4"/>
+    <text x="280" y="22" fill="#dc2626" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">the cut</text>
+    <path d="M100,64 C200,64 360,64 460,64" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="1s" repeatCount="indefinite"/></path>
+    <path d="M100,112 C200,112 360,112 460,112" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="1s" repeatCount="indefinite"/></path>
+    <path d="M100,160 C200,160 360,160 460,160" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="5 7"><animate attributeName="stroke-dashoffset" from="0" to="-24" dur="1s" repeatCount="indefinite"/></path>
+    <text x="280" y="212" fill="#64748b" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">bisection bandwidth = total crossing the worst-case split</text>
+  </g>
+  <text x="280" y="278" fill="#64748b" font-size="10.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="280" dy="0">Draw a line down the middle and ask how much bandwidth crosses it. A full-bisection cut carries</tspan><tspan x="280" dy="14">every link; an oversubscribed one narrows at the cut.</tspan></text>
+</svg>

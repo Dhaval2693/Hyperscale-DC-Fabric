@@ -33,7 +33,7 @@ BGP runs the internet and the data center. OSPF handles the underlay. MPLS and i
 At hyperscale, congestion is not an exception — it is a design input. These articles explain why standard TCP is not enough for data center workloads, how ECN and DCTCP fix it, and how PFC creates a lossless fabric for RDMA.
 
 ### HPC and RDMA Networking
-AI training and HPC workloads demand something TCP cannot give: zero-copy, kernel-bypass, microsecond latency. This section covers RDMA, the InfiniBand vs RoCEv2 tradeoff, and what it takes to build a lossless Ethernet fabric that RDMA can actually use.
+AI training and HPC workloads demand something TCP cannot give: zero-copy, kernel-bypass, microsecond latency. This section covers RDMA, the InfiniBand vs RoCEv2 tradeoff, and what it takes to build a lossless Ethernet fabric that RDMA can actually use. It then follows AI past training: what happens when you ask a chatbot a question, why there are so many models, and how inference serves millions of people at once.
 
 ### Kubernetes Networking
 Kubernetes runs on the DC fabric, which means DC network engineers own it whether they signed up for it or not. CNI plugins, pod routing, Services, kube-proxy, host TCP tuning — explained from a network engineer's perspective.
