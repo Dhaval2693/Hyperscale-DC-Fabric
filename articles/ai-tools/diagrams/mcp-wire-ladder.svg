@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 400" width="725" height="500" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" role="img" aria-label="A client column and a server column. Arrows cross between them in sequence: initialize and its reply, tools/list and its reply, tools/call and the result.">
+  <title>One MCP exchange, message by message</title>
+  <defs><marker id="mcp-wire-ladder-ah-accent2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker><marker id="mcp-wire-ladder-ah-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97706"/></marker></defs>
+  <rect x="0.5" y="0.5" width="579" height="399" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="290" y="20" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" letter-spacing="1">ONE MCP EXCHANGE, MESSAGE BY MESSAGE</text>
+  <g transform="translate(0,30)">
+    <g><rect x="50" y="36" width="120" height="36" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="110" y="57.3" fill="#334155" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">Client</text></g>
+    <g><rect x="410" y="36" width="120" height="36" rx="6" fill="#fae3e3" stroke="#dc2626" stroke-width="1.5"/><text x="470" y="57.3" fill="#334155" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">Server</text></g>
+    <line x1="110" y1="72" x2="110" y2="300" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <line x1="470" y1="72" x2="470" y2="300" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <text x="290" y="92" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">initialize</text>
+    <g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.04;0.06;0.19;0.21;1" dur="10s" repeatCount="indefinite"/><path d="M110 100 H470" fill="none" stroke="#d97706" stroke-width="1.5" marker-end="url(#mcp-wire-ladder-ah-warn)"/></g>
+    <text x="290" y="132" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">capabilities</text>
+    <g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.21;0.23;0.36;0.38;1" dur="10s" repeatCount="indefinite"/><path d="M470 140 H110" fill="none" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#mcp-wire-ladder-ah-accent2)"/></g>
+    <text x="290" y="182" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">tools/list</text>
+    <g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.38;0.4;0.53;0.55;1" dur="10s" repeatCount="indefinite"/><path d="M110 190 H470" fill="none" stroke="#d97706" stroke-width="1.5" marker-end="url(#mcp-wire-ladder-ah-warn)"/></g>
+    <text x="290" y="222" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">tool + schema</text>
+    <g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.55;0.57;0.7;0.72;1" dur="10s" repeatCount="indefinite"/><path d="M470 230 H110" fill="none" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#mcp-wire-ladder-ah-accent2)"/></g>
+    <text x="290" y="272" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">tools/call  get_bgp_neighbors</text>
+    <g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.72;0.74;0.87;0.89;1" dur="10s" repeatCount="indefinite"/><path d="M110 280 H470" fill="none" stroke="#d97706" stroke-width="1.5" marker-end="url(#mcp-wire-ladder-ah-warn)"/></g>
+    <text x="290" y="292" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">result: neighbor Idle (flapping)</text>
+    <g><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.9;0.92;0.99;1" dur="10s" repeatCount="indefinite"/><path d="M470 300 H110" fill="none" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#mcp-wire-ladder-ah-accent2)"/></g>
+  </g>
+  <text x="290" y="368" fill="#64748b" font-size="10.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="290" dy="0">Watch each JSON-RPC message cross in turn: negotiate (initialize), discover (tools/list), call</tspan><tspan x="290" dy="14">(tools/call), then the result comes back.</tspan></text>
+</svg>

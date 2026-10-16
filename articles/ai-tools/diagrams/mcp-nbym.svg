@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" width="750" height="475" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" role="img" aria-label="On the left, three apps each wired by hand to three systems, a dense mesh. On the right, the same apps and systems each connect once through a central MCP standard.">
+  <title>One standard replaces an integration per pair</title>
+  <rect x="0.5" y="0.5" width="599" height="379" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="300" y="20" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" letter-spacing="1">ONE STANDARD REPLACES AN INTEGRATION PER PAIR</text>
+  <g transform="translate(0,30)">
+    <text x="150" y="30" fill="#dc2626" font-size="11" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">without a standard: M x N</text>
+    <g><rect x="40" y="54" width="76" height="32" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="78" y="73" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">App A</text></g>
+    <g><rect x="40" y="124" width="76" height="32" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="78" y="143" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">App B</text></g>
+    <g><rect x="40" y="194" width="76" height="32" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="78" y="213" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">App C</text></g>
+    <g><rect x="230" y="54" width="76" height="32" rx="6" fill="#ffffff" stroke="#334155" stroke-width="1.5"/><text x="268" y="73" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GitHub</text></g>
+    <g><rect x="230" y="124" width="76" height="32" rx="6" fill="#ffffff" stroke="#334155" stroke-width="1.5"/><text x="268" y="143" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">Tickets</text></g>
+    <g><rect x="230" y="194" width="76" height="32" rx="6" fill="#ffffff" stroke="#334155" stroke-width="1.5"/><text x="268" y="213" fill="#334155" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">Devices</text></g>
+    <line x1="116" y1="70" x2="230" y2="70" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="116" y1="70" x2="230" y2="140" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="116" y1="70" x2="230" y2="210" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="116" y1="140" x2="230" y2="70" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="116" y1="140" x2="230" y2="140" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="116" y1="140" x2="230" y2="210" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="116" y1="210" x2="230" y2="70" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="116" y1="210" x2="230" y2="140" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="116" y1="210" x2="230" y2="210" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <text x="470" y="30" fill="#16a34a" font-size="11" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">with MCP: M + N</text>
+    <g><rect x="458" y="124" width="76" height="48" rx="6" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/><text x="496" y="145.45" fill="#334155" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">MCP</text><text x="496" y="157.15" fill="#64748b" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">standard</text></g>
+    <g><rect x="372" y="56" width="66" height="28" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="405" y="72.7" fill="#334155" font-size="9" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">App A</text></g>
+    <line x1="438" y1="70" x2="458" y2="148" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <g><rect x="372" y="126" width="66" height="28" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="405" y="142.7" fill="#334155" font-size="9" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">App B</text></g>
+    <line x1="438" y1="140" x2="458" y2="148" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <g><rect x="372" y="196" width="66" height="28" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="405" y="212.7" fill="#334155" font-size="9" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">App C</text></g>
+    <line x1="438" y1="210" x2="458" y2="148" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <g><rect x="540" y="56" width="52" height="28" rx="6" fill="#ffffff" stroke="#334155" stroke-width="1.5"/><text x="566" y="72.7" fill="#334155" font-size="9" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">GitHub</text></g>
+    <line x1="534" y1="148" x2="540" y2="70" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <g><rect x="540" y="126" width="52" height="28" rx="6" fill="#ffffff" stroke="#334155" stroke-width="1.5"/><text x="566" y="142.7" fill="#334155" font-size="9" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">Tickets</text></g>
+    <line x1="534" y1="148" x2="540" y2="140" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <g><rect x="540" y="196" width="52" height="28" rx="6" fill="#ffffff" stroke="#334155" stroke-width="1.5"/><text x="566" y="212.7" fill="#334155" font-size="9" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">Devices</text></g>
+    <line x1="534" y1="148" x2="540" y2="210" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="300" y="282" fill="#64748b" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">write a server once; every host that speaks MCP can use it</text>
+  </g>
+  <text x="300" y="348" fill="#64748b" font-size="10.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="300" dy="0">Left: every app needs a custom connector to every system (M x N wires). Right: each speaks MCP once, so</tspan><tspan x="300" dy="14">the wiring collapses to M + N.</tspan></text>
+</svg>

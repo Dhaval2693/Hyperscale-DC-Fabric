@@ -47,6 +47,15 @@ Networks fail. The question is how fast you find out and how much you understand
 ### Protocols
 Deep dives into specific technologies that cut across the fabric: multicast (PIM-SM, how it works on Arista), eBPF (how it is reshaping DC networking from the host side up).
 
+### AI Tools for Engineers
+Every AI tool names its features differently, but underneath they share the same building blocks. This series follows one network engineer from a plain chat window to an agent that can see her configs, call her systems, and follow her team's process — and explains each piece in vendor-neutral terms.
+
+- From chatbot to agent: the model, the harness around it, and the agent loop
+- Context, rules files, memory, and knowledge bases (RAG)
+- Tool calling, MCP, and local vs remote servers
+- Skills, subagents, hooks, spec-driven and background workflows
+- Using AI tools safely: permissions, prompt injection, cost, and a learning path
+
 ### Coding
 Technical interviews for network engineering roles test general problem-solving, not just protocol knowledge. Graph algorithms, common DSA patterns, and Python networking patterns — practical preparation, not theory.
 

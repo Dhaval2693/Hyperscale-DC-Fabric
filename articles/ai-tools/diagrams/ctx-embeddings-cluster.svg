@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 350" width="700" height="438" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" role="img" aria-label="A 2-D space of points in two clusters: one about BGP sessions timing out, one about cabling; an amber query point appears next to the BGP cluster.">
+  <title>Similar meaning lands close together</title>
+  <rect x="0.5" y="0.5" width="559" height="349" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="280" y="20" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" letter-spacing="1">SIMILAR MEANING LANDS CLOSE TOGETHER</text>
+  <g transform="translate(0,30)">
+    <rect x="40" y="40" width="480" height="180" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="60" y="34" fill="#64748b" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="start">embedding space (simplified to 2-D)</text>
+    <circle cx="150" cy="110" r="62" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <circle cx="130" cy="95" r="5" fill="#0891b2"/>
+    <circle cx="168" cy="100" r="5" fill="#0891b2"/>
+    <circle cx="150" cy="135" r="5" fill="#0891b2"/>
+    <text x="150" y="185" fill="#64748b" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="150" dy="0">&quot;session timed out&quot;</tspan><tspan x="150" dy="11.7">&quot;stopped answering keepalives&quot;</tspan></text>
+    <circle cx="400" cy="120" r="58" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <circle cx="385" cy="108" r="5" fill="#7c3aed"/>
+    <circle cx="418" cy="112" r="5" fill="#7c3aed"/>
+    <circle cx="400" cy="142" r="5" fill="#7c3aed"/>
+    <text x="400" y="192" fill="#64748b" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="400" dy="0">&quot;swapped the fiber&quot;</tspan><tspan x="400" dy="11.7">&quot;cleaned the optic&quot;</tspan></text>
+    <g><animateTransform attributeName="transform" type="translate" additive="sum" values="0 0;0 0;0 0;0 0" keyTimes="0;0.0444;0.1111;1" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.0444;0.0611;0.9833;1" dur="9s" repeatCount="indefinite"/><circle cx="118" cy="118" r="7" fill="#d97706"/><text x="96" y="118" fill="#d97706" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="end">query</text></g>
+    <text x="280" y="244" fill="#64748b" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">nearest points are retrieved — meaning, not matching words</text>
+  </g>
+  <text x="280" y="318" fill="#64748b" font-size="10.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="280" dy="0">Each sentence becomes a point; passages that mean the same thing cluster, even with no shared</tspan><tspan x="280" dy="14">words. Watch the amber query land among its nearest neighbours.</tspan></text>
+</svg>
