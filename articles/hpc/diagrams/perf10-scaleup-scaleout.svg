@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 344" width="725" height="430" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" role="img" aria-label="Two labelled bars: a long scale-up bar for NVLink bandwidth and a much shorter scale-out bar for the per-port network bandwidth between servers.">
+  <title>Scale-up is fast and small; scale-out is slower and vast</title>
+  <rect x="0.5" y="0.5" width="579" height="343" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="290" y="20" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" letter-spacing="1">SCALE-UP IS FAST AND SMALL; SCALE-OUT IS SLOWER AND VAST</text>
+  <g transform="translate(0,30)">
+    <text x="14" y="30" fill="#64748b" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="start">per-GPU bandwidth, each direction</text>
+    <text x="60" y="78" fill="#0891b2" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="start">scale-up</text>
+    <text x="60" y="92" fill="#94a3b8" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="start">NVLink, inside a server</text>
+    <rect x="230" y="66" width="320" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <g transform="translate(232,68)"><g><animateTransform attributeName="transform" type="scale" additive="sum" values="0.04 1;0.04 1;1 1;1 1;0.04 1;0.04 1" keyTimes="0;0.0429;0.3571;0.9286;0.9857;1" dur="7s" repeatCount="indefinite"/><rect x="0" y="0" width="316" height="30" rx="3" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/></g></g>
+    <g><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.3714;0.4;1" dur="7s" repeatCount="indefinite"/><text x="430" y="118" fill="#0891b2" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">900 GB/s per GPU (NVLink gen5)</text></g>
+    <text x="60" y="168" fill="#7c3aed" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="start">scale-out</text>
+    <text x="60" y="182" fill="#94a3b8" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="start">RDMA network, between servers</text>
+    <rect x="230" y="156" width="320" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <g transform="translate(232,158)"><g><animateTransform attributeName="transform" type="scale" additive="sum" values="0.04 1;0.04 1;1 1;1 1;0.04 1;0.04 1" keyTimes="0;0.0429;0.1714;0.9286;0.9857;1" dur="7s" repeatCount="indefinite"/><rect x="0" y="0" width="18" height="30" rx="3" fill="#eee5fd" stroke="#7c3aed" stroke-width="1.5"/></g></g>
+    <g><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.2;0.2286;1" dur="7s" repeatCount="indefinite"/><text x="320" y="208" fill="#7c3aed" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">400 Gb/s port = 50 GB/s</text></g>
+    <text x="290" y="236" fill="#94a3b8" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">about 18x apart, so keep the big exchanges on the fast tier</text>
+  </g>
+  <text x="290" y="298" fill="#64748b" font-size="10.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="290" dy="0">Inside a server, NVLink links GPUs at about 900 GB/s each way (scale-up). Between servers, the RDMA</tspan><tspan x="290" dy="14">network runs at hundreds of gigabits per second per port (scale-out). Per direction, from NVIDIA and</tspan><tspan x="290" dy="14">AWS public specs, as of October 2026.</tspan></text>
+</svg>

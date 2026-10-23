@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 310" width="750" height="388" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" role="img" aria-label="Two timelines. The top bar is compute; the bottom bar is communication overlapping it, with a short exposed tail extending past the end of compute.">
+  <title>A training step: compute, comm, and the part that is exposed</title>
+  <rect x="0.5" y="0.5" width="599" height="309" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="300" y="20" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" letter-spacing="1">A TRAINING STEP: COMPUTE, COMM, AND THE PART THAT IS EXPOSED</text>
+  <g transform="translate(0,30)">
+    <text x="14" y="30" fill="#64748b" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="start">ONE STEP</text>
+    <text x="80" y="64" fill="#94a3b8" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">compute</text>
+    <g transform="translate(80,70)"><g><animateTransform attributeName="transform" type="scale" additive="sum" values="0.04 1;0.04 1;1 1;1 1;0.04 1;0.04 1" keyTimes="0;0.0375;0.2875;0.9375;0.9875;1" dur="8s" repeatCount="indefinite"/><rect x="0" y="0" width="300" height="34" rx="3" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/></g></g>
+    <text x="80" y="128" fill="#94a3b8" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">comm</text>
+    <g transform="translate(150,134)"><g><animateTransform attributeName="transform" type="scale" additive="sum" values="0.04 1;0.04 1;1 1;1 1;0.04 1;0.04 1" keyTimes="0;0.125;0.4;0.9375;0.9875;1" dur="8s" repeatCount="indefinite"/><rect x="0" y="0" width="300" height="34" rx="3" fill="#faeddf" stroke="#d97706" stroke-width="1.5"/></g></g>
+    <line x1="380" y1="60" x2="380" y2="180" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <line x1="450" y1="60" x2="450" y2="180" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <g><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.425;0.45;1" dur="8s" repeatCount="indefinite"/><text x="380" y="200" fill="#64748b" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">compute ends</text><text x="450" y="215" fill="#dc2626" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">comm ends</text><rect x="380" y="134" width="70" height="34" rx="3" fill="#dc2626" stroke="#dc2626" stroke-width="1.5"/><text x="500" y="155" fill="#dc2626" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="start">exposed</text></g>
+    <text x="300" y="25" fill="#94a3b8" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">overlap hides comm behind compute; the exposed tail is pure network cost</text>
+  </g>
+  <text x="300" y="278" fill="#64748b" font-size="10.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="300" dy="0">Each step is compute followed by communication. Good overlap hides most of the comm behind compute; the</tspan><tspan x="300" dy="14">sliver that sticks out past compute is exposed time, and that is the part the network adds to every step.</tspan></text>
+</svg>

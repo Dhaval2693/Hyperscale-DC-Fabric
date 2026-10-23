@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 300" width="725" height="375" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" role="img" aria-label="A compute timeline producing three gradient buckets left to right; each bucket triggers an all-reduce bar on a network timeline below, overlapping the next compute.">
+  <title>Collectives overlap the backward pass, bucket by bucket</title>
+  <rect x="0.5" y="0.5" width="579" height="299" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="290" y="20" fill="#64748b" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" letter-spacing="1">COLLECTIVES OVERLAP THE BACKWARD PASS, BUCKET BY BUCKET</text>
+  <g transform="translate(0,30)">
+    <text x="14" y="40" fill="#64748b" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="start">GPU compute</text>
+    <text x="14" y="44" fill="#94a3b8" font-size="9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="start"></text>
+    <text x="14" y="150" fill="#64748b" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="start">network</text>
+    <g><rect x="150" y="28" width="120" height="34" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="210" y="47.7" fill="#334155" font-size="9" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">bucket 1</text></g>
+    <g><rect x="278" y="28" width="120" height="34" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="338" y="47.7" fill="#334155" font-size="9" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">bucket 2</text></g>
+    <g><rect x="406" y="28" width="120" height="34" rx="6" fill="#dff1f5" stroke="#0891b2" stroke-width="1.5"/><text x="466" y="47.7" fill="#334155" font-size="9" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">bucket 3</text></g>
+    <g transform="translate(260,130)"><g><animateTransform attributeName="transform" type="scale" additive="sum" values="0.04 1;0.04 1;1 1;1 1;0.04 1;0.04 1" keyTimes="0;0.1111;0.2667;0.9444;0.9889;1" dur="9s" repeatCount="indefinite"/><rect x="0" y="0" width="120" height="30" rx="3" fill="#fae3e3" stroke="#dc2626" stroke-width="1.5"/></g></g>
+    <text x="284" y="149" fill="#dc2626" font-size="8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">AR</text>
+    <g transform="translate(388,130)"><g><animateTransform attributeName="transform" type="scale" additive="sum" values="0.04 1;0.04 1;1 1;1 1;0.04 1;0.04 1" keyTimes="0;0.3333;0.4889;0.9444;0.9889;1" dur="9s" repeatCount="indefinite"/><rect x="0" y="0" width="120" height="30" rx="3" fill="#fae3e3" stroke="#dc2626" stroke-width="1.5"/></g></g>
+    <text x="412" y="149" fill="#dc2626" font-size="8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">AR</text>
+    <g transform="translate(456,130)"><g><animateTransform attributeName="transform" type="scale" additive="sum" values="0.04 1;0.04 1;1 1;1 1;0.04 1;0.04 1" keyTimes="0;0.5556;0.7111;0.9444;0.9889;1" dur="9s" repeatCount="indefinite"/><rect x="0" y="0" width="120" height="30" rx="3" fill="#fae3e3" stroke="#dc2626" stroke-width="1.5"/></g></g>
+    <text x="480" y="149" fill="#dc2626" font-size="8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">AR</text>
+    <text x="290" y="200" fill="#94a3b8" font-size="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">each all-reduce (AR) runs while the next bucket is still computing</text>
+  </g>
+  <text x="290" y="268" fill="#64748b" font-size="10.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle"><tspan x="290" dy="0">As the backward pass finishes each group of gradients (a bucket), its all-reduce launches on the</tspan><tspan x="290" dy="14">network immediately while the GPU keeps computing the next bucket. Communication hides behind compute.</tspan></text>
+</svg>
